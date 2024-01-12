@@ -46,6 +46,4 @@ void gmClock_EndFrame( gmClock_t* clock )
       sleepTime.microseconds = clock->maxFrameDurationMicro - frameDurationMicro;
       sfSleep( sleepTime );
    }
-
-
 }
