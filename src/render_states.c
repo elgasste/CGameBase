@@ -23,8 +23,6 @@ static gmDebugBarRenderState_t* gmDebugBarRenderState_Create()
    state->msgBuffer = (char*)gmCalloc( DEFAULT_STRLEN, sizeof( char ), sfTrue );
    state->msgBufferLen = DEFAULT_STRLEN;
 
-   state->msgBuffer[0] = '\0';
-
    return state;
 }
 
