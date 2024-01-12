@@ -27,6 +27,8 @@ typedef struct gmRenderObjects_t
    gmDebugBarRenderObjects_t* debugBarRenderObjects;
 
    sfRectangleShape* windowBackgroundRect;
+
+   sfRectangleShape* entityRect;
 }
 gmRenderObjects_t;
 

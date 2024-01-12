@@ -44,7 +44,7 @@ void gmRenderStates_Tic( gmRenderStates_t* states, gmClock_t* clock )
 {
    if ( states->debugBar->isVisible )
    {
-      states->debugBar->elapsedSeconds += clock->frameDeltaSeconds;
+      states->debugBar->elapsedSeconds += clock->frameDelta;
 
       if ( states->debugBar->elapsedSeconds > states->debugBar->visibleSeconds )
       {

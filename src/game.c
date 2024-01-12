@@ -4,6 +4,8 @@
 #include "input_state.h"
 #include "render_objects.h"
 #include "render_states.h"
+#include "entity.h"
+#include "physics.h"
 
 gmGame_t* gmGame_Create()
 {
@@ -17,6 +19,12 @@ gmGame_t* gmGame_Create()
 
    game->showDiagnostics = sfFalse;
 
+   game->entity = (gmEntity_t*)gmAlloc( sizeof( gmEntity_t ), sfTrue );
+   game->entity->mapPos.x = 64;
+   game->entity->mapPos.y = 64;
+   game->entity->mapHitBoxSize.x = 58;
+   game->entity->mapHitBoxSize.y = 32;
+
    return game;
 }
 
@@ -28,6 +36,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmClock_Destroy( game->clock );
    gmWindow_Destroy( game->window );
 
+   gmFree( game->entity, sizeof( gmEntity_t ), sfTrue );
    gmFree( game, sizeof( gmGame_t ), sfTrue );
 }
 
@@ -40,6 +49,7 @@ void gmGame_Run( gmGame_t* game )
       gmInputState_Reset( game->inputState );
       gmWindow_HandleEvents( game->window, game->inputState );
       gmGame_HandleInput( game );
+      gmPhysics_Tic( game );
       gmRenderStates_Tic( game->renderStates, game->clock );
       gmGame_Render( game );
 

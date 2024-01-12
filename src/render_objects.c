@@ -19,6 +19,9 @@ gmRenderObjects_t* gmRenderObjects_Create()
    sfRectangleShape_setPosition( renderObjects->windowBackgroundRect, windowBackgroundPosition );
    sfRectangleShape_setFillColor( renderObjects->windowBackgroundRect, sfBlack );
 
+   renderObjects->entityRect = gmRectangleShape_Create();
+   sfRectangleShape_setFillColor( renderObjects->entityRect, sfBlue );
+
    return renderObjects;
 }
 
@@ -71,6 +74,7 @@ void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
    gmDebugBarRenderObjects_Destroy( objects->debugBarRenderObjects );
    gmDiagnosticsRenderObjects_Destroy( objects->diagnosticsRenderObjects );
 
+   gmRectangleShape_Destroy( objects->entityRect );
    gmRectangleShape_Destroy( objects->windowBackgroundRect );
 
    gmFree( objects, sizeof( gmRenderObjects_t ), sfTrue );

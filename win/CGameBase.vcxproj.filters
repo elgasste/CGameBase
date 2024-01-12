@@ -45,6 +45,12 @@
     <ClInclude Include="..\src\render_states.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.c">
@@ -78,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\time_util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\physics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

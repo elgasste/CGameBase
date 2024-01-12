@@ -13,12 +13,14 @@
 
 #define LOG_FILENAME    "log.txt"
 
-#define WINDOW_WIDTH    1024
-#define WINDOW_HEIGHT   960
+#define WINDOW_WIDTH    1920
+#define WINDOW_HEIGHT   1080
 #define WINDOW_BPP      32
 #define WINDOW_STYLE    sfTitlebar | sfClose
 
 #define GAME_FPS        60
+
+#define MAP_TILE_SIZE   64
 
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;
 

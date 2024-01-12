@@ -5,8 +5,8 @@ gmClock_t* gmClock_Create()
    gmClock_t* clock = (gmClock_t*)gmAlloc( sizeof( gmClock_t ), sfTrue );
 
    clock->innerClock = gmInnerClock_Create();
-   clock->frameDeltaSeconds = 1.0f / GAME_FPS;
-   clock->maxFrameDurationMicro = (sfInt64)( (double)clock->frameDeltaSeconds * 1000000 );
+   clock->frameDelta = 1.0f / GAME_FPS;
+   clock->maxFrameDurationMicro = (sfInt64)( (double)clock->frameDelta * 1000000 );
    clock->totalFrameCount = 0;
    clock->lagFrameCount = 0;
 

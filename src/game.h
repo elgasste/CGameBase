@@ -8,6 +8,7 @@ typedef struct gmClock_t gmClock_t;
 typedef struct gmInputState_t gmInputState_t;
 typedef struct gmRenderObjects_t gmRenderObjects_t;
 typedef struct gmRenderStates_t gmRenderStates_t;
+typedef struct gmEntity_t gmEntity_t;
 
 typedef struct gmGame_t
 {
@@ -18,6 +19,8 @@ typedef struct gmGame_t
    gmRenderStates_t* renderStates;
 
    sfBool showDiagnostics;
+
+   gmEntity_t* entity;
 }
 gmGame_t;
 

@@ -4,14 +4,17 @@
 #include "window.h"
 #include "clock.h"
 #include "time_util.h"
+#include "entity.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
+static void gmRenderer_DrawEntities( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 void gmGame_Render( gmGame_t* game )
 {
    gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
 
+   gmRenderer_DrawEntities( game );
    gmRenderer_DrawDebugBar( game );
 
    if ( game->showDiagnostics )
@@ -54,6 +57,13 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
    snprintf( msg, DEFAULT_STRLEN, STR_ELAPSEDTIMEFORMATTER, timeStr );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
+}
+
+static void gmRenderer_DrawEntities( gmGame_t* game )
+{
+   sfRectangleShape_setPosition( game->renderObjects->entityRect, game->entity->mapPos );
+   sfRectangleShape_setSize( game->renderObjects->entityRect, game->entity->mapHitBoxSize );
+   gmWindow_DrawRectangleShape( game->window, game->renderObjects->entityRect );
 }
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )
