@@ -61,7 +61,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\CSFML-2.5.1\bin\*.dll" "$(OutDir)" /Y
-xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y</Command>
+xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y
+xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -86,7 +87,8 @@ xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\CSFML-2.5.1\bin\*.dll" "$(OutDir)" /Y
-xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y</Command>
+xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y
+xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
