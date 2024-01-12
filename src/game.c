@@ -5,6 +5,7 @@
 #include "render_objects.h"
 #include "render_states.h"
 #include "entity.h"
+#include "entity_sprite.h"
 #include "physics.h"
 
 gmGame_t* gmGame_Create()
@@ -24,6 +25,14 @@ gmGame_t* gmGame_Create()
    game->entity->mapPos.y = 64;
    game->entity->mapHitBoxSize.x = 58;
    game->entity->mapHitBoxSize.y = 32;
+   game->entity->direction = gmDirection_Down;
+   game->entity->sprite = (gmEntitySprite_t*)gmAlloc( sizeof( gmEntitySprite_t ), sfTrue );
+
+   // TODO: populate the entity sprite
+   //
+   // - load the sprite texture from a file
+   // - define a sprite size
+   // - figure out frames
 
    return game;
 }
@@ -36,6 +45,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmClock_Destroy( game->clock );
    gmWindow_Destroy( game->window );
 
+   gmFree( game->entity->sprite, sizeof( gmEntitySprite_t ), sfTrue );
    gmFree( game->entity, sizeof( gmEntity_t ), sfTrue );
    gmFree( game, sizeof( gmGame_t ), sfTrue );
 }

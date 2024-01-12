@@ -51,6 +51,12 @@
     <ClInclude Include="..\src\physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\entity_sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.c">

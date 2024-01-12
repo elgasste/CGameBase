@@ -41,7 +41,14 @@ void gmGame_HandleInput( gmGame_t* game )
       {
          entity->velocity.x *= 0.707f;
       }
+
+      if ( !( upIsDown && entity->direction == gmDirection_Up ) &&
+           !( downIsDown && entity->direction == gmDirection_Down ) )
+      {
+         entity->direction = gmDirection_Left;
+      }
    }
+
    if ( upIsDown && !downIsDown )
    {
       entity->velocity.y = -ENTITY_MAX_VELOCITY;
@@ -50,7 +57,14 @@ void gmGame_HandleInput( gmGame_t* game )
       {
          entity->velocity.y *= 0.707f;
       }
+
+      if ( !( leftIsDown && entity->direction == gmDirection_Left ) &&
+           !( rightIsDown && entity->direction == gmDirection_Right ) )
+      {
+         entity->direction = gmDirection_Up;
+      }
    }
+
    if ( rightIsDown && !leftIsDown )
    {
       entity->velocity.x = ENTITY_MAX_VELOCITY;
@@ -59,7 +73,14 @@ void gmGame_HandleInput( gmGame_t* game )
       {
          entity->velocity.x *= 0.707f;
       }
+
+      if ( !( upIsDown && entity->direction == gmDirection_Up ) &&
+           !( downIsDown && entity->direction == gmDirection_Down ) )
+      {
+         entity->direction = gmDirection_Right;
+      }
    }
+
    if ( downIsDown && !upIsDown )
    {
       entity->velocity.y = ENTITY_MAX_VELOCITY;
@@ -67,6 +88,12 @@ void gmGame_HandleInput( gmGame_t* game )
       if ( leftIsDown || rightIsDown )
       {
          entity->velocity.y *= 0.707f;
+      }
+
+      if ( !( leftIsDown && entity->direction == gmDirection_Left ) &&
+           !( rightIsDown && entity->direction == gmDirection_Right ) )
+      {
+         entity->direction = gmDirection_Down;
       }
    }
 }

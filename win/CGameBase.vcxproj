@@ -92,6 +92,8 @@ xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y</Command>
   <ItemGroup>
     <ClInclude Include="..\src\clock.h" />
     <ClInclude Include="..\src\common.h" />
+    <ClInclude Include="..\src\direction.h" />
+    <ClInclude Include="..\src\entity_sprite.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\entity.h" />
     <ClInclude Include="..\src\input_state.h" />
