@@ -1,5 +1,6 @@
 #include "window.h"
 #include "input_state.h"
+#include "entity_sprite.h"
 
 gmWindow_t* gmWindow_Create()
 {
@@ -60,6 +61,11 @@ void gmWindow_DrawRectangleShape( gmWindow_t* window, sfRectangleShape* rect )
 void gmWindow_DrawText( gmWindow_t* window, sfText* text )
 {
    sfRenderWindow_drawText( window->sfmlWindow, text, 0 );
+}
+
+void gmWindow_DrawEntitySprite( gmWindow_t* window, gmEntitySprite_t* sprite )
+{
+   sfRenderWindow_drawSprite( window->sfmlWindow, sprite->sfmlSprite, 0 );
 }
 
 sfBool gmWindow_IsOpen( gmWindow_t* window )

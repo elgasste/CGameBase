@@ -10,6 +10,10 @@
 
 gmGame_t* gmGame_Create()
 {
+   sfVector2f spriteMapPos = { 256, 256 };
+   sfVector2f spriteMapHitBoxSize = { 56, 32 };
+   sfVector2f spriteOffset = { -4, -32 };
+
    gmGame_t* game = (gmGame_t*)gmAlloc( sizeof( gmGame_t ), sfTrue );
 
    game->window = gmWindow_Create();
@@ -20,34 +24,23 @@ gmGame_t* gmGame_Create()
 
    game->showDiagnostics = sfFalse;
 
-   game->entity = (gmEntity_t*)gmAlloc( sizeof( gmEntity_t ), sfTrue );
-   game->entity->mapPos.x = 256;
-   game->entity->mapPos.y = 256;
-   game->entity->mapHitBoxSize.x = 56;
-   game->entity->mapHitBoxSize.y = 32;
-   game->entity->velocity.x = 0;
-   game->entity->velocity.y = 0;
-   game->entity->direction = gmDirection_Down;
-   game->entity->sprite = (gmEntitySprite_t*)gmAlloc( sizeof( gmEntitySprite_t ), sfTrue );
-
-   // MUFFINS: populate the entity sprite
-   //
-   // - define the sprite size
-   // - figure out frames based on direction
+   game->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
+   game->entity = gmEntity_Create( spriteMapPos, spriteMapHitBoxSize, spriteOffset, game->entitySpriteTexture );
 
    return game;
 }
 
 void gmGame_Destroy( gmGame_t* game )
 {
+   gmEntity_Destroy( game->entity );
+   gmTexture_Destroy( game->entitySpriteTexture );
+
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
    gmInputState_Destroy( game->inputState );
    gmClock_Destroy( game->clock );
    gmWindow_Destroy( game->window );
 
-   gmFree( game->entity->sprite, sizeof( gmEntitySprite_t ), sfTrue );
-   gmFree( game->entity, sizeof( gmEntity_t ), sfTrue );
    gmFree( game, sizeof( gmGame_t ), sfTrue );
 }
 

@@ -109,6 +109,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
   <ItemGroup>
     <ClCompile Include="..\src\clock.c" />
     <ClCompile Include="..\src\common.c" />
+    <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\input_handler.c" />
     <ClCompile Include="..\src\input_state.c" />
@@ -117,11 +118,15 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClCompile Include="..\src\renderer.c" />
     <ClCompile Include="..\src\render_objects.c" />
     <ClCompile Include="..\src\render_states.c" />
+    <ClCompile Include="..\src\entity_sprite.c" />
     <ClCompile Include="..\src\time_util.c" />
     <ClCompile Include="..\src\window.c" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\src\resources\fonts\consolas.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\src\resources\textures\sprites\entity.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

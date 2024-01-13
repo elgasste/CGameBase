@@ -21,6 +21,7 @@ typedef struct gmGame_t
    sfBool showDiagnostics;
    
    gmEntity_t* entity;
+   sfTexture* entitySpriteTexture;
 }
 gmGame_t;
 

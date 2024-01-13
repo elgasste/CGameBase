@@ -50,11 +50,15 @@ sfClock* gmInnerClock_Create();
 sfRectangleShape* gmRectangleShape_Create();
 sfFont* gmFont_CreateFromFile( const char* filePath );
 sfText* gmText_Create();
+sfTexture* gmTexture_CreateFromFile( const char* filePath );
+sfSprite* gmSprite_Create();
 
 void gmRenderWindow_Destroy( sfRenderWindow* window );
 void gmInnerClock_Destroy( sfClock* clock );
 void gmRectangleShape_Destroy( sfRectangleShape* rect );
 void gmFont_Destroy( sfFont* font );
 void gmText_Destroy( sfText* text );
+void gmTexture_Destroy( sfTexture* texture );
+void gmSprite_Destroy( sfSprite* sprite );
 
 #endif // COMMON_H

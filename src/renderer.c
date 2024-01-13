@@ -5,6 +5,7 @@
 #include "clock.h"
 #include "time_util.h"
 #include "entity.h"
+#include "entity_sprite.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_DrawEntities( gmGame_t* game );
@@ -61,11 +62,11 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 
 static void gmRenderer_DrawEntities( gmGame_t* game )
 {
-   // MUFFINS: use the entity's sprite
+   sfVector2f spritePos = { game->entity->mapPos.x + game->entity->spriteOffset.x,
+                            game->entity->mapPos.y + game->entity->spriteOffset.y };
 
-   sfRectangleShape_setPosition( game->renderObjects->entityRect, game->entity->mapPos );
-   sfRectangleShape_setSize( game->renderObjects->entityRect, game->entity->mapHitBoxSize );
-   gmWindow_DrawRectangleShape( game->window, game->renderObjects->entityRect );
+   gmEntitySprite_SetPosition( game->entity->sprite, spritePos );
+   gmWindow_DrawEntitySprite( game->window, game->entity->sprite );
 }
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )

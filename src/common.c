@@ -152,6 +152,18 @@ sfText* gmText_Create()
    return sfText_create();
 }
 
+sfTexture* gmTexture_CreateFromFile( const char* filePath )
+{
+   INCREMENT_SFML()
+   return sfTexture_createFromFile( filePath, 0 );
+}
+
+sfSprite* gmSprite_Create()
+{
+   INCREMENT_SFML()
+   return sfSprite_create();
+}
+
 void gmRenderWindow_Destroy( sfRenderWindow* window )
 {
    DECREMENT_SFML()
@@ -180,4 +192,16 @@ void gmText_Destroy( sfText* text )
 {
    DECREMENT_SFML()
    sfText_destroy( text );
+}
+
+void gmTexture_Destroy( sfTexture* texture )
+{
+   DECREMENT_SFML()
+   sfTexture_destroy( texture );
+}
+
+void gmSprite_Destroy( sfSprite* sprite )
+{
+   DECREMENT_SFML()
+   sfSprite_destroy( sprite );
 }

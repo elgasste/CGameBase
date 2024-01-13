@@ -16,6 +16,12 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{72ac2f73-e598-4024-8a55-25a22ef0cdab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{06c50133-ec17-4759-86c1-39658a38b672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures\Sprites">
+      <UniqueIdentifier>{3cde2401-8029-49d8-87d5-2bc4fdc4c1c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\common.h">
@@ -95,10 +101,21 @@
     <ClCompile Include="..\src\physics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\entity_sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\entity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\src\resources\fonts\consolas.ttf">
       <Filter>Resource Files\Fonts</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\src\resources\textures\sprites\entity.png">
+      <Filter>Resource Files\Textures\Sprites</Filter>
+    </Image>
   </ItemGroup>
 </Project>
