@@ -23,18 +23,17 @@ gmGame_t* gmGame_Create()
    game->entity = (gmEntity_t*)gmAlloc( sizeof( gmEntity_t ), sfTrue );
    game->entity->mapPos.x = 256;
    game->entity->mapPos.y = 256;
-   game->entity->mapHitBoxSize.x = 58;
+   game->entity->mapHitBoxSize.x = 56;
    game->entity->mapHitBoxSize.y = 32;
    game->entity->velocity.x = 0;
    game->entity->velocity.y = 0;
    game->entity->direction = gmDirection_Down;
    game->entity->sprite = (gmEntitySprite_t*)gmAlloc( sizeof( gmEntitySprite_t ), sfTrue );
 
-   // TODO: populate the entity sprite
+   // MUFFINS: populate the entity sprite
    //
-   // - load the sprite texture from a file
-   // - define a sprite size
-   // - figure out frames
+   // - define the sprite size
+   // - figure out frames based on direction
 
    return game;
 }

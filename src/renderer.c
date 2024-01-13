@@ -61,6 +61,8 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 
 static void gmRenderer_DrawEntities( gmGame_t* game )
 {
+   // MUFFINS: use the entity's sprite
+
    sfRectangleShape_setPosition( game->renderObjects->entityRect, game->entity->mapPos );
    sfRectangleShape_setSize( game->renderObjects->entityRect, game->entity->mapHitBoxSize );
    gmWindow_DrawRectangleShape( game->window, game->renderObjects->entityRect );

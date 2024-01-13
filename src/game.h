@@ -19,7 +19,7 @@ typedef struct gmGame_t
    gmRenderStates_t* renderStates;
 
    sfBool showDiagnostics;
-
+   
    gmEntity_t* entity;
 }
 gmGame_t;
