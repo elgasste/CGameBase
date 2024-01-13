@@ -1,6 +1,7 @@
 #include "physics.h"
 #include "game.h"
 #include "entity.h"
+#include "entity_sprite.h"
 #include "clock.h"
 
 #define COLLISION_PADDING 0.0001f
@@ -29,6 +30,8 @@ void gmPhysics_Tic( gmGame_t* game )
    {
       entity->mapPos.y = WINDOW_HEIGHT - entity->mapHitBoxSize.y - COLLISION_PADDING;
    }
+
+   gmEntity_Tic( entity, game->clock );
 
    entity->velocity.x = 0;
    entity->velocity.y = 0;

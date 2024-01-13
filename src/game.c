@@ -8,6 +8,8 @@
 #include "entity_sprite.h"
 #include "physics.h"
 
+static void gmGame_Tic( gmGame_t* game );
+
 gmGame_t* gmGame_Create()
 {
    sfVector2f spriteMapPos = { 256, 256 };
@@ -25,7 +27,8 @@ gmGame_t* gmGame_Create()
    game->showDiagnostics = sfFalse;
 
    game->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
-   game->entity = gmEntity_Create( spriteMapPos, spriteMapHitBoxSize, spriteOffset, game->entitySpriteTexture );
+   game->entity = gmEntity_Create( spriteMapPos, spriteMapHitBoxSize, 200.0f, spriteOffset, game->entitySpriteTexture );
+   gmEntity_SetDirection( game->entity, gmDirection_Down );
 
    return game;
 }
@@ -53,8 +56,7 @@ void gmGame_Run( gmGame_t* game )
       gmInputState_Reset( game->inputState );
       gmWindow_HandleEvents( game->window, game->inputState );
       gmGame_HandleInput( game );
-      gmPhysics_Tic( game );
-      gmRenderStates_Tic( game->renderStates, game->clock );
+      gmGame_Tic( game );
       gmGame_Render( game );
 
       if ( game->window->wantToClose )
@@ -69,6 +71,12 @@ void gmGame_Run( gmGame_t* game )
 void gmGame_Close( gmGame_t* game )
 {
    gmWindow_Close( game->window );
+}
+
+static void gmGame_Tic( gmGame_t* game )
+{
+   gmPhysics_Tic( game );
+   gmRenderStates_Tic( game->renderStates, game->clock );
 }
 
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg )

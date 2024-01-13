@@ -2,8 +2,6 @@
 #include "input_state.h"
 #include "entity.h"
 
-#define ENTITY_MAX_VELOCITY 256
-
 void gmGame_HandleInput( gmGame_t* game )
 {
    gmEntity_t* entity = game->entity;
@@ -35,7 +33,7 @@ void gmGame_HandleInput( gmGame_t* game )
 
    if ( leftIsDown && !rightIsDown )
    {
-      entity->velocity.x = -ENTITY_MAX_VELOCITY;
+      entity->velocity.x = -entity->maxVelocity;
 
       if ( upIsDown || downIsDown )
       {
@@ -51,7 +49,7 @@ void gmGame_HandleInput( gmGame_t* game )
 
    if ( upIsDown && !downIsDown )
    {
-      entity->velocity.y = -ENTITY_MAX_VELOCITY;
+      entity->velocity.y = -entity->maxVelocity;
 
       if ( leftIsDown || rightIsDown )
       {
@@ -67,7 +65,7 @@ void gmGame_HandleInput( gmGame_t* game )
 
    if ( rightIsDown && !leftIsDown )
    {
-      entity->velocity.x = ENTITY_MAX_VELOCITY;
+      entity->velocity.x = entity->maxVelocity;
 
       if ( upIsDown || rightIsDown )
       {
@@ -83,7 +81,7 @@ void gmGame_HandleInput( gmGame_t* game )
 
    if ( downIsDown && !upIsDown )
    {
-      entity->velocity.y = ENTITY_MAX_VELOCITY;
+      entity->velocity.y = entity->maxVelocity;
 
       if ( leftIsDown || rightIsDown )
       {
