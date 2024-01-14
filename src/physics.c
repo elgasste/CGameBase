@@ -3,34 +3,82 @@
 #include "entity.h"
 #include "entity_sprite.h"
 #include "clock.h"
+#include "map.h"
 
 #define COLLISION_PADDING 0.0001f
 
 void gmPhysics_Tic( gmGame_t* game )
 {
    gmEntity_t* entity = game->entity;
+   sfVector2f newPos = entity->mapPos;
+   uint32_t startRow, endRow, startCol, endCol, row, col;
+   gmMapTile_t* tile;
 
-   entity->mapPos.x += entity->velocity.x * game->clock->frameDelta;
-   entity->mapPos.y += entity->velocity.y * game->clock->frameDelta;
+   newPos.x += entity->velocity.x * game->clock->frameDelta;
 
-   if ( entity->mapPos.x <= 0 )
+   if ( newPos.x <= 0 )
    {
-      entity->mapPos.x = COLLISION_PADDING;
+      newPos.x = COLLISION_PADDING;
    }
-   else if ( entity->mapPos.x + entity->mapHitBoxSize.x >= WINDOW_WIDTH )
+   else if ( newPos.x + entity->mapHitBoxSize.x >= WINDOW_WIDTH )
    {
-      entity->mapPos.x = WINDOW_WIDTH - entity->mapHitBoxSize.x - COLLISION_PADDING;
+      newPos.x = WINDOW_WIDTH - entity->mapHitBoxSize.x - COLLISION_PADDING;
+   }
+   else if ( newPos.x != entity->mapPos.x )
+   {
+      startRow = (uint32_t)( newPos.y / MAP_TILE_SIZE );
+      endRow = (uint32_t)( ( newPos.y + entity->mapHitBoxSize.y ) / MAP_TILE_SIZE );
+      col = ( newPos.x < entity->mapPos.x )
+         ? (uint32_t)( newPos.x / MAP_TILE_SIZE )
+         : (uint32_t)( ( newPos.x + entity->mapHitBoxSize.x ) / MAP_TILE_SIZE );
+
+      for ( row = startRow; row <= endRow; row++ )
+      {
+         tile = &( game->map->tiles[( row * game->map->tileCount.x ) + col] );
+
+         if ( !tile->passable )
+         {
+            newPos.x = ( newPos.x < entity->mapPos.x )
+               ? ( ( col + 1 ) * MAP_TILE_SIZE ) + COLLISION_PADDING
+               : ( col * MAP_TILE_SIZE ) - entity->mapHitBoxSize.x - COLLISION_PADDING;
+            break;
+         }
+      }
    }
 
-   if ( entity->mapPos.y <= 0 )
+   newPos.y += entity->velocity.y * game->clock->frameDelta;
+
+   if ( newPos.y <= 0 )
    {
-      entity->mapPos.y = COLLISION_PADDING;
+      newPos.y = COLLISION_PADDING;
    }
-   else if ( entity->mapPos.y + entity->mapHitBoxSize.y >= WINDOW_HEIGHT )
+   else if ( newPos.y + entity->mapHitBoxSize.y >= WINDOW_HEIGHT )
    {
-      entity->mapPos.y = WINDOW_HEIGHT - entity->mapHitBoxSize.y - COLLISION_PADDING;
+      newPos.y = WINDOW_HEIGHT - entity->mapHitBoxSize.y - COLLISION_PADDING;
+   }
+   else if ( newPos.y != entity->mapPos.y )
+   {
+      startCol = (uint32_t)( newPos.x / MAP_TILE_SIZE );
+      endCol = (uint32_t)( ( newPos.x + entity->mapHitBoxSize.x ) / MAP_TILE_SIZE );
+      row = ( newPos.y < entity->mapPos.y )
+         ? (uint32_t)( newPos.y / MAP_TILE_SIZE )
+         : (uint32_t)( ( newPos.y + entity->mapHitBoxSize.y ) / MAP_TILE_SIZE );
+
+      for ( col = startCol; col <= endCol; col++ )
+      {
+         tile = &( game->map->tiles[( row * game->map->tileCount.x ) + col] );
+
+         if ( !tile->passable )
+         {
+            newPos.y = ( newPos.y < entity->mapPos.y )
+               ? ( ( row + 1 ) * MAP_TILE_SIZE ) + COLLISION_PADDING
+               : ( row * MAP_TILE_SIZE ) - entity->mapHitBoxSize.y - COLLISION_PADDING;
+            break;
+         }
+      }
    }
 
+   entity->mapPos = newPos;
    gmEntity_Tic( entity, game->clock );
 
    entity->velocity.x = 0;

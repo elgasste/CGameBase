@@ -51,8 +51,6 @@ void gmGame_Load( gmGame_t* game )
    game->map->tiles[( mapTileCount.x * 4 ) + 13].color = sfRed;
    game->map->tiles[( mapTileCount.x * 4 ) + 13].passable = sfFalse;
 
-   // MUFFINS: make left and right sides unpassable
-
    game->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
    game->entity = gmEntity_Create( spriteMapPos, spriteMapHitBoxSize, 200.0f, spriteOffset, game->entitySpriteTexture );
    gmEntity_SetDirection( game->entity, gmDirection_Down );
