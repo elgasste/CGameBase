@@ -112,6 +112,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClCompile Include="..\src\common.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
+    <ClCompile Include="..\src\game_loader.c" />
     <ClCompile Include="..\src\input_handler.c" />
     <ClCompile Include="..\src\input_state.c" />
     <ClCompile Include="..\src\main.c" />

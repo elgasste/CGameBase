@@ -113,6 +113,9 @@
     <ClCompile Include="..\src\map.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\game_loader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\src\resources\fonts\consolas.ttf">
