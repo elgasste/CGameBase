@@ -4,6 +4,7 @@
 #include "input_state.h"
 #include "render_objects.h"
 #include "render_states.h"
+#include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
 #include "physics.h"
@@ -13,8 +14,9 @@ static void gmGame_Tic( gmGame_t* game );
 gmGame_t* gmGame_Create()
 {
    sfVector2f spriteMapPos = { 256, 256 };
-   sfVector2f spriteMapHitBoxSize = { 56, 32 };
-   sfVector2f spriteOffset = { -4, -32 };
+   sfVector2f spriteMapHitBoxSize = { 52, 32 };
+   sfVector2f spriteOffset = { -6, -32 };
+   sfVector2u mapTileCount = { 16, 12 };
 
    gmGame_t* game = (gmGame_t*)gmAlloc( sizeof( gmGame_t ), sfTrue );
 
@@ -25,6 +27,8 @@ gmGame_t* gmGame_Create()
    game->renderStates = gmRenderStates_Create();
 
    game->showDiagnostics = sfFalse;
+
+   game->map = gmMap_Create( mapTileCount );
 
    game->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
    game->entity = gmEntity_Create( spriteMapPos, spriteMapHitBoxSize, 200.0f, spriteOffset, game->entitySpriteTexture );
@@ -37,7 +41,7 @@ void gmGame_Destroy( gmGame_t* game )
 {
    gmEntity_Destroy( game->entity );
    gmTexture_Destroy( game->entitySpriteTexture );
-
+   gmMap_Destroy( game->map );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
    gmInputState_Destroy( game->inputState );

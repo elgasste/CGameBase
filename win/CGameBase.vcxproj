@@ -99,6 +99,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\entity.h" />
     <ClInclude Include="..\src\input_state.h" />
+    <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\physics.h" />
     <ClInclude Include="..\src\render_objects.h" />
     <ClInclude Include="..\src\render_states.h" />
@@ -114,6 +115,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClCompile Include="..\src\input_handler.c" />
     <ClCompile Include="..\src\input_state.c" />
     <ClCompile Include="..\src\main.c" />
+    <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\physics.c" />
     <ClCompile Include="..\src\renderer.c" />
     <ClCompile Include="..\src\render_objects.c" />
