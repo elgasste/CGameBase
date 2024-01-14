@@ -2,8 +2,10 @@
 
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
+static gmMapRenderObjects_t* gmMapRenderObjects_Create();
 static void gmDiagnosticsRenderObjects_Destroy( gmDiagnosticsRenderObjects_t* objects );
 static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects );
+static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects );
 
 gmRenderObjects_t* gmRenderObjects_Create()
 {
@@ -13,6 +15,7 @@ gmRenderObjects_t* gmRenderObjects_Create()
    gmRenderObjects_t* renderObjects = (gmRenderObjects_t*)gmAlloc( sizeof( gmRenderObjects_t ), sfTrue );
    renderObjects->diagnosticsRenderObjects = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBarRenderObjects = gmDebugBarRenderObjects_Create();
+   renderObjects->mapRenderObjects = gmMapRenderObjects_Create();
 
    renderObjects->windowBackgroundRect = gmRectangleShape_Create();
    sfRectangleShape_setSize( renderObjects->windowBackgroundRect, windowBackgroundSize );
@@ -69,8 +72,21 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
    return objects;
 }
 
+static gmMapRenderObjects_t* gmMapRenderObjects_Create()
+{
+   sfVector2f tileRectSize = { MAP_TILE_SIZE, MAP_TILE_SIZE };
+
+   gmMapRenderObjects_t* objects = (gmMapRenderObjects_t*)gmAlloc( sizeof( gmMapRenderObjects_t ), sfTrue );
+
+   objects->tileRect = gmRectangleShape_Create();
+   sfRectangleShape_setSize( objects->tileRect, tileRectSize );
+
+   return objects;
+}
+
 void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
 {
+   gmMapRenderObjects_Destroy( objects->mapRenderObjects );
    gmDebugBarRenderObjects_Destroy( objects->debugBarRenderObjects );
    gmDiagnosticsRenderObjects_Destroy( objects->diagnosticsRenderObjects );
 
@@ -96,4 +112,11 @@ static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects 
    gmRectangleShape_Destroy( objects->backgroundRect );
 
    gmFree( objects, sizeof( gmDebugBarRenderObjects_t ), sfTrue );
+}
+
+static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects )
+{
+   gmRectangleShape_Destroy( objects->tileRect );
+
+   gmFree( objects, sizeof( gmMapRenderObjects_t ), sfTrue );
 }

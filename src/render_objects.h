@@ -21,10 +21,17 @@ typedef struct gmDebugBarRenderObjects_t
 }
 gmDebugBarRenderObjects_t;
 
+typedef struct gmMapRenderObjects_t
+{
+   sfRectangleShape* tileRect;
+}
+gmMapRenderObjects_t;
+
 typedef struct gmRenderObjects_t
 {
    gmDiagnosticsRenderObjects_t* diagnosticsRenderObjects;
    gmDebugBarRenderObjects_t* debugBarRenderObjects;
+   gmMapRenderObjects_t* mapRenderObjects;
 
    sfRectangleShape* windowBackgroundRect;
 

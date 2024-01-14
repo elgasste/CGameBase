@@ -4,10 +4,12 @@
 #include "window.h"
 #include "clock.h"
 #include "time_util.h"
+#include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
+static void gmRenderer_DrawMap( gmGame_t* game );
 static void gmRenderer_DrawEntities( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
@@ -15,6 +17,7 @@ void gmGame_Render( gmGame_t* game )
 {
    gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
 
+   gmRenderer_DrawMap( game );
    gmRenderer_DrawEntities( game );
    gmRenderer_DrawDebugBar( game );
 
@@ -58,6 +61,30 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
    snprintf( msg, DEFAULT_STRLEN, STR_ELAPSEDTIMEFORMATTER, timeStr );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
+}
+
+static void gmRenderer_DrawMap( gmGame_t* game )
+{
+   uint32_t row, col;
+   gmMapRenderObjects_t* objects = game->renderObjects->mapRenderObjects;
+   gmMap_t* map = game->map;
+   gmMapTile_t* tile;
+   sfVector2f tilePos;
+
+   for ( row = 0; row < map->tileCount.y; row++ )
+   {
+      for ( col = 0; col < map->tileCount.x; col++ )
+      {
+         tile = &( map->tiles[( row * map->tileCount.x ) + col] );
+         tilePos.x = (float)col * MAP_TILE_SIZE;
+         tilePos.y = (float)row * MAP_TILE_SIZE;
+
+         sfRectangleShape_setPosition( objects->tileRect, tilePos );
+         sfRectangleShape_setFillColor( objects->tileRect, tile->color );
+
+         gmWindow_DrawRectangleShape( game->window, objects->tileRect );
+      }
+   }
 }
 
 static void gmRenderer_DrawEntities( gmGame_t* game )
