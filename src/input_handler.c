@@ -67,7 +67,7 @@ void gmGame_HandleInput( gmGame_t* game )
    {
       entity->velocity.x = entity->maxVelocity;
 
-      if ( upIsDown || rightIsDown )
+      if ( upIsDown || downIsDown )
       {
          entity->velocity.x *= 0.707f;
       }
