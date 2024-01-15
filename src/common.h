@@ -30,6 +30,7 @@
 #define GAME_FONT_SIZE              16
 
 #define MENU_CARAT_BLINKSECONDS     0.25f
+#define MENU_LINESIZE               32.0f
 
 #define CHEAT_NOCLIP                "dqclip"
 #define CHEAT_CLEAR                 "dqclear"

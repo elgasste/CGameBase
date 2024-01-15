@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "game.h"
+#include "menus.h"
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
@@ -12,6 +15,14 @@ void gmGame_LoadData( gmGame_t* game )
    sfVector2u mapTileCount = { 56, 56 };
    uint32_t i, tileIndex;
    gmMap_t* map;
+
+   game->menus = gmMenus_Create();
+   game->menus->overworld->optionCount = 2;
+   game->menus->overworld->options = (gmMenuOption_t*)gmAlloc( sizeof( gmMenuOption_t ) * 2, sfTrue );
+   game->menus->overworld->options[0].command = gmMenuCommand_CloseMenu;
+   sprintf_s( game->menus->overworld->options[0].label, SHORT_STRLEN, STR_MENU_CLOSEMENU );
+   game->menus->overworld->options[1].command = gmMenuCommand_Quit;
+   sprintf_s( game->menus->overworld->options[1].label, SHORT_STRLEN, STR_MENU_QUITGAME );
 
    game->map = gmMap_Create( mapTileCount );
    map = game->map;

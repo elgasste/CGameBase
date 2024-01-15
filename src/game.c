@@ -6,6 +6,7 @@
 #include "render_objects.h"
 #include "render_states.h"
 #include "renderer.h"
+#include "menus.h"
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
@@ -40,6 +41,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmTexture_Destroy( game->entitySpriteTexture );
    gmTexture_Destroy( game->mapTilesetTexture );
    gmMap_Destroy( game->map );
+   gmMenus_Destroy( game->menus );
    gmRenderer_Destroy( game->renderer );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
