@@ -5,7 +5,7 @@
 #include "clock.h"
 #include "map.h"
 
-#define COLLISION_PADDING 0.0001f
+#define COLLISION_PADDING 0.01f
 
 void gmPhysics_Tic( gmGame_t* game )
 {
