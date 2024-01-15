@@ -188,9 +188,14 @@ static void gmRenderer_DrawMap( gmGame_t* game )
 static void gmRenderer_DrawEntities( gmGame_t* game )
 {
    gmRenderer_t* renderer = game->renderer;
+   sfVector2f spritePos;
 
-   sfVector2f spritePos = { game->entity->mapPos.x + game->entity->spriteOffset.x - renderer->mapViewRect.left + renderer->mapViewPadding.x,
-                            game->entity->mapPos.y + game->entity->spriteOffset.y - renderer->mapViewRect.top + renderer->mapViewPadding.y };
+   spritePos.x = ( renderer->mapViewPadding.x > 0 )
+      ? game->entity->mapPos.x + game->entity->spriteOffset.x + renderer->mapViewPadding.x
+      : game->entity->mapPos.x + game->entity->spriteOffset.x - renderer->mapViewRect.left;
+   spritePos.y = ( renderer->mapViewPadding.y > 0 )
+      ? game->entity->mapPos.y + game->entity->spriteOffset.y + renderer->mapViewPadding.y
+      : game->entity->mapPos.y + game->entity->spriteOffset.y - renderer->mapViewRect.top;
 
    gmEntitySprite_SetPosition( game->entity->sprite, spritePos );
    gmWindow_DrawEntitySprite( game->window, game->entity->sprite );
