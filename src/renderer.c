@@ -229,13 +229,7 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
    gmMenu_t* menu = game->menus->overworld;
    uint16_t i;
 
-   gmWindow_DrawRectangleShape( game->window, objects->backgroundRects[0] );
-   gmWindow_DrawRectangleShape( game->window, objects->backgroundRects[1] );
-   gmWindow_DrawRectangleShape( game->window, objects->backgroundRects[2] );
-   gmWindow_DrawCircleShape( game->window, objects->cornerRounds[0] );
-   gmWindow_DrawCircleShape( game->window, objects->cornerRounds[1] );
-   gmWindow_DrawCircleShape( game->window, objects->cornerRounds[2] );
-   gmWindow_DrawCircleShape( game->window, objects->cornerRounds[3] );
+   gmWindow_DrawConvexShape( game->window, objects->backgroundShape );
 
    for ( i = 0; i < menu->optionCount; i++ )
    {

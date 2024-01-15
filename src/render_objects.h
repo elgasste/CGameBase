@@ -31,8 +31,7 @@ gmMapRenderObjects_t;
 
 typedef struct gmOverworldMenuRenderObjects_t
 {
-   sfRectangleShape* backgroundRects[3];
-   sfCircleShape* cornerRounds[4];
+   sfConvexShape* backgroundShape;
    sfFont* font;
    sfText* text;
    sfVector2f menuPos;

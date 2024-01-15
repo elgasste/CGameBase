@@ -146,6 +146,12 @@ sfCircleShape* gmCircleShape_Create()
    return sfCircleShape_create();
 }
 
+sfConvexShape* gmConvexShape_Create()
+{
+   INCREMENT_SFML()
+   return sfConvexShape_create();
+}
+
 sfFont* gmFont_CreateFromFile( const char* filePath )
 {
    INCREMENT_SFML()
@@ -192,6 +198,12 @@ void gmCircleShape_Destroy( sfCircleShape* circle )
 {
    DECREMENT_SFML()
    sfCircleShape_destroy( circle );
+}
+
+void gmConvexShape_Destroy( sfConvexShape* shape )
+{
+   DECREMENT_SFML()
+   sfConvexShape_destroy( shape );
 }
 
 void gmFont_Destroy( sfFont* font )

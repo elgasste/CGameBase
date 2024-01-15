@@ -62,6 +62,7 @@ sfRenderWindow* gmRenderWindow_Create( sfVideoMode mode, const char* title, sfUi
 sfClock* gmInnerClock_Create();
 sfRectangleShape* gmRectangleShape_Create();
 sfCircleShape* gmCircleShape_Create();
+sfConvexShape* gmConvexShape_Create();
 sfFont* gmFont_CreateFromFile( const char* filePath );
 sfText* gmText_Create();
 sfTexture* gmTexture_CreateFromFile( const char* filePath );
@@ -71,6 +72,7 @@ void gmRenderWindow_Destroy( sfRenderWindow* window );
 void gmInnerClock_Destroy( sfClock* clock );
 void gmRectangleShape_Destroy( sfRectangleShape* rect );
 void gmCircleShape_Destroy( sfCircleShape* circle );
+void gmConvexShape_Destroy( sfConvexShape* shape );
 void gmFont_Destroy( sfFont* font );
 void gmText_Destroy( sfText* text );
 void gmTexture_Destroy( sfTexture* texture );
