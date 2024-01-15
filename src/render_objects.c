@@ -1,5 +1,6 @@
 #include "render_objects.h"
 #include "game.h"
+#include "menus.h"
 
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
@@ -92,7 +93,79 @@ static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game )
 static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create()
 {
    sfVector2f textScale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
+   sfVector2f pos, size;
+   float w = 256, h = 142, cornerRadius = 10;
    gmOverworldMenuRenderObjects_t* objects = (gmOverworldMenuRenderObjects_t*)gmAlloc( sizeof( gmOverworldMenuRenderObjects_t ), sfTrue );
+
+   objects->menuPos.x = 64;
+   objects->menuPos.y = 64;
+   objects->itemsOffset.x = 48;
+   objects->itemsOffset.y = 32;
+   objects->caratOffset.x = -32;
+   objects->caratOffset.y = 0;
+
+   objects->backgroundRects[0] = gmRectangleShape_Create();
+   objects->backgroundRects[1] = gmRectangleShape_Create();
+   objects->backgroundRects[2] = gmRectangleShape_Create();
+   objects->cornerRounds[0] = gmCircleShape_Create();
+   objects->cornerRounds[1] = gmCircleShape_Create();
+   objects->cornerRounds[2] = gmCircleShape_Create();
+   objects->cornerRounds[3] = gmCircleShape_Create();
+
+   // left side
+   pos.x = objects->menuPos.x;
+   pos.y = objects->menuPos.y + cornerRadius;
+   size.x = cornerRadius;
+   size.y = h - ( 2 * cornerRadius );
+   sfRectangleShape_setPosition( objects->backgroundRects[0], pos );
+   sfRectangleShape_setSize( objects->backgroundRects[0], size );
+   sfRectangleShape_setFillColor( objects->backgroundRects[0], sfBlack );
+
+   // middle
+   pos.x = objects->menuPos.x + cornerRadius;
+   pos.y = objects->menuPos.y;
+   size.x = w - ( cornerRadius * 2 );
+   size.y = h;
+   sfRectangleShape_setPosition( objects->backgroundRects[1], pos );
+   sfRectangleShape_setSize( objects->backgroundRects[1], size );
+   sfRectangleShape_setFillColor( objects->backgroundRects[1], sfBlack );
+
+   // right side
+   pos.x = objects->menuPos.x + ( w - cornerRadius );
+   pos.y = objects->menuPos.y + cornerRadius;
+   size.x = cornerRadius;
+   size.y = h - ( 2 * cornerRadius );
+   sfRectangleShape_setPosition( objects->backgroundRects[2], pos );
+   sfRectangleShape_setSize( objects->backgroundRects[2], size );
+   sfRectangleShape_setFillColor( objects->backgroundRects[2], sfBlack );
+
+   // upper-left corner
+   pos.x = objects->menuPos.x;
+   pos.y = objects->menuPos.y;
+   sfCircleShape_setPosition( objects->cornerRounds[0], pos );
+   sfCircleShape_setRadius( objects->cornerRounds[0], cornerRadius );
+   sfCircleShape_setFillColor( objects->cornerRounds[0], sfBlack );
+
+   // upper-right corner
+   pos.x = objects->menuPos.x + w - ( cornerRadius * 2 );
+   pos.y = objects->menuPos.y;
+   sfCircleShape_setPosition( objects->cornerRounds[1], pos );
+   sfCircleShape_setRadius( objects->cornerRounds[1], cornerRadius );
+   sfCircleShape_setFillColor( objects->cornerRounds[1], sfBlack );
+
+   // lower-left corner
+   pos.x = objects->menuPos.x;
+   pos.y = objects->menuPos.y + h - ( cornerRadius * 2 );
+   sfCircleShape_setPosition( objects->cornerRounds[2], pos );
+   sfCircleShape_setRadius( objects->cornerRounds[2], cornerRadius );
+   sfCircleShape_setFillColor( objects->cornerRounds[2], sfBlack );
+
+   // lower-right corner
+   pos.x = objects->menuPos.x + w - ( cornerRadius * 2 );
+   pos.y = objects->menuPos.y + h - ( cornerRadius * 2 );
+   sfCircleShape_setPosition( objects->cornerRounds[3], pos );
+   sfCircleShape_setRadius( objects->cornerRounds[3], cornerRadius );
+   sfCircleShape_setFillColor( objects->cornerRounds[3], sfBlack );
 
    objects->font = gmFont_CreateFromFile( GAME_FONT );
    objects->text = gmText_Create();
@@ -100,13 +173,6 @@ static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create()
    sfText_setCharacterSize( objects->text, GAME_FONT_SIZE );
    sfText_scale( objects->text, textScale );
    sfText_setFillColor( objects->text, sfWhite );
-
-   objects->menuPos.x = 64;
-   objects->menuPos.y = 64;
-   objects->itemsOffset.x = 32;
-   objects->itemsOffset.y = 32;
-   objects->caratOffset.x = -32;
-   objects->caratOffset.y = 0;
 
    return objects;
 }
@@ -153,6 +219,13 @@ static void gmMenuRenderObjects_Destroy( gmOverworldMenuRenderObjects_t* objects
 {
    gmText_Destroy( objects->text );
    gmFont_Destroy( objects->font );
+   gmRectangleShape_Destroy( objects->backgroundRects[0] );
+   gmRectangleShape_Destroy( objects->backgroundRects[1] );
+   gmRectangleShape_Destroy( objects->backgroundRects[2] );
+   gmCircleShape_Destroy( objects->cornerRounds[0] );
+   gmCircleShape_Destroy( objects->cornerRounds[1] );
+   gmCircleShape_Destroy( objects->cornerRounds[2] );
+   gmCircleShape_Destroy( objects->cornerRounds[3] );
 
    gmFree( objects, sizeof( gmOverworldMenuRenderObjects_t ), sfTrue );
 }

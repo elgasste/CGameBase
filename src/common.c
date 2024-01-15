@@ -140,6 +140,12 @@ sfRectangleShape* gmRectangleShape_Create()
    return sfRectangleShape_create();
 }
 
+sfCircleShape* gmCircleShape_Create()
+{
+   INCREMENT_SFML()
+   return sfCircleShape_create();
+}
+
 sfFont* gmFont_CreateFromFile( const char* filePath )
 {
    INCREMENT_SFML()
@@ -180,6 +186,12 @@ void gmRectangleShape_Destroy( sfRectangleShape* rect )
 {
    DECREMENT_SFML()
    sfRectangleShape_destroy( rect );
+}
+
+void gmCircleShape_Destroy( sfCircleShape* circle )
+{
+   DECREMENT_SFML()
+   sfCircleShape_destroy( circle );
 }
 
 void gmFont_Destroy( sfFont* font )
