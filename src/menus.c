@@ -1,4 +1,5 @@
 #include "menus.h"
+#include "render_states.h"
 
 gmMenus_t* gmMenus_Create()
 {
@@ -20,4 +21,24 @@ void gmMenus_Destroy( gmMenus_t* menus )
 
    gmFree( menus->overworld, sizeof( gmMenu_t ), sfTrue );
    gmFree( menus, sizeof( gmMenus_t ), sfTrue );
+}
+
+void gmMenu_ScrollUp( gmMenu_t* menu, gmMenuRenderState_t* renderState )
+{
+   if ( menu->selectedIndex > 0 )
+   {
+      menu->selectedIndex--;
+   }
+
+   gmRenderStates_ResetMenu( renderState );
+}
+
+void gmMenu_ScrollDown( gmMenu_t* menu, gmMenuRenderState_t* renderState )
+{
+   if ( menu->selectedIndex < menu->optionCount - 1 )
+   {
+      menu->selectedIndex++;
+   }
+
+   gmRenderStates_ResetMenu( renderState );
 }

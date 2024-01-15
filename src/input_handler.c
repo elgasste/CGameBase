@@ -4,6 +4,8 @@
 #include "game.h"
 #include "input_state.h"
 #include "entity.h"
+#include "menus.h"
+#include "render_states.h"
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
@@ -129,10 +131,27 @@ static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
 
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
 {
+   gmMenu_t* menu = game->menus->overworld;
+   gmMenuOption_t* selectedOption;
+
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {
       gmGame_SetState( game, gmGameState_Overworld );
       return;
+   }
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
+   {
+      gmMenu_ScrollUp( menu, game->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyDown ) )
+   {
+      gmMenu_ScrollDown( menu, game->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
+   {
+      selectedOption = &( menu->options[menu->selectedIndex] );
+      gmGame_ExecuteMenuCommand( game, selectedOption->command );
    }
 }
 

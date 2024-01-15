@@ -2,13 +2,9 @@
 #define MENUS_H
 
 #include "common.h"
+#include "menu_command.h"
 
-typedef enum gmMenuCommand_t
-{
-   gmMenuCommand_Quit = 0,
-   gmMenuCommand_CloseMenu
-}
-gmMenuCommand_t;
+typedef struct gmMenuRenderState_t gmMenuRenderState_t;
 
 typedef struct gmMenuOption_t
 {
@@ -33,5 +29,7 @@ gmMenus_t;
 
 gmMenus_t* gmMenus_Create();
 void gmMenus_Destroy( gmMenus_t* menus );
+void gmMenu_ScrollUp( gmMenu_t* menu, gmMenuRenderState_t* renderState );
+void gmMenu_ScrollDown( gmMenu_t* menu, gmMenuRenderState_t* renderState );
 
 #endif // MENUS_H

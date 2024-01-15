@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "common.h"
+#include "menu_command.h"
 
 typedef struct gmWindow_t gmWindow_t;
 typedef struct gmClock_t gmClock_t;
@@ -52,6 +53,7 @@ void gmGame_Run( gmGame_t* game );
 void gmGame_Close( gmGame_t* game );
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
 void gmGame_SetState( gmGame_t* game, gmGameState_t state );
+void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command );
 
 // game_loader.c
 void gmGame_LoadData( gmGame_t* game );

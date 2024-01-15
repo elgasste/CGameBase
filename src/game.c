@@ -87,9 +87,26 @@ void gmGame_SetState( gmGame_t* game, gmGameState_t state )
    if ( state == gmGameState_OverworldMenu )
    {
       gmRenderStates_ResetMenu( game->renderStates->menu );
+      game->menus->overworld->selectedIndex = 0;
    }
 
    game->state = state;
+}
+
+void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command )
+{
+   switch ( command )
+   {
+      case gmMenuCommand_Quit:
+         gmGame_Close( game );
+         break;
+      case gmMenuCommand_CloseMenu:
+         if ( game->state == gmGameState_OverworldMenu )
+         {
+            gmGame_SetState( game, gmGameState_Overworld );
+         }
+         break;
+   }
 }
 
 static void gmGame_Tic( gmGame_t* game )

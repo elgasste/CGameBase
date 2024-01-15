@@ -104,6 +104,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClInclude Include="..\src\input_state.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\menus.h" />
+    <ClInclude Include="..\src\menu_command.h" />
     <ClInclude Include="..\src\physics.h" />
     <ClInclude Include="..\src\random.h" />
     <ClInclude Include="..\src\renderer.h" />
