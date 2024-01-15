@@ -13,6 +13,13 @@ typedef struct gmRenderer_t gmRenderer_t;
 typedef struct gmMap_t gmMap_t;
 typedef struct gmEntity_t gmEntity_t;
 
+typedef enum gmGameState_t
+{
+   gmGameState_Overworld,
+   gmGameState_OverworldMenu
+}
+gmGameState_t;
+
 typedef struct gmGame_t
 {
    gmWindow_t* window;
@@ -32,6 +39,8 @@ typedef struct gmGame_t
    sfTexture* entitySpriteTexture;
 
    sfBool cheatNoClip;
+
+   gmGameState_t state;
 }
 gmGame_t;
 

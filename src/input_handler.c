@@ -5,6 +5,7 @@
 #include "input_state.h"
 #include "entity.h"
 
+static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -25,7 +26,6 @@ void gmInputHandler_Destroy( gmInputHandler_t* inputHandler )
 void gmInputHandler_HandleInput( gmGame_t* game )
 {
    char debugMsg[SHORT_STRLEN];
-   gmEntity_t* entity = game->entity;
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {
@@ -40,6 +40,17 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
+   if ( game->state == gmGameState_Overworld )
+   {
+      gmInputHandler_HandleOverworldInput( game );
+   }
+
+   gmInputHandler_CheckCheats( game );
+}
+
+static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
+{
+   gmEntity_t* entity = game->entity;
    sfBool leftIsDown = gmInputState_IsKeyDown( sfKeyLeft );
    sfBool upIsDown = gmInputState_IsKeyDown( sfKeyUp );
    sfBool rightIsDown = gmInputState_IsKeyDown( sfKeyRight );
@@ -108,8 +119,6 @@ void gmInputHandler_HandleInput( gmGame_t* game )
          entity->direction = gmDirection_Down;
       }
    }
-
-   gmInputHandler_CheckCheats( game );
 }
 
 static void gmInputHandler_CheckCheats( gmGame_t* game )

@@ -53,6 +53,8 @@ void gmGame_Destroy( gmGame_t* game )
 
 void gmGame_Run( gmGame_t* game )
 {
+   game->state = gmGameState_Overworld;
+
    while ( gmWindow_IsOpen( game->window ) )
    {
       gmClock_StartFrame( game->clock );
@@ -79,7 +81,11 @@ void gmGame_Close( gmGame_t* game )
 
 static void gmGame_Tic( gmGame_t* game )
 {
-   gmPhysics_Tic( game );
+   if ( game->state == gmGameState_Overworld )
+   {
+      gmPhysics_Tic( game );
+   }
+
    gmRenderStates_Tic( game->renderStates, game->clock );
 }
 

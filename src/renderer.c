@@ -12,7 +12,7 @@
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
-static void gmRenderer_DrawEntities( gmGame_t* game );
+static void gmRenderer_DrawMapEntities( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create()
@@ -34,9 +34,13 @@ void gmGame_Render( gmGame_t* game )
 {
    gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
 
-   gmRenderer_SetMapView( game );
-   gmRenderer_DrawMap( game );
-   gmRenderer_DrawEntities( game );
+   if ( game->state == gmGameState_Overworld )
+   {
+      gmRenderer_SetMapView( game );
+      gmRenderer_DrawMap( game );
+      gmRenderer_DrawMapEntities( game );
+   }
+   
    gmRenderer_DrawDebugBar( game );
 
    if ( game->showDiagnostics )
@@ -185,7 +189,7 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    }
 }
 
-static void gmRenderer_DrawEntities( gmGame_t* game )
+static void gmRenderer_DrawMapEntities( gmGame_t* game )
 {
    gmRenderer_t* renderer = game->renderer;
    sfVector2f spritePos;
