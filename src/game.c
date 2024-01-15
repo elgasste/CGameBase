@@ -18,12 +18,13 @@ gmGame_t* gmGame_Create()
    game->window = gmWindow_Create();
    game->clock = gmClock_Create();
    game->inputState = gmInputState_Create();
-   game->renderObjects = gmRenderObjects_Create();
+
+   gmGame_LoadData( game );
+
+   game->renderObjects = gmRenderObjects_Create( game );
    game->renderStates = gmRenderStates_Create();
 
    game->showDiagnostics = sfFalse;
-
-   gmGame_Load( game );
 
    return game;
 }
@@ -32,6 +33,7 @@ void gmGame_Destroy( gmGame_t* game )
 {
    gmEntity_Destroy( game->entity );
    gmTexture_Destroy( game->entitySpriteTexture );
+   gmTexture_Destroy( game->mapTilesetTexture );
    gmMap_Destroy( game->map );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );

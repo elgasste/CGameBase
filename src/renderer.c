@@ -70,6 +70,9 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    gmMap_t* map = game->map;
    gmMapTile_t* tile;
    sfVector2f tilePos;
+   sfIntRect textureRect = { 0, 0, MAP_TILE_PIXELS, MAP_TILE_PIXELS };
+   sfVector2u textureSize = sfTexture_getSize( game->mapTilesetTexture );
+   sfVector2u textureTileCount = { textureSize.x / MAP_TILE_PIXELS, textureSize.y / MAP_TILE_PIXELS };
 
    for ( row = 0; row < map->tileCount.y; row++ )
    {
@@ -78,11 +81,13 @@ static void gmRenderer_DrawMap( gmGame_t* game )
          tile = &( map->tiles[( row * map->tileCount.x ) + col] );
          tilePos.x = (float)col * MAP_TILE_SIZE;
          tilePos.y = (float)row * MAP_TILE_SIZE;
+         textureRect.left = ( tile->textureIndex % textureTileCount.x ) * MAP_TILE_PIXELS;
+         textureRect.top = ( tile->textureIndex / textureTileCount.x ) * MAP_TILE_PIXELS;
 
-         sfRectangleShape_setPosition( objects->tileRect, tilePos );
-         sfRectangleShape_setFillColor( objects->tileRect, tile->color );
+         sfSprite_setTextureRect( objects->tileSprite, textureRect );
+         sfSprite_setPosition( objects->tileSprite, tilePos );
 
-         gmWindow_DrawRectangleShape( game->window, objects->tileRect );
+         gmWindow_DrawSprite( game->window, objects->tileSprite );
       }
    }
 }

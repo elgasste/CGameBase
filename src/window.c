@@ -63,6 +63,11 @@ void gmWindow_DrawText( gmWindow_t* window, sfText* text )
    sfRenderWindow_drawText( window->sfmlWindow, text, 0 );
 }
 
+void gmWindow_DrawSprite( gmWindow_t* window, sfSprite* sprite )
+{
+   sfRenderWindow_drawSprite( window->sfmlWindow, sprite, 0 );
+}
+
 void gmWindow_DrawEntitySprite( gmWindow_t* window, gmEntitySprite_t* sprite )
 {
    sfRenderWindow_drawSprite( window->sfmlWindow, sprite->sfmlSprite, 0 );

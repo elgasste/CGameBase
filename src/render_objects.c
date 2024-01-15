@@ -1,13 +1,14 @@
 #include "render_objects.h"
+#include "game.h"
 
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
-static gmMapRenderObjects_t* gmMapRenderObjects_Create();
+static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game );
 static void gmDiagnosticsRenderObjects_Destroy( gmDiagnosticsRenderObjects_t* objects );
 static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects );
 static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects );
 
-gmRenderObjects_t* gmRenderObjects_Create()
+gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game )
 {
    sfVector2f windowBackgroundSize = { WINDOW_WIDTH, WINDOW_HEIGHT };
    sfVector2f windowBackgroundPosition = { 0, 0 };
@@ -15,7 +16,7 @@ gmRenderObjects_t* gmRenderObjects_Create()
    gmRenderObjects_t* renderObjects = (gmRenderObjects_t*)gmAlloc( sizeof( gmRenderObjects_t ), sfTrue );
    renderObjects->diagnosticsRenderObjects = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBarRenderObjects = gmDebugBarRenderObjects_Create();
-   renderObjects->mapRenderObjects = gmMapRenderObjects_Create();
+   renderObjects->mapRenderObjects = gmMapRenderObjects_Create( game );
 
    renderObjects->windowBackgroundRect = gmRectangleShape_Create();
    sfRectangleShape_setSize( renderObjects->windowBackgroundRect, windowBackgroundSize );
@@ -72,14 +73,15 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
    return objects;
 }
 
-static gmMapRenderObjects_t* gmMapRenderObjects_Create()
+static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game )
 {
-   sfVector2f tileRectSize = { MAP_TILE_SIZE, MAP_TILE_SIZE };
+   sfVector2f tilesetScale = { 2, 2 };
 
    gmMapRenderObjects_t* objects = (gmMapRenderObjects_t*)gmAlloc( sizeof( gmMapRenderObjects_t ), sfTrue );
 
-   objects->tileRect = gmRectangleShape_Create();
-   sfRectangleShape_setSize( objects->tileRect, tileRectSize );
+   objects->tileSprite = gmSprite_Create();
+   sfSprite_setTexture( objects->tileSprite, game->mapTilesetTexture, sfFalse );
+   sfSprite_scale( objects->tileSprite, tilesetScale );
 
    return objects;
 }
@@ -116,7 +118,7 @@ static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects 
 
 static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects )
 {
-   gmRectangleShape_Destroy( objects->tileRect );
+   gmSprite_Destroy( objects->tileSprite );
 
    gmFree( objects, sizeof( gmMapRenderObjects_t ), sfTrue );
 }

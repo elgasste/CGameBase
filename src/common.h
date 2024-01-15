@@ -8,19 +8,20 @@
 
 #include "strings.h"
 
-#define DEFAULT_STRLEN  512
-#define SHORT_STRLEN    32
+#define DEFAULT_STRLEN     512
+#define SHORT_STRLEN       32
 
-#define LOG_FILENAME    "log.txt"
+#define LOG_FILENAME       "log.txt"
 
-#define WINDOW_WIDTH    1024
-#define WINDOW_HEIGHT   768
-#define WINDOW_BPP      32
-#define WINDOW_STYLE    sfTitlebar | sfClose
+#define WINDOW_WIDTH       1024
+#define WINDOW_HEIGHT      768
+#define WINDOW_BPP         32
+#define WINDOW_STYLE       sfTitlebar | sfClose
 
-#define GAME_FPS        60
+#define GAME_FPS           60
 
-#define MAP_TILE_SIZE   64
+#define MAP_TILE_SIZE      64
+#define MAP_TILE_PIXELS    32
 
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;
 

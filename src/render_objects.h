@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+typedef struct gmGame_t gmGame_t;
+
 typedef struct gmDiagnosticsRenderObjects_t
 {
    sfRectangleShape* backgroundRect;
@@ -23,7 +25,7 @@ gmDebugBarRenderObjects_t;
 
 typedef struct gmMapRenderObjects_t
 {
-   sfRectangleShape* tileRect;
+   sfSprite* tileSprite;
 }
 gmMapRenderObjects_t;
 
@@ -39,7 +41,7 @@ typedef struct gmRenderObjects_t
 }
 gmRenderObjects_t;
 
-gmRenderObjects_t* gmRenderObjects_Create();
+gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game );
 void gmRenderObjects_Destroy( gmRenderObjects_t* renderObjects );
 
 #endif // RENDERER_H

@@ -62,7 +62,8 @@
     <PostBuildEvent>
       <Command>xcopy "C:\CSFML-2.5.1\bin\*.dll" "$(OutDir)" /Y
 xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y
-xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Command>
+xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y
+xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -88,7 +89,8 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <PostBuildEvent>
       <Command>xcopy "C:\CSFML-2.5.1\bin\*.dll" "$(OutDir)" /Y
 xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y
-xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Command>
+xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y
+xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -101,6 +103,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClInclude Include="..\src\input_state.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\physics.h" />
+    <ClInclude Include="..\src\random.h" />
     <ClInclude Include="..\src\render_objects.h" />
     <ClInclude Include="..\src\render_states.h" />
     <ClInclude Include="..\src\strings.h" />
@@ -118,6 +121,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\sprites\*.*" "$(OutDir)" /Y</Comm
     <ClCompile Include="..\src\main.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\physics.c" />
+    <ClCompile Include="..\src\random.c" />
     <ClCompile Include="..\src\renderer.c" />
     <ClCompile Include="..\src\render_objects.c" />
     <ClCompile Include="..\src\render_states.c" />

@@ -24,6 +24,7 @@ typedef struct gmGame_t
    gmMap_t* map;
 
    gmEntity_t* entity;
+   sfTexture* mapTilesetTexture;
    sfTexture* entitySpriteTexture;
 }
 gmGame_t;
@@ -35,7 +36,7 @@ void gmGame_Close( gmGame_t* game );
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
 
 // game_loader.c
-void gmGame_Load( gmGame_t* game );
+void gmGame_LoadData( gmGame_t* game );
 
 // input_handler.c
 void gmGame_HandleInput( gmGame_t* game );

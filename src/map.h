@@ -5,7 +5,7 @@
 
 typedef struct gmMapTile_t
 {
-   sfColor color;
+   uint16_t textureIndex;
    sfBool passable;
 }
 gmMapTile_t;
