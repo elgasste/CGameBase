@@ -26,7 +26,7 @@ void gmPhysics_Tic( gmGame_t* game )
    {
       newPos.x = mapSize.x - entity->mapHitBoxSize.x - COLLISION_PADDING;
    }
-   else if ( newPos.x != entity->mapPos.x )
+   else if ( newPos.x != entity->mapPos.x && !game->cheatNoClip )
    {
       startRow = (uint32_t)( newPos.y / MAP_TILE_SIZE );
       endRow = (uint32_t)( ( newPos.y + entity->mapHitBoxSize.y ) / MAP_TILE_SIZE );
@@ -58,7 +58,7 @@ void gmPhysics_Tic( gmGame_t* game )
    {
       newPos.y = mapSize.y - entity->mapHitBoxSize.y - COLLISION_PADDING;
    }
-   else if ( newPos.y != entity->mapPos.y )
+   else if ( newPos.y != entity->mapPos.y && !game->cheatNoClip )
    {
       startCol = (uint32_t)( newPos.x / MAP_TILE_SIZE );
       endCol = (uint32_t)( ( newPos.x + entity->mapHitBoxSize.x ) / MAP_TILE_SIZE );
