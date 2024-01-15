@@ -103,6 +103,8 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClInclude Include="..\src\input_handler.h" />
     <ClInclude Include="..\src\input_state.h" />
     <ClInclude Include="..\src\map.h" />
+    <ClInclude Include="..\src\menus.h" />
+    <ClInclude Include="..\src\menu_command.h" />
     <ClInclude Include="..\src\physics.h" />
     <ClInclude Include="..\src\random.h" />
     <ClInclude Include="..\src\renderer.h" />
@@ -122,6 +124,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClCompile Include="..\src\input_state.c" />
     <ClCompile Include="..\src\main.c" />
     <ClCompile Include="..\src\map.c" />
+    <ClCompile Include="..\src\menus.c" />
     <ClCompile Include="..\src\physics.c" />
     <ClCompile Include="..\src\random.c" />
     <ClCompile Include="..\src\renderer.c" />

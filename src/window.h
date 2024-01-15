@@ -19,6 +19,8 @@ void gmWindow_Display( gmWindow_t* window );
 void gmWindow_Close( gmWindow_t* window );
 void gmWindow_HandleEvents( gmWindow_t* window, gmInputState_t* inputState );
 void gmWindow_DrawRectangleShape( gmWindow_t* window, sfRectangleShape* rect );
+void gmWindow_DrawCircleShape( gmWindow_t* window, sfCircleShape* circle );
+void gmWindow_DrawConvexShape( gmWindow_t* window, sfConvexShape* shape );
 void gmWindow_DrawText( gmWindow_t* window, sfText* text );
 void gmWindow_DrawSprite( gmWindow_t* window, sfSprite* sprite );
 void gmWindow_DrawEntitySprite( gmWindow_t* window, gmEntitySprite_t* sprite );

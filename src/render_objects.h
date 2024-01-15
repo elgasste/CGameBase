@@ -29,11 +29,23 @@ typedef struct gmMapRenderObjects_t
 }
 gmMapRenderObjects_t;
 
+typedef struct gmOverworldMenuRenderObjects_t
+{
+   sfConvexShape* backgroundShape;
+   sfFont* font;
+   sfText* text;
+   sfVector2f menuPos;
+   sfVector2f itemsOffset;
+   sfVector2f caratOffset;
+}
+gmOverworldMenuRenderObjects_t;
+
 typedef struct gmRenderObjects_t
 {
    gmDiagnosticsRenderObjects_t* diagnosticsRenderObjects;
    gmDebugBarRenderObjects_t* debugBarRenderObjects;
    gmMapRenderObjects_t* mapRenderObjects;
+   gmOverworldMenuRenderObjects_t* overworldMenuRenderObjects;
 
    sfRectangleShape* windowBackgroundRect;
 

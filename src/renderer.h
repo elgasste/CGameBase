@@ -17,5 +17,6 @@ gmRenderer_t;
 
 gmRenderer_t* gmRenderer_Create();
 void gmRenderer_Destroy( gmRenderer_t* renderer );
+void gmRenderer_Render( gmGame_t* game );
 
 #endif // RENDERER_H

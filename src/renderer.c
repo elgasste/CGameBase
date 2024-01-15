@@ -8,11 +8,13 @@
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
+#include "menus.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
-static void gmRenderer_DrawEntities( gmGame_t* game );
+static void gmRenderer_DrawMapEntities( gmGame_t* game );
+static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create()
@@ -30,13 +32,31 @@ void gmRenderer_Destroy( gmRenderer_t* renderer )
    gmFree( renderer, sizeof( gmRenderer_t ), sfTrue );
 }
 
-void gmGame_Render( gmGame_t* game )
+void gmRenderer_Render( gmGame_t* game )
 {
    gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
 
-   gmRenderer_SetMapView( game );
-   gmRenderer_DrawMap( game );
-   gmRenderer_DrawEntities( game );
+   switch ( game->state )
+   {
+      case gmGameState_Overworld:
+         gmRenderer_SetMapView( game );
+         gmRenderer_DrawMap( game );
+         gmRenderer_DrawMapEntities( game );
+         break;
+      case gmGameState_OverworldMenu:
+         gmRenderer_SetMapView( game );
+         gmRenderer_DrawMap( game );
+         gmRenderer_DrawMapEntities( game );
+         gmRenderer_DrawOverworldMenu( game );
+         break;
+   }
+   if ( game->state == gmGameState_Overworld )
+   {
+      gmRenderer_SetMapView( game );
+      gmRenderer_DrawMap( game );
+      gmRenderer_DrawMapEntities( game );
+   }
+   
    gmRenderer_DrawDebugBar( game );
 
    if ( game->showDiagnostics )
@@ -185,7 +205,7 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    }
 }
 
-static void gmRenderer_DrawEntities( gmGame_t* game )
+static void gmRenderer_DrawMapEntities( gmGame_t* game )
 {
    gmRenderer_t* renderer = game->renderer;
    sfVector2f spritePos;
@@ -199,6 +219,35 @@ static void gmRenderer_DrawEntities( gmGame_t* game )
 
    gmEntitySprite_SetPosition( game->entity->sprite, spritePos );
    gmWindow_DrawEntitySprite( game->window, game->entity->sprite );
+}
+
+static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
+{
+   sfVector2f pos;
+   gmOverworldMenuRenderObjects_t* objects = game->renderObjects->overworldMenuRenderObjects;
+   gmMenuRenderState_t* renderState = game->renderStates->menu;
+   gmMenu_t* menu = game->menus->overworld;
+   uint16_t i;
+
+   gmWindow_DrawConvexShape( game->window, objects->backgroundShape );
+
+   for ( i = 0; i < menu->optionCount; i++ )
+   {
+      if ( menu->selectedIndex == i && renderState->showCarat )
+      {
+         pos.x = objects->menuPos.x + objects->itemsOffset.x + objects->caratOffset.x;
+         pos.y = objects->menuPos.y + objects->itemsOffset.y + objects->caratOffset.y + ( i * MENU_LINESIZE );
+         sfText_setPosition( objects->text, pos );
+         sfText_setString( objects->text, STR_MENU_CARAT );
+         gmWindow_DrawText( game->window, objects->text );
+      }
+
+      pos.x = objects->menuPos.x + objects->itemsOffset.x;
+      pos.y = objects->menuPos.y + objects->itemsOffset.y + ( i * MENU_LINESIZE );
+      sfText_setPosition( objects->text, pos );
+      sfText_setString( objects->text, menu->options[i].label );
+      gmWindow_DrawText( game->window, objects->text );
+   }
 }
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )

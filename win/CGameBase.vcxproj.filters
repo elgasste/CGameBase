@@ -75,6 +75,12 @@
     <ClInclude Include="..\src\input_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\menus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\menu_command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.c">
@@ -126,6 +132,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\random.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\menus.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

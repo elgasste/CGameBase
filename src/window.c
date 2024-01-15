@@ -58,6 +58,16 @@ void gmWindow_DrawRectangleShape( gmWindow_t* window, sfRectangleShape* rect )
    sfRenderWindow_drawRectangleShape( window->sfmlWindow, rect, 0 );
 }
 
+void gmWindow_DrawCircleShape( gmWindow_t* window, sfCircleShape* circle )
+{
+   sfRenderWindow_drawCircleShape( window->sfmlWindow, circle, 0 );
+}
+
+void gmWindow_DrawConvexShape( gmWindow_t* window, sfConvexShape* shape )
+{
+   sfRenderWindow_drawConvexShape( window->sfmlWindow, shape, 0 );
+}
+
 void gmWindow_DrawText( gmWindow_t* window, sfText* text )
 {
    sfRenderWindow_drawText( window->sfmlWindow, text, 0 );

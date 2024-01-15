@@ -6,6 +6,7 @@
 #include "render_objects.h"
 #include "render_states.h"
 #include "renderer.h"
+#include "menus.h"
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
@@ -40,6 +41,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmTexture_Destroy( game->entitySpriteTexture );
    gmTexture_Destroy( game->mapTilesetTexture );
    gmMap_Destroy( game->map );
+   gmMenus_Destroy( game->menus );
    gmRenderer_Destroy( game->renderer );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
@@ -53,6 +55,8 @@ void gmGame_Destroy( gmGame_t* game )
 
 void gmGame_Run( gmGame_t* game )
 {
+   game->state = gmGameState_Overworld;
+
    while ( gmWindow_IsOpen( game->window ) )
    {
       gmClock_StartFrame( game->clock );
@@ -61,7 +65,7 @@ void gmGame_Run( gmGame_t* game )
       gmWindow_HandleEvents( game->window, game->inputState );
       gmInputHandler_HandleInput( game );
       gmGame_Tic( game );
-      gmGame_Render( game );
+      gmRenderer_Render( game );
 
       if ( game->window->wantToClose )
       {
@@ -77,10 +81,42 @@ void gmGame_Close( gmGame_t* game )
    gmWindow_Close( game->window );
 }
 
+void gmGame_SetState( gmGame_t* game, gmGameState_t state )
+{
+   // TODO: whatever validation checks need to be done
+   if ( state == gmGameState_OverworldMenu )
+   {
+      gmRenderStates_ResetMenu( game->renderStates->menu );
+      game->menus->overworld->selectedIndex = 0;
+   }
+
+   game->state = state;
+}
+
+void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command )
+{
+   switch ( command )
+   {
+      case gmMenuCommand_Quit:
+         gmGame_Close( game );
+         break;
+      case gmMenuCommand_CloseMenu:
+         if ( game->state == gmGameState_OverworldMenu )
+         {
+            gmGame_SetState( game, gmGameState_Overworld );
+         }
+         break;
+   }
+}
+
 static void gmGame_Tic( gmGame_t* game )
 {
-   gmPhysics_Tic( game );
-   gmRenderStates_Tic( game->renderStates, game->clock );
+   if ( game->state == gmGameState_Overworld )
+   {
+      gmPhysics_Tic( game );
+   }
+
+   gmRenderStates_Tic( game );
 }
 
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg )

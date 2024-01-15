@@ -4,7 +4,11 @@
 #include "game.h"
 #include "input_state.h"
 #include "entity.h"
+#include "menus.h"
+#include "render_states.h"
 
+static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
+static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -25,13 +29,6 @@ void gmInputHandler_Destroy( gmInputHandler_t* inputHandler )
 void gmInputHandler_HandleInput( gmGame_t* game )
 {
    char debugMsg[SHORT_STRLEN];
-   gmEntity_t* entity = game->entity;
-
-   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
-   {
-      gmGame_Close( game );
-      return;
-   }
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
@@ -40,10 +37,32 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
+   switch ( game->state )
+   {
+      case gmGameState_Overworld:
+         gmInputHandler_HandleOverworldInput( game );
+         break;
+      case gmGameState_OverworldMenu:
+         gmInputHandler_HandleOverworldMenuInput( game );
+         break;
+   }
+
+   gmInputHandler_CheckCheats( game );
+}
+
+static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
+{
+   gmEntity_t* entity = game->entity;
    sfBool leftIsDown = gmInputState_IsKeyDown( sfKeyLeft );
    sfBool upIsDown = gmInputState_IsKeyDown( sfKeyUp );
    sfBool rightIsDown = gmInputState_IsKeyDown( sfKeyRight );
    sfBool downIsDown = gmInputState_IsKeyDown( sfKeyDown );
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
+   {
+      gmGame_SetState( game, gmGameState_OverworldMenu );
+      return;
+   }
 
    if ( leftIsDown && !rightIsDown )
    {
@@ -108,8 +127,32 @@ void gmInputHandler_HandleInput( gmGame_t* game )
          entity->direction = gmDirection_Down;
       }
    }
+}
 
-   gmInputHandler_CheckCheats( game );
+static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
+{
+   gmMenu_t* menu = game->menus->overworld;
+   gmMenuOption_t* selectedOption;
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
+   {
+      gmGame_SetState( game, gmGameState_Overworld );
+      return;
+   }
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
+   {
+      gmMenu_ScrollUp( menu, game->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyDown ) )
+   {
+      gmMenu_ScrollDown( menu, game->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
+   {
+      selectedOption = &( menu->options[menu->selectedIndex] );
+      gmGame_ExecuteMenuCommand( game, selectedOption->command );
+   }
 }
 
 static void gmInputHandler_CheckCheats( gmGame_t* game )

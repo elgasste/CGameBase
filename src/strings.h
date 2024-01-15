@@ -37,4 +37,8 @@
 #define STR_ERROR_WRITELOGFILE            "Could not write message to logfile"
 #define STR_ERROR_CLOSELOGFILE            "Could not close logfile"
 
+#define STR_MENU_CARAT                    ">"
+#define STR_MENU_QUITGAME                 "Quit Game"
+#define STR_MENU_CLOSEMENU                "Close Menu"
+
 #endif // STRINGS_H
