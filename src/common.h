@@ -20,6 +20,8 @@
 
 #define GAME_FPS           60
 
+#define GRAPHICS_SCALE     2
+
 #define MAP_TILE_SIZE      64
 #define MAP_TILE_PIXELS    32
 

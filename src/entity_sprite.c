@@ -4,7 +4,7 @@
 gmEntitySprite_t* gmEntitySprite_Create( sfTexture* texture, uint16_t frames, float frameSeconds )
 {
    sfIntRect textureRect = { 0, 0, 32, 32 };
-   sfVector2f scale = { 2, 2 };
+   sfVector2f scale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
 
    gmEntitySprite_t* sprite = (gmEntitySprite_t*)gmAlloc( sizeof( gmEntitySprite_t ), sfTrue );
 

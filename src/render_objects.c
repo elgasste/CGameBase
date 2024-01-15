@@ -75,7 +75,7 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
 
 static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game )
 {
-   sfVector2f tilesetScale = { 2, 2 };
+   sfVector2f tilesetScale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
 
    gmMapRenderObjects_t* objects = (gmMapRenderObjects_t*)gmAlloc( sizeof( gmMapRenderObjects_t ), sfTrue );
 
