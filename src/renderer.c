@@ -19,6 +19,9 @@ gmRenderer_t* gmRenderer_Create()
 {
    gmRenderer_t* renderer = (gmRenderer_t*)gmAlloc( sizeof( gmRenderer_t ), sfTrue );
 
+   renderer->mapViewRect.width = WINDOW_WIDTH;
+   renderer->mapViewRect.height = WINDOW_HEIGHT;
+
    return renderer;
 }
 
@@ -89,8 +92,6 @@ static void gmRenderer_SetMapView( gmGame_t* game )
 
    renderer->mapViewRect.left = entityCenter.x - ( WINDOW_WIDTH / 2 );
    renderer->mapViewRect.top = entityCenter.y - ( WINDOW_HEIGHT / 2 );
-   renderer->mapViewRect.width = WINDOW_WIDTH;
-   renderer->mapViewRect.height = WINDOW_HEIGHT;
 
    if ( mapSize.x < renderer->mapViewRect.width )
    {
@@ -112,7 +113,7 @@ static void gmRenderer_SetMapView( gmGame_t* game )
       renderer->mapViewRect.left = mapSize.x - renderer->mapViewRect.width - 1;
       renderer->mapViewPadding.x = 0;
       renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
-      renderer->mapViewEnd.x = map->tileCount.x - 1;
+      renderer->mapViewEnd.x = map->tileCount.x;
       renderer->mapViewStart.x = renderer->mapViewEnd.x - (uint32_t)( renderer->mapViewRect.width / MAP_TILE_SIZE ) - 1;
    }
    else
@@ -142,7 +143,7 @@ static void gmRenderer_SetMapView( gmGame_t* game )
       renderer->mapViewRect.top = mapSize.y - renderer->mapViewRect.height - 1;
       renderer->mapViewPadding.y = 0;
       renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
-      renderer->mapViewEnd.y = map->tileCount.y - 1;
+      renderer->mapViewEnd.y = map->tileCount.y;
       renderer->mapViewStart.y = renderer->mapViewEnd.y - (uint32_t)( renderer->mapViewRect.height / MAP_TILE_SIZE ) - 1;
    }
    else
