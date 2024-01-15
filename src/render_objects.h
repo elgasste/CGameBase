@@ -1,5 +1,5 @@
-#if !defined( RENDERER_H )
-#define RENDERER_H
+#if !defined( RENDER_OBJECTS_H )
+#define RENDER_OBJECTS_H
 
 #include "common.h"
 
@@ -44,5 +44,5 @@ gmRenderObjects_t;
 gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game );
 void gmRenderObjects_Destroy( gmRenderObjects_t* renderObjects );
 
-#endif // RENDERER_H
+#endif // RENDER_OBJECTS_H
 

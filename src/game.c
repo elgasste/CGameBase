@@ -4,6 +4,7 @@
 #include "input_state.h"
 #include "render_objects.h"
 #include "render_states.h"
+#include "renderer.h"
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
@@ -23,6 +24,7 @@ gmGame_t* gmGame_Create()
 
    game->renderObjects = gmRenderObjects_Create( game );
    game->renderStates = gmRenderStates_Create();
+   game->renderer = gmRenderer_Create();
 
    game->showDiagnostics = sfFalse;
 
@@ -35,6 +37,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmTexture_Destroy( game->entitySpriteTexture );
    gmTexture_Destroy( game->mapTilesetTexture );
    gmMap_Destroy( game->map );
+   gmRenderer_Destroy( game->renderer );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
    gmInputState_Destroy( game->inputState );
