@@ -49,11 +49,9 @@ void gmGame_Destroy( gmGame_t* game );
 void gmGame_Run( gmGame_t* game );
 void gmGame_Close( gmGame_t* game );
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
+void gmGame_SetState( gmGame_t* game, gmGameState_t state );
 
 // game_loader.c
 void gmGame_LoadData( gmGame_t* game );
-
-// renderer.c
-void gmGame_Render( gmGame_t* game );
 
 #endif // GAME_H

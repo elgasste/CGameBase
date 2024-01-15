@@ -63,7 +63,7 @@ void gmGame_Run( gmGame_t* game )
       gmWindow_HandleEvents( game->window, game->inputState );
       gmInputHandler_HandleInput( game );
       gmGame_Tic( game );
-      gmGame_Render( game );
+      gmRenderer_Render( game );
 
       if ( game->window->wantToClose )
       {
@@ -79,6 +79,17 @@ void gmGame_Close( gmGame_t* game )
    gmWindow_Close( game->window );
 }
 
+void gmGame_SetState( gmGame_t* game, gmGameState_t state )
+{
+   // TODO: whatever validation checks need to be done
+   if ( state == gmGameState_OverworldMenu )
+   {
+      gmRenderStates_ResetMenu( game->renderStates->menu );
+   }
+
+   game->state = state;
+}
+
 static void gmGame_Tic( gmGame_t* game )
 {
    if ( game->state == gmGameState_Overworld )
@@ -86,7 +97,7 @@ static void gmGame_Tic( gmGame_t* game )
       gmPhysics_Tic( game );
    }
 
-   gmRenderStates_Tic( game->renderStates, game->clock );
+   gmRenderStates_Tic( game );
 }
 
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg )

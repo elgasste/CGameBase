@@ -8,28 +8,31 @@
 
 #include "strings.h"
 
-#define DEFAULT_STRLEN     512
-#define SHORT_STRLEN       32
+#define DEFAULT_STRLEN              512
+#define SHORT_STRLEN                32
 
-#define LOG_FILENAME       "log.txt"
+#define LOG_FILENAME                "log.txt"
 
-#define WINDOW_WIDTH       1024
-#define WINDOW_HEIGHT      768
-#define WINDOW_BPP         32
-#define WINDOW_STYLE       sfTitlebar | sfClose
+#define WINDOW_WIDTH                1024
+#define WINDOW_HEIGHT               768
+#define WINDOW_BPP                  32
+#define WINDOW_STYLE                sfTitlebar | sfClose
 
-#define GAME_FPS           60
+#define GAME_FPS                    60
 
-#define GRAPHICS_SCALE     2
+#define GRAPHICS_SCALE              2
 
-#define MAP_TILE_SIZE      64
-#define MAP_TILE_PIXELS    32
+#define MAP_TILE_SIZE               64
+#define MAP_TILE_PIXELS             32
 
-#define DEBUG_FONT         "consolas.ttf"
-#define GAME_FONT          "abaddon_bold.ttf"
+#define DEBUG_FONT                  "consolas.ttf"
+#define GAME_FONT                   "abaddon_bold.ttf"
+#define GAME_FONT_SIZE              16
 
-#define CHEAT_NOCLIP       "dqclip"
-#define CHEAT_CLEAR        "dqclear"
+#define MENU_CARAT_BLINKSECONDS     0.25f
+
+#define CHEAT_NOCLIP                "dqclip"
+#define CHEAT_CLEAR                 "dqclear"
 
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;
 

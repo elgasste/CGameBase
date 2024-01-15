@@ -6,6 +6,7 @@
 #include "entity.h"
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
+static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -27,12 +28,6 @@ void gmInputHandler_HandleInput( gmGame_t* game )
 {
    char debugMsg[SHORT_STRLEN];
 
-   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
-   {
-      gmGame_Close( game );
-      return;
-   }
-
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
       TOGGLE_BOOL( game->showDiagnostics );
@@ -40,9 +35,14 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
-   if ( game->state == gmGameState_Overworld )
+   switch ( game->state )
    {
-      gmInputHandler_HandleOverworldInput( game );
+      case gmGameState_Overworld:
+         gmInputHandler_HandleOverworldInput( game );
+         break;
+      case gmGameState_OverworldMenu:
+         gmInputHandler_HandleOverworldMenuInput( game );
+         break;
    }
 
    gmInputHandler_CheckCheats( game );
@@ -55,6 +55,12 @@ static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
    sfBool upIsDown = gmInputState_IsKeyDown( sfKeyUp );
    sfBool rightIsDown = gmInputState_IsKeyDown( sfKeyRight );
    sfBool downIsDown = gmInputState_IsKeyDown( sfKeyDown );
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
+   {
+      gmGame_SetState( game, gmGameState_OverworldMenu );
+      return;
+   }
 
    if ( leftIsDown && !rightIsDown )
    {
@@ -118,6 +124,15 @@ static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
       {
          entity->direction = gmDirection_Down;
       }
+   }
+}
+
+static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
+{
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
+   {
+      gmGame_SetState( game, gmGameState_Overworld );
+      return;
    }
 }
 

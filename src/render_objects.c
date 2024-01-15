@@ -4,9 +4,11 @@
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
 static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game );
+static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create();
 static void gmDiagnosticsRenderObjects_Destroy( gmDiagnosticsRenderObjects_t* objects );
 static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects );
 static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects );
+static void gmMenuRenderObjects_Destroy( gmOverworldMenuRenderObjects_t* objects );
 
 gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game )
 {
@@ -17,6 +19,7 @@ gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game )
    renderObjects->diagnosticsRenderObjects = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBarRenderObjects = gmDebugBarRenderObjects_Create();
    renderObjects->mapRenderObjects = gmMapRenderObjects_Create( game );
+   renderObjects->overworldMenuRenderObjects = gmOverworldMenuRenderObjects_Create();
 
    renderObjects->windowBackgroundRect = gmRectangleShape_Create();
    sfRectangleShape_setSize( renderObjects->windowBackgroundRect, windowBackgroundSize );
@@ -86,8 +89,31 @@ static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game )
    return objects;
 }
 
+static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create()
+{
+   sfVector2f textScale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
+   gmOverworldMenuRenderObjects_t* objects = (gmOverworldMenuRenderObjects_t*)gmAlloc( sizeof( gmOverworldMenuRenderObjects_t ), sfTrue );
+
+   objects->font = gmFont_CreateFromFile( GAME_FONT );
+   objects->text = gmText_Create();
+   sfText_setFont( objects->text, objects->font );
+   sfText_setCharacterSize( objects->text, GAME_FONT_SIZE );
+   sfText_scale( objects->text, textScale );
+   sfText_setFillColor( objects->text, sfWhite );
+
+   objects->menuPos.x = 64;
+   objects->menuPos.y = 64;
+   objects->itemsOffset.x = 32;
+   objects->itemsOffset.y = 32;
+   objects->caratOffset.x = -32;
+   objects->caratOffset.y = 0;
+
+   return objects;
+}
+
 void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
 {
+   gmMenuRenderObjects_Destroy( objects->overworldMenuRenderObjects );
    gmMapRenderObjects_Destroy( objects->mapRenderObjects );
    gmDebugBarRenderObjects_Destroy( objects->debugBarRenderObjects );
    gmDiagnosticsRenderObjects_Destroy( objects->diagnosticsRenderObjects );
@@ -121,4 +147,12 @@ static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects )
    gmSprite_Destroy( objects->tileSprite );
 
    gmFree( objects, sizeof( gmMapRenderObjects_t ), sfTrue );
+}
+
+static void gmMenuRenderObjects_Destroy( gmOverworldMenuRenderObjects_t* objects )
+{
+   gmText_Destroy( objects->text );
+   gmFont_Destroy( objects->font );
+
+   gmFree( objects, sizeof( gmOverworldMenuRenderObjects_t ), sfTrue );
 }
