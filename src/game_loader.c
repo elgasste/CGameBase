@@ -9,7 +9,7 @@ void gmGame_LoadData( gmGame_t* game )
    sfVector2f spriteMapPos = { 256, 256 };
    sfVector2f spriteMapHitBoxSize = { 52, 32 };
    sfVector2f spriteOffset = { -6, -32 };
-   sfVector2u mapTileCount = { 16, 12 };
+   sfVector2u mapTileCount = { 56, 56 };
    uint32_t i, tileIndex;
    gmMap_t* map;
 
@@ -24,7 +24,7 @@ void gmGame_LoadData( gmGame_t* game )
    }
 
    // randomly generate some trees
-   for ( i = 0; i < 30; i++ )
+   for ( i = 0; i < 100; i++ )
    {
       tileIndex = gmRandom_UInt32( 0, mapTileCount.x * mapTileCount.y );
       map->tiles[tileIndex].textureIndex = 25;
