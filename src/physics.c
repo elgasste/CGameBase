@@ -5,12 +5,14 @@
 #include "clock.h"
 #include "map.h"
 
-#define COLLISION_PADDING 0.0001f
+#define COLLISION_PADDING 0.01f
 
 void gmPhysics_Tic( gmGame_t* game )
 {
    gmEntity_t* entity = game->entity;
    sfVector2f newPos = entity->mapPos;
+   sfVector2f mapSize = { (float)( game->map->tileCount.x * MAP_TILE_SIZE ),
+                          (float)( game->map->tileCount.y * MAP_TILE_SIZE ) };
    uint32_t startRow, endRow, startCol, endCol, row, col;
    gmMapTile_t* tile;
 
@@ -20,9 +22,9 @@ void gmPhysics_Tic( gmGame_t* game )
    {
       newPos.x = COLLISION_PADDING;
    }
-   else if ( newPos.x + entity->mapHitBoxSize.x >= WINDOW_WIDTH )
+   else if ( newPos.x + entity->mapHitBoxSize.x >= mapSize.x )
    {
-      newPos.x = WINDOW_WIDTH - entity->mapHitBoxSize.x - COLLISION_PADDING;
+      newPos.x = mapSize.x - entity->mapHitBoxSize.x - COLLISION_PADDING;
    }
    else if ( newPos.x != entity->mapPos.x )
    {
@@ -52,9 +54,9 @@ void gmPhysics_Tic( gmGame_t* game )
    {
       newPos.y = COLLISION_PADDING;
    }
-   else if ( newPos.y + entity->mapHitBoxSize.y >= WINDOW_HEIGHT )
+   else if ( newPos.y + entity->mapHitBoxSize.y >= mapSize.y )
    {
-      newPos.y = WINDOW_HEIGHT - entity->mapHitBoxSize.y - COLLISION_PADDING;
+      newPos.y = mapSize.y - entity->mapHitBoxSize.y - COLLISION_PADDING;
    }
    else if ( newPos.y != entity->mapPos.y )
    {
