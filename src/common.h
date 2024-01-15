@@ -28,6 +28,9 @@
 #define DEBUG_FONT         "consolas.ttf"
 #define GAME_FONT          "abaddon_bold.ttf"
 
+#define CHEAT_NOCLIP       "dqclip"
+#define CHEAT_CLEAR        "dqclear"
+
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;
 
 // globals

@@ -23,8 +23,13 @@
 #define STR_LAGFRAMESFORMATTER            "  Lag Frames: %d"
 #define STR_ELAPSEDTIMEFORMATTER          "Elapsed Time: %s"
 
-#define STR_DEBUG_DIAGNOSTICSON           "Toggled diagnostics on"
-#define STR_DEBUG_DIAGNOSTICSOFF          "Toggled diagnostics off"
+#define STR_ON                            "on"
+#define STR_OFF                           "off"
+
+#define STR_DEBUG_DIAGNOSTICSFORMATTER    "Toggled diagnostics %s"
+
+#define STR_CHEAT_NOCLIPFORMATTER         "Toggle no-clip mode %s"
+#define STR_CHEAT_CLEARED                 "Cleared all cheats"
 
 #define STR_ERROR                         "ERROR"
 #define STR_ERROR_MALLOC                  "Could not allocate dynamic memory"

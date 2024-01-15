@@ -2,6 +2,7 @@
 #include "window.h"
 #include "clock.h"
 #include "input_state.h"
+#include "input_handler.h"
 #include "render_objects.h"
 #include "render_states.h"
 #include "renderer.h"
@@ -19,6 +20,7 @@ gmGame_t* gmGame_Create()
    game->window = gmWindow_Create();
    game->clock = gmClock_Create();
    game->inputState = gmInputState_Create();
+   game->inputHandler = gmInputHandler_Create();
 
    gmGame_LoadData( game );
 
@@ -27,6 +29,7 @@ gmGame_t* gmGame_Create()
    game->renderer = gmRenderer_Create();
 
    game->showDiagnostics = sfFalse;
+   game->cheatNoClip = sfFalse;
 
    return game;
 }
@@ -40,6 +43,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmRenderer_Destroy( game->renderer );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
+   gmInputHandler_Destroy( game->inputHandler );
    gmInputState_Destroy( game->inputState );
    gmClock_Destroy( game->clock );
    gmWindow_Destroy( game->window );
@@ -55,7 +59,7 @@ void gmGame_Run( gmGame_t* game )
 
       gmInputState_Reset( game->inputState );
       gmWindow_HandleEvents( game->window, game->inputState );
-      gmGame_HandleInput( game );
+      gmInputHandler_HandleInput( game );
       gmGame_Tic( game );
       gmGame_Render( game );
 
