@@ -25,6 +25,9 @@
 #define MAP_TILE_SIZE      64
 #define MAP_TILE_PIXELS    32
 
+#define DEBUG_FONT         "consolas.ttf"
+#define GAME_FONT          "abaddon_bold.ttf"
+
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;
 
 // globals

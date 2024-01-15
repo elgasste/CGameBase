@@ -40,7 +40,7 @@ static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create()
    sfRectangleShape_setSize( objects->backgroundRect, backgroundSize );
    sfRectangleShape_setPosition( objects->backgroundRect, backgroundPos );
    sfRectangleShape_setFillColor( objects->backgroundRect, sfBlue );
-   objects->font = gmFont_CreateFromFile( "consolas.ttf" );
+   objects->font = gmFont_CreateFromFile( DEBUG_FONT );
    objects->textPosition.x = WINDOW_WIDTH - backgroundSize.x + 8;
    objects->text = gmText_Create();
    sfText_setFont( objects->text, objects->font );
@@ -63,7 +63,7 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
    sfRectangleShape_setSize( objects->backgroundRect, backgroundSize );
    sfRectangleShape_setPosition( objects->backgroundRect, backgroundPos );
    sfRectangleShape_setFillColor( objects->backgroundRect, sfWhite );
-   objects->font = gmFont_CreateFromFile( "consolas.ttf" );
+   objects->font = gmFont_CreateFromFile( DEBUG_FONT );
    objects->text = gmText_Create();
    sfText_setFont( objects->text, objects->font );
    sfText_setCharacterSize( objects->text, 12 );
