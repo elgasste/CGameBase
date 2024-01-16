@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-typedef struct gmGame_t gmGame_t;
+typedef struct gmRenderer_t gmRenderer_t;
 
 typedef struct gmDiagnosticsRenderObjects_t
 {
@@ -61,14 +61,14 @@ typedef struct gmRenderObjects_t
    gmOverworldMenuRenderObjects_t* overworldMenuRenderObjects;
    gmBattleRenderObjects_t* battleRenderObjects;
 
+   sfTexture* mapTilesetTexture;
+   sfTexture* entitySpriteTexture;
    sfRectangleShape* windowBackgroundRect;
-
    sfRectangleShape* entityRect;
 }
 gmRenderObjects_t;
 
-gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game );
+gmRenderObjects_t* gmRenderObjects_Create();
 void gmRenderObjects_Destroy( gmRenderObjects_t* renderObjects );
 
 #endif // RENDER_OBJECTS_H
-

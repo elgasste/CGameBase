@@ -23,6 +23,9 @@ gmRenderer_t* gmRenderer_Create()
 {
    gmRenderer_t* renderer = (gmRenderer_t*)gmAlloc( sizeof( gmRenderer_t ), sfTrue );
 
+   renderer->renderObjects = gmRenderObjects_Create( renderer );
+   renderer->renderStates = gmRenderStates_Create();
+
    renderer->mapViewRect.width = WINDOW_WIDTH;
    renderer->mapViewRect.height = WINDOW_HEIGHT;
 
@@ -31,12 +34,15 @@ gmRenderer_t* gmRenderer_Create()
 
 void gmRenderer_Destroy( gmRenderer_t* renderer )
 {
+   gmRenderStates_Destroy( renderer->renderStates );
+   gmRenderObjects_Destroy( renderer->renderObjects );
+
    gmFree( renderer, sizeof( gmRenderer_t ), sfTrue );
 }
 
 void gmRenderer_Render( gmGame_t* game )
 {
-   gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
+   gmWindow_DrawRectangleShape( game->window, game->renderer->renderObjects->windowBackgroundRect );
 
    switch ( game->state )
    {
@@ -70,7 +76,7 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];
    char timeStr[SHORT_STRLEN];
-   gmDiagnosticsRenderObjects_t* objects = game->renderObjects->diagnosticsRenderObjects;
+   gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnosticsRenderObjects;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
@@ -178,11 +184,11 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    gmRenderer_t* renderer = game->renderer;
    gmMap_t* map = game->map;
    uint32_t tileRow, tileCol, row, col;
-   gmMapRenderObjects_t* objects = game->renderObjects->mapRenderObjects;
+   gmMapRenderObjects_t* objects = game->renderer->renderObjects->mapRenderObjects;
    gmMapTile_t* tile;
    sfVector2f tilePos = { 0, 0 };
    sfIntRect textureRect = { 0, 0, MAP_TILE_PIXELS, MAP_TILE_PIXELS };
-   sfVector2u textureSize = sfTexture_getSize( game->mapTilesetTexture );
+   sfVector2u textureSize = sfTexture_getSize( game->renderer->renderObjects->mapTilesetTexture );
    sfVector2u textureTileCount = { textureSize.x / MAP_TILE_PIXELS, textureSize.y / MAP_TILE_PIXELS };
 
    for ( row = 0, tileRow = renderer->mapViewStart.y; tileRow <= renderer->mapViewEnd.y; row++, tileRow++ )
@@ -223,8 +229,8 @@ static void gmRenderer_DrawMapEntities( gmGame_t* game )
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 {
    sfVector2f pos;
-   gmOverworldMenuRenderObjects_t* objects = game->renderObjects->overworldMenuRenderObjects;
-   gmMenuRenderState_t* renderState = game->renderStates->menu;
+   gmOverworldMenuRenderObjects_t* objects = game->renderer->renderObjects->overworldMenuRenderObjects;
+   gmMenuRenderState_t* renderState = game->renderer->renderStates->menu;
    gmMenu_t* menu = game->menus->overworld;
    uint32_t i;
 
@@ -251,7 +257,7 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 
 static void gmRenderer_DrawBattle( gmGame_t* game )
 {
-   gmBattleRenderObjects_t* objects = game->renderObjects->battleRenderObjects;
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battleRenderObjects;
 
    switch ( game->battle->state )
    {
@@ -272,8 +278,8 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )
 {
-   gmDebugBarRenderState_t* state = game->renderStates->debugBar;
-   gmDebugBarRenderObjects_t* objects = game->renderObjects->debugBarRenderObjects;
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
+   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBarRenderObjects;
 
    if ( state->isVisible )
    {

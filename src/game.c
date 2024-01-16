@@ -18,6 +18,10 @@ static void gmGame_Tic( gmGame_t* game );
 
 gmGame_t* gmGame_Create()
 {
+   sfVector2f entityMapPos = { 256, 256 };
+   sfVector2f entityMapHitBoxSize = { 52, 32 };
+   sfVector2f entitySpriteOffset = { -6, -32 };
+
    gmGame_t* game = (gmGame_t*)gmAlloc( sizeof( gmGame_t ), sfTrue );
 
    game->window = gmWindow_Create();
@@ -28,8 +32,6 @@ gmGame_t* gmGame_Create()
 
    gmGame_LoadData( game );
 
-   game->renderObjects = gmRenderObjects_Create( game );
-   game->renderStates = gmRenderStates_Create();
    game->renderer = gmRenderer_Create();
 
    game->battle = 0;
@@ -38,19 +40,25 @@ gmGame_t* gmGame_Create()
    game->cheatNoClip = sfFalse;
    game->cheatNoEncounters = sfFalse;
 
+   // TODO: entities should be created on the fly, probably.
+   // and gmGame_t should have a "controllable entity" pointer.
+   game->entity = gmEntity_Create( entityMapPos,
+                                   entityMapHitBoxSize,
+                                   200.0f,
+                                   entitySpriteOffset,
+                                   game->renderer->renderObjects->entitySpriteTexture );
+   gmEntity_SetDirection( game->entity, gmDirection_Down );
+   game->physics->entityMapTileCache = gmMap_TileIndexFromPos( game->map, entityMapPos );
+
    return game;
 }
 
 void gmGame_Destroy( gmGame_t* game )
 {
    gmEntity_Destroy( game->entity );
-   gmTexture_Destroy( game->entitySpriteTexture );
-   gmTexture_Destroy( game->mapTilesetTexture );
    gmMap_Destroy( game->map );
    gmMenus_Destroy( game->menus );
    gmRenderer_Destroy( game->renderer );
-   gmRenderStates_Destroy( game->renderStates );
-   gmRenderObjects_Destroy( game->renderObjects );
    gmPhysics_Destroy( game->physics );
    gmInputHandler_Destroy( game->inputHandler );
    gmInputState_Destroy( game->inputState );
@@ -97,7 +105,7 @@ void gmGame_SetState( gmGame_t* game, gmGameState_t state )
 {
    if ( state == gmGameState_OverworldMenu )
    {
-      gmRenderStates_ResetMenu( game->renderStates->menu );
+      gmRenderStates_ResetMenu( game->renderer->renderStates->menu );
       game->menus->overworld->selectedIndex = 0;
    }
 
@@ -150,7 +158,7 @@ static void gmGame_Tic( gmGame_t* game )
 
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg )
 {
-   gmDebugBarRenderState_t* state = game->renderStates->debugBar;
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
 
    snprintf( state->msgBuffer, state->msgBufferLen, "%s", msg );
    state->isVisible = sfTrue;

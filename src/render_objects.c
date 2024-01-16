@@ -1,10 +1,9 @@
 #include "render_objects.h"
-#include "game.h"
 #include "menus.h"
 
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
-static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game );
+static gmMapRenderObjects_t* gmMapRenderObjects_Create( sfTexture* mapTilesetTexture );
 static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create();
 static gmBattleRenderObjects_t* gmBattleRenderObjects_Create();
 static void gmDiagnosticsRenderObjects_Destroy( gmDiagnosticsRenderObjects_t* objects );
@@ -18,15 +17,20 @@ static void gmRenderObjects_BuildDialogBackground( sfConvexShape* shape,
                                                    float cornerRadius,
                                                    sfColor color );
 
-gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game )
+gmRenderObjects_t* gmRenderObjects_Create()
 {
    sfVector2f windowBackgroundSize = { WINDOW_WIDTH, WINDOW_HEIGHT };
    sfVector2f windowBackgroundPosition = { 0, 0 };
 
    gmRenderObjects_t* renderObjects = (gmRenderObjects_t*)gmAlloc( sizeof( gmRenderObjects_t ), sfTrue );
+
+   // TODO: define these filenames somewhere?
+   renderObjects->mapTilesetTexture = gmTexture_CreateFromFile( "map_tileset.png" );
+   renderObjects->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
+
    renderObjects->diagnosticsRenderObjects = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBarRenderObjects = gmDebugBarRenderObjects_Create();
-   renderObjects->mapRenderObjects = gmMapRenderObjects_Create( game );
+   renderObjects->mapRenderObjects = gmMapRenderObjects_Create( renderObjects->mapTilesetTexture );
    renderObjects->overworldMenuRenderObjects = gmOverworldMenuRenderObjects_Create();
    renderObjects->battleRenderObjects = gmBattleRenderObjects_Create();
 
@@ -85,14 +89,14 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
    return objects;
 }
 
-static gmMapRenderObjects_t* gmMapRenderObjects_Create( gmGame_t* game )
+static gmMapRenderObjects_t* gmMapRenderObjects_Create( sfTexture* mapTilesetTexture)
 {
    sfVector2f tilesetScale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
 
    gmMapRenderObjects_t* objects = (gmMapRenderObjects_t*)gmAlloc( sizeof( gmMapRenderObjects_t ), sfTrue );
 
    objects->tileSprite = gmSprite_Create();
-   sfSprite_setTexture( objects->tileSprite, game->mapTilesetTexture, sfFalse );
+   sfSprite_setTexture( objects->tileSprite, mapTilesetTexture, sfFalse );
    sfSprite_scale( objects->tileSprite, tilesetScale );
 
    return objects;
@@ -181,6 +185,9 @@ void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
 
    gmRectangleShape_Destroy( objects->entityRect );
    gmRectangleShape_Destroy( objects->windowBackgroundRect );
+
+   gmTexture_Destroy( objects->entitySpriteTexture );
+   gmTexture_Destroy( objects->mapTilesetTexture );
 
    gmFree( objects, sizeof( gmRenderObjects_t ), sfTrue );
 }

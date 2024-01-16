@@ -8,8 +8,6 @@ typedef struct gmWindow_t gmWindow_t;
 typedef struct gmClock_t gmClock_t;
 typedef struct gmInputState_t gmInputState_t;
 typedef struct gmInputHandler_t gmInputHandler_t;
-typedef struct gmRenderObjects_t gmRenderObjects_t;
-typedef struct gmRenderStates_t gmRenderStates_t;
 typedef struct gmRenderer_t gmRenderer_t;
 typedef struct gmPhysics_t gmPhysics_t;
 typedef struct gmMenus_t gmMenus_t;
@@ -31,8 +29,6 @@ typedef struct gmGame_t
    gmClock_t* clock;
    gmInputState_t* inputState;
    gmInputHandler_t* inputHandler;
-   gmRenderObjects_t* renderObjects;
-   gmRenderStates_t* renderStates;
    gmRenderer_t* renderer;
    gmPhysics_t* physics;
 
@@ -43,8 +39,6 @@ typedef struct gmGame_t
    gmBattle_t* battle;
 
    gmEntity_t* entity;
-   sfTexture* mapTilesetTexture;
-   sfTexture* entitySpriteTexture;
 
    sfBool cheatNoClip;
    sfBool cheatNoEncounters;
