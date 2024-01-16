@@ -15,6 +15,7 @@ static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
 static void gmRenderer_DrawMapEntities( gmGame_t* game );
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
+static void gmRenderer_DrawBattle();
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create()
@@ -48,6 +49,9 @@ void gmRenderer_Render( gmGame_t* game )
          gmRenderer_DrawMap( game );
          gmRenderer_DrawMapEntities( game );
          gmRenderer_DrawOverworldMenu( game );
+         break;
+      case gmGameState_Battle:
+         gmRenderer_DrawBattle();
          break;
    }
    if ( game->state == gmGameState_Overworld )
@@ -248,6 +252,11 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
       sfText_setString( objects->text, menu->options[i].label );
       gmWindow_DrawText( game->window, objects->text );
    }
+}
+
+static void gmRenderer_DrawBattle()
+{
+   // TODO
 }
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )

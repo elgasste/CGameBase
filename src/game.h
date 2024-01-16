@@ -19,7 +19,8 @@ typedef struct gmEntity_t gmEntity_t;
 typedef enum gmGameState_t
 {
    gmGameState_Overworld,
-   gmGameState_OverworldMenu
+   gmGameState_OverworldMenu,
+   gmGameState_Battle
 }
 gmGameState_t;
 

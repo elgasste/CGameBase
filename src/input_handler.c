@@ -9,6 +9,7 @@
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
+static void gmInputHandler_HandleBattleInput( gmGame_t* game );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -44,6 +45,9 @@ void gmInputHandler_HandleInput( gmGame_t* game )
          break;
       case gmGameState_OverworldMenu:
          gmInputHandler_HandleOverworldMenuInput( game );
+         break;
+      case gmGameState_Battle:
+         gmInputHandler_HandleBattleInput( game );
          break;
    }
 
@@ -152,6 +156,14 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
    {
       selectedOption = &( menu->options[menu->selectedIndex] );
       gmGame_ExecuteMenuCommand( game, selectedOption->command );
+   }
+}
+
+static void gmInputHandler_HandleBattleInput( gmGame_t* game )
+{
+   if ( game->inputState->keyWasPressed )
+   {
+      gmGame_SetState( game, gmGameState_Overworld );
    }
 }
 

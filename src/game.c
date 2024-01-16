@@ -87,7 +87,6 @@ void gmGame_Close( gmGame_t* game )
 
 void gmGame_SetState( gmGame_t* game, gmGameState_t state )
 {
-   // TODO: whatever validation checks need to be done
    if ( state == gmGameState_OverworldMenu )
    {
       gmRenderStates_ResetMenu( game->renderStates->menu );
@@ -119,7 +118,7 @@ void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex )
 
    if ( !game->cheatNoEncounters && tile->encounterRate > 0 && gmRandom_Percent() <= tile->encounterRate )
    {
-      // TODO: generate an encounter and switch to battle state
+      gmGame_SetState( game, gmGameState_Battle );
    }
 }
 
