@@ -94,6 +94,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\battle.h" />
     <ClInclude Include="..\src\clock.h" />
     <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\direction.h" />
@@ -115,6 +116,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClInclude Include="..\src\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\battle.c" />
     <ClCompile Include="..\src\clock.c" />
     <ClCompile Include="..\src\common.c" />
     <ClCompile Include="..\src\entity.c" />

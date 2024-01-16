@@ -40,12 +40,26 @@ typedef struct gmOverworldMenuRenderObjects_t
 }
 gmOverworldMenuRenderObjects_t;
 
+typedef struct gmBattleRenderObjects_t
+{
+   sfConvexShape* largeDialogBackground;
+   sfConvexShape* smallDialogBackground;
+   sfConvexShape* actionMenuBackground;
+   sfFont* font;
+   sfText* text;
+   sfVector2f largeDialogTextPos;
+   sfVector2f smallDialogTextPos;
+   sfVector2f actionMenuItemsPos;
+}
+gmBattleRenderObjects_t;
+
 typedef struct gmRenderObjects_t
 {
    gmDiagnosticsRenderObjects_t* diagnosticsRenderObjects;
    gmDebugBarRenderObjects_t* debugBarRenderObjects;
    gmMapRenderObjects_t* mapRenderObjects;
    gmOverworldMenuRenderObjects_t* overworldMenuRenderObjects;
+   gmBattleRenderObjects_t* battleRenderObjects;
 
    sfRectangleShape* windowBackgroundRect;
 

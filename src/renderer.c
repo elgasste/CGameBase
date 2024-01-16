@@ -9,13 +9,14 @@
 #include "entity.h"
 #include "entity_sprite.h"
 #include "menus.h"
+#include "battle.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
 static void gmRenderer_DrawMapEntities( gmGame_t* game );
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
-static void gmRenderer_DrawBattle();
+static void gmRenderer_DrawBattle( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create()
@@ -51,14 +52,8 @@ void gmRenderer_Render( gmGame_t* game )
          gmRenderer_DrawOverworldMenu( game );
          break;
       case gmGameState_Battle:
-         gmRenderer_DrawBattle();
+         gmRenderer_DrawBattle( game );
          break;
-   }
-   if ( game->state == gmGameState_Overworld )
-   {
-      gmRenderer_SetMapView( game );
-      gmRenderer_DrawMap( game );
-      gmRenderer_DrawMapEntities( game );
    }
    
    gmRenderer_DrawDebugBar( game );
@@ -254,9 +249,25 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
    }
 }
 
-static void gmRenderer_DrawBattle()
+static void gmRenderer_DrawBattle( gmGame_t* game )
 {
-   // TODO
+   gmBattleRenderObjects_t* objects = game->renderObjects->battleRenderObjects;
+
+   switch ( game->battle->state )
+   {
+      case gmBattleState_Intro:
+      case gmBattleState_Result:
+         gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
+         sfText_setPosition( objects->text, objects->largeDialogTextPos );
+         gmWindow_DrawText( game->window, objects->text );
+         break;
+      case gmBattleState_SelectAction:
+         gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
+         gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
+         sfText_setPosition( objects->text, objects->smallDialogTextPos );
+         gmWindow_DrawText( game->window, objects->text );
+         break;
+   }
 }
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )

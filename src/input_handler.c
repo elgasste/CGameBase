@@ -163,7 +163,7 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 {
    if ( game->inputState->keyWasPressed )
    {
-      gmGame_SetState( game, gmGameState_Overworld );
+      gmGame_CloseEncounter( game );
    }
 }
 

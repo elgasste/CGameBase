@@ -28,6 +28,9 @@
 #define DEBUG_FONT                  "consolas.ttf"
 #define GAME_FONT                   "abaddon_bold.ttf"
 #define GAME_FONT_SIZE              16
+#define GAME_FONT_COLOR             sfColor_fromRGB( 224, 224, 224 )
+#define DIALOG_BACKDROP_LIGHTCOLOR  sfColor_fromRGBA( 0, 0, 0, 192 )
+#define DIALOG_BACKDROP_DARKCOLOR   sfColor_fromRGBA( 255, 255, 255, 24 )
 
 #define MENU_CARAT_BLINKSECONDS     0.25f
 #define MENU_LINESIZE               32.0f
