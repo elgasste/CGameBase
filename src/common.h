@@ -33,6 +33,7 @@
 #define MENU_LINESIZE               32.0f
 
 #define CHEAT_NOCLIP                "dqclip"
+#define CHEAT_NOENCOUNTER           "dqinvis"
 #define CHEAT_CLEAR                 "dqclear"
 
 #define TOGGLE_BOOL( x ) x = x ? sfFalse : sfTrue;

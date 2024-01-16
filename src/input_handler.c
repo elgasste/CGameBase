@@ -160,6 +160,7 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
    int cheatStringLength, i, l, lastIndex, matchCount;
    static const char* cheats[] = {
       CHEAT_NOCLIP,
+      CHEAT_NOENCOUNTER,
       CHEAT_CLEAR
    };
    static int cheatCount = (int)( sizeof( cheats ) / sizeof( const char* ) );
@@ -210,9 +211,16 @@ static void gmInputHandler_ApplyCheat( gmGame_t* game )
       sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
+   else if ( !strcmp( cheat, CHEAT_NOENCOUNTER ) )
+   {
+      TOGGLE_BOOL( game->cheatNoEncounters );
+      sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
+      gmGame_ShowDebugMessage( game, cheatMsg );
+   }
    else if ( !strcmp( cheat, CHEAT_CLEAR ) )
    {
       game->cheatNoClip = sfFalse;
+      game->cheatNoEncounters = sfFalse;
       gmGame_ShowDebugMessage( game, STR_CHEAT_CLEARED );
    }
 

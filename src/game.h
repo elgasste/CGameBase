@@ -44,6 +44,7 @@ typedef struct gmGame_t
    sfTexture* entitySpriteTexture;
 
    sfBool cheatNoClip;
+   sfBool cheatNoEncounters;
 
    gmGameState_t state;
 }

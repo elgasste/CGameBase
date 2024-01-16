@@ -33,6 +33,7 @@ gmGame_t* gmGame_Create()
 
    game->showDiagnostics = sfFalse;
    game->cheatNoClip = sfFalse;
+   game->cheatNoEncounters = sfFalse;
 
    return game;
 }
@@ -116,7 +117,7 @@ void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex )
 {
    gmMapTile_t* tile = &( game->map->tiles[mapTileIndex] );
 
-   if ( tile->encounterRate > 0 && gmRandom_Percent() <= tile->encounterRate )
+   if ( !game->cheatNoEncounters && tile->encounterRate > 0 && gmRandom_Percent() <= tile->encounterRate )
    {
       // TODO: generate an encounter and switch to battle state
    }
