@@ -16,8 +16,8 @@ gmMenuOption_t;
 typedef struct gmMenu_t
 {
    gmMenuOption_t* options;
-   uint16_t optionCount;
-   uint16_t selectedIndex;
+   uint32_t optionCount;
+   uint32_t selectedIndex;
 }
 gmMenu_t;
 

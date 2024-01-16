@@ -1,7 +1,7 @@
 #include "entity_sprite.h"
 #include "clock.h"
 
-gmEntitySprite_t* gmEntitySprite_Create( sfTexture* texture, uint16_t frames, float frameSeconds )
+gmEntitySprite_t* gmEntitySprite_Create( sfTexture* texture, uint32_t frames, float frameSeconds )
 {
    sfIntRect textureRect = { 0, 0, 32, 32 };
    sfVector2f scale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
@@ -52,7 +52,7 @@ void gmEntitySprite_Tic( gmEntitySprite_t* sprite, gmDirection_t direction, gmCl
       sprite->elapsedSeconds -= sprite->frameSeconds;
       textureRect.left += textureRect.width;
 
-      if ( textureRect.left >= ( textureRect.width * sprite->frames ) )
+      if ( textureRect.left >= (int)( textureRect.width * sprite->frames ) )
       {
          textureRect.left = 0;
       }

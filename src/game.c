@@ -11,6 +11,7 @@
 #include "entity.h"
 #include "entity_sprite.h"
 #include "physics.h"
+#include "random.h"
 
 static void gmGame_Tic( gmGame_t* game );
 
@@ -22,6 +23,7 @@ gmGame_t* gmGame_Create()
    game->clock = gmClock_Create();
    game->inputState = gmInputState_Create();
    game->inputHandler = gmInputHandler_Create();
+   game->physics = gmPhysics_Create();
 
    gmGame_LoadData( game );
 
@@ -45,6 +47,7 @@ void gmGame_Destroy( gmGame_t* game )
    gmRenderer_Destroy( game->renderer );
    gmRenderStates_Destroy( game->renderStates );
    gmRenderObjects_Destroy( game->renderObjects );
+   gmPhysics_Destroy( game->physics );
    gmInputHandler_Destroy( game->inputHandler );
    gmInputState_Destroy( game->inputState );
    gmClock_Destroy( game->clock );
@@ -106,6 +109,16 @@ void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command )
             gmGame_SetState( game, gmGameState_Overworld );
          }
          break;
+   }
+}
+
+void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex )
+{
+   gmMapTile_t* tile = &( game->map->tiles[mapTileIndex] );
+
+   if ( tile->encounterRate > 0 && gmRandom_Percent() <= tile->encounterRate )
+   {
+      // TODO: generate an encounter and switch to battle state
    }
 }
 

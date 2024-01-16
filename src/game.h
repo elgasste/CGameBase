@@ -11,6 +11,7 @@ typedef struct gmInputHandler_t gmInputHandler_t;
 typedef struct gmRenderObjects_t gmRenderObjects_t;
 typedef struct gmRenderStates_t gmRenderStates_t;
 typedef struct gmRenderer_t gmRenderer_t;
+typedef struct gmPhysics_t gmPhysics_t;
 typedef struct gmMenus_t gmMenus_t;
 typedef struct gmMap_t gmMap_t;
 typedef struct gmEntity_t gmEntity_t;
@@ -31,6 +32,7 @@ typedef struct gmGame_t
    gmRenderObjects_t* renderObjects;
    gmRenderStates_t* renderStates;
    gmRenderer_t* renderer;
+   gmPhysics_t* physics;
 
    sfBool showDiagnostics;
    
@@ -54,6 +56,7 @@ void gmGame_Close( gmGame_t* game );
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
 void gmGame_SetState( gmGame_t* game, gmGameState_t state );
 void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command );
+void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex );
 
 // game_loader.c
 void gmGame_LoadData( gmGame_t* game );

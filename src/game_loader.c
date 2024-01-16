@@ -5,6 +5,7 @@
 #include "map.h"
 #include "entity.h"
 #include "entity_sprite.h"
+#include "physics.h"
 #include "random.h"
 
 void gmGame_LoadData( gmGame_t* game )
@@ -32,6 +33,7 @@ void gmGame_LoadData( gmGame_t* game )
    {
       map->tiles[i].textureIndex = 0;
       map->tiles[i].passable = sfTrue;
+      map->tiles[i].encounterRate = 0;
    }
 
    // randomly generate some trees
@@ -42,9 +44,19 @@ void gmGame_LoadData( gmGame_t* game )
       map->tiles[tileIndex].passable = sfFalse;
    }
 
+   // grass tiles can have enemies
+   for ( i = 0; i < mapTileCount.x * mapTileCount.y; i++ )
+   {
+      if ( map->tiles[i].textureIndex == 0 )
+      {
+         map->tiles[i].encounterRate = 2;
+      }
+   }
+
    game->mapTilesetTexture = gmTexture_CreateFromFile( "map_tileset.png" );
    game->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
 
    game->entity = gmEntity_Create( entityMapPos, entityMapHitBoxSize, 200.0f, entitySpriteOffset, game->entitySpriteTexture );
    gmEntity_SetDirection( game->entity, gmDirection_Down );
+   game->physics->entityMapTileCache = gmMap_TileIndexFromPos( game->map, entityMapPos );
 }

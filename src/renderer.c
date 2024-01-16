@@ -227,7 +227,7 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
    gmOverworldMenuRenderObjects_t* objects = game->renderObjects->overworldMenuRenderObjects;
    gmMenuRenderState_t* renderState = game->renderStates->menu;
    gmMenu_t* menu = game->menus->overworld;
-   uint16_t i;
+   uint32_t i;
 
    gmWindow_DrawConvexShape( game->window, objects->backgroundShape );
 
