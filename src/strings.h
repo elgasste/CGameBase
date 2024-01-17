@@ -30,6 +30,7 @@
 
 #define STR_CHEAT_NOCLIPFORMATTER         "Toggled no-clip mode %s"
 #define STR_CHEAT_NOENCOUNTERFORMATTER    "Toggled no-encounters mode %s"
+#define STR_CHEAT_FIGHT                   "Forced an enemy encounter"
 #define STR_CHEAT_CLEARED                 "Cleared all cheats"
 
 #define STR_ERROR                         "ERROR"

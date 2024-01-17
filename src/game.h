@@ -55,7 +55,8 @@ void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
 void gmGame_SetState( gmGame_t* game, gmGameState_t state );
 void gmGame_ExecuteMenuCommand( gmGame_t* game, gmMenuCommand_t command );
 void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex );
-void gmGame_CloseEncounter( gmGame_t* game );
+void gmGame_StartEncounter( gmGame_t* game );
+void gmGame_EndEncounter( gmGame_t* game );
 
 // game_loader.c
 void gmGame_LoadData( gmGame_t* game );

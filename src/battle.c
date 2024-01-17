@@ -30,5 +30,5 @@ void gmBattle_ActionSelected( gmBattle_t* battle )
 
 void gmBattle_Close( gmGame_t* game )
 {
-   gmGame_CloseEncounter( game );
+   gmGame_EndEncounter( game );
 }

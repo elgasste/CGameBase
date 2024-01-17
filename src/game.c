@@ -134,12 +134,17 @@ void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex )
 
    if ( !game->cheatNoEncounters && tile->encounterRate > 0 && gmRandom_Percent() <= tile->encounterRate )
    {
-      game->battle = gmBattle_Create();
-      gmGame_SetState( game, gmGameState_Battle );
+      gmGame_StartEncounter( game );
    }
 }
 
-void gmGame_CloseEncounter( gmGame_t* game )
+void gmGame_StartEncounter( gmGame_t* game )
+{
+   game->battle = gmBattle_Create();
+   gmGame_SetState( game, gmGameState_Battle );
+}
+
+void gmGame_EndEncounter( gmGame_t* game )
 {
    gmBattle_Destroy( game->battle );
    game->battle = 0;
