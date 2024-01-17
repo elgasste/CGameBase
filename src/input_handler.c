@@ -170,13 +170,13 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 
 static void gmInputHandler_CheckCheats( gmGame_t* game )
 {
-   int cheatStringLength, i, l, lastIndex, matchCount;
+   int32_t cheatStringLength, i, l, lastIndex, matchCount;
    static const char* cheats[] = {
       CHEAT_NOCLIP,
       CHEAT_NOENCOUNTER,
       CHEAT_CLEAR
    };
-   static int cheatCount = (int)( sizeof( cheats ) / sizeof( const char* ) );
+   static int32_t cheatCount = (int32_t)( sizeof( cheats ) / sizeof( const char* ) );
    gmInputHandler_t* inputHandler = game->inputHandler;
 
    if ( !game->inputState->keyWasPressed )
@@ -184,7 +184,7 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
       return;
    }
 
-   cheatStringLength = (int)strlen( inputHandler->cheatString );
+   cheatStringLength = (int32_t)strlen( inputHandler->cheatString );
    inputHandler->cheatString[cheatStringLength] = (char)( game->inputState->lastPressedKey + 97 );
    cheatStringLength++;
    inputHandler->cheatString[cheatStringLength] = '\0';
@@ -194,7 +194,7 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
 
    for ( i = 0; i < cheatCount; i++ )
    {
-      l = (int)strlen( cheats[i] );
+      l = (int32_t)strlen( cheats[i] );
 
       if ( lastIndex >= l || cheats[i][lastIndex] != inputHandler->cheatString[lastIndex] )
       {

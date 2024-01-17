@@ -10,6 +10,7 @@
 #include "entity_sprite.h"
 #include "menus.h"
 #include "battle.h"
+#include "text_util.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
@@ -137,13 +138,13 @@ static void gmRenderer_SetMapView( gmGame_t* game )
    {
       renderer->mapViewRect.left = mapSize.x - renderer->mapViewRect.width - 1;
       renderer->mapViewPadding.x = 0;
-      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int32_t)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewEnd.x = map->tileCount.x;
       renderer->mapViewStart.x = renderer->mapViewEnd.x - (uint32_t)( renderer->mapViewRect.width / MAP_TILE_SIZE ) - 1;
    }
    else
    {
-      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int32_t)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewStart.x = (uint32_t)( renderer->mapViewRect.left / MAP_TILE_SIZE );
       renderer->mapViewEnd.x = renderer->mapViewStart.x + (uint32_t)( renderer->mapViewRect.width / MAP_TILE_SIZE ) + 1;
    }
@@ -167,13 +168,13 @@ static void gmRenderer_SetMapView( gmGame_t* game )
    {
       renderer->mapViewRect.top = mapSize.y - renderer->mapViewRect.height - 1;
       renderer->mapViewPadding.y = 0;
-      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int32_t)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewEnd.y = map->tileCount.y;
       renderer->mapViewStart.y = renderer->mapViewEnd.y - (uint32_t)( renderer->mapViewRect.height / MAP_TILE_SIZE ) - 1;
    }
    else
    {
-      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int32_t)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewStart.y = (uint32_t)( renderer->mapViewRect.top / MAP_TILE_SIZE );
       renderer->mapViewEnd.y = renderer->mapViewStart.y + (uint32_t)( renderer->mapViewRect.height / MAP_TILE_SIZE ) + 1;
    }
@@ -264,14 +265,24 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
       case gmBattleState_Intro:
       case gmBattleState_Result:
          gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
-         sfText_setPosition( objects->text, objects->largeDialogTextPos );
-         gmWindow_DrawText( game->window, objects->text );
+         sfText_setString( objects->text, game->battle->message );
+         gmTextUtil_DrawWrappedText( game->window,
+                                     objects->text,
+                                     game->battle->message,
+                                     objects->largeDialogTextPos,
+                                     objects->largeDialogTextWidth,
+                                     objects->lineSpacing );
          break;
       case gmBattleState_SelectAction:
          gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
          gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
-         sfText_setPosition( objects->text, objects->smallDialogTextPos );
-         gmWindow_DrawText( game->window, objects->text );
+         sfText_setString( objects->text, game->battle->message );
+         gmTextUtil_DrawWrappedText( game->window,
+                                     objects->text,
+                                     game->battle->message,
+                                     objects->smallDialogTextPos,
+                                     objects->smallDialogTextWidth,
+                                     objects->lineSpacing );
          break;
    }
 }

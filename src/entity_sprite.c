@@ -36,14 +36,14 @@ void gmEntitySprite_SetPosition( gmEntitySprite_t* sprite, sfVector2f pos )
 void gmEntitySprite_SetDirection( gmEntitySprite_t* sprite, gmDirection_t direction )
 {
    sfIntRect textureRect = sfSprite_getTextureRect( sprite->sfmlSprite );
-   textureRect.top = (int)direction * textureRect.height;
+   textureRect.top = (int32_t)direction * textureRect.height;
    sfSprite_setTextureRect( sprite->sfmlSprite, textureRect );
 }
 
 void gmEntitySprite_Tic( gmEntitySprite_t* sprite, gmDirection_t direction, gmClock_t* clock )
 {
    sfIntRect textureRect = sfSprite_getTextureRect( sprite->sfmlSprite );
-   textureRect.top = (int)direction * textureRect.height;
+   textureRect.top = (int32_t)direction * textureRect.height;
 
    sprite->elapsedSeconds += clock->frameDelta;
 
@@ -52,7 +52,7 @@ void gmEntitySprite_Tic( gmEntitySprite_t* sprite, gmDirection_t direction, gmCl
       sprite->elapsedSeconds -= sprite->frameSeconds;
       textureRect.left += textureRect.width;
 
-      if ( textureRect.left >= (int)( textureRect.width * sprite->frames ) )
+      if ( textureRect.left >= (int32_t)( textureRect.width * sprite->frames ) )
       {
          textureRect.left = 0;
       }

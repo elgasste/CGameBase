@@ -117,7 +117,7 @@ static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create()
    objects->backgroundShape = gmConvexShape_Create();
    gmRenderObjects_BuildDialogBackground( objects->backgroundShape,
                                           objects->menuPos.x, objects->menuPos.y,
-                                          256, 142,
+                                          256, 150,
                                           16,
                                           DIALOG_BACKDROP_LIGHTCOLOR );
 
@@ -165,10 +165,13 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    sfText_scale( objects->text, textScale );
    sfText_setFillColor( objects->text, GAME_FONT_COLOR );
 
+   objects->lineSpacing = 40;
    objects->largeDialogTextPos.x = 64;
    objects->largeDialogTextPos.y = WINDOW_HEIGHT - 256;
+   objects->largeDialogTextWidth = WINDOW_WIDTH - 64 - 64;
    objects->smallDialogTextPos.x = WINDOW_WIDTH - 640;
    objects->smallDialogTextPos.y = WINDOW_HEIGHT - 256;
+   objects->smallDialogTextWidth = 640 - 64;
    objects->actionMenuItemsPos.x = 64;
    objects->actionMenuItemsPos.y = WINDOW_HEIGHT - 256;
 

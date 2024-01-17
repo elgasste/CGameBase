@@ -47,8 +47,11 @@ typedef struct gmBattleRenderObjects_t
    sfConvexShape* actionMenuBackground;
    sfFont* font;
    sfText* text;
+   float lineSpacing;
    sfVector2f largeDialogTextPos;
+   float largeDialogTextWidth;
    sfVector2f smallDialogTextPos;
+   float smallDialogTextWidth;
    sfVector2f actionMenuItemsPos;
 }
 gmBattleRenderObjects_t;

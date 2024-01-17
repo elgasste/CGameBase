@@ -33,7 +33,7 @@
 #define DIALOG_BACKDROP_DARKCOLOR   sfColor_fromRGBA( 255, 255, 255, 24 )
 
 #define MENU_CARAT_BLINKSECONDS     0.25f
-#define MENU_LINESIZE               32.0f
+#define MENU_LINESIZE               40.0f
 
 #define CHEAT_NOCLIP                "dqclip"
 #define CHEAT_NOENCOUNTER           "dqinvis"

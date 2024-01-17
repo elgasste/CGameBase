@@ -112,6 +112,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClInclude Include="..\src\render_objects.h" />
     <ClInclude Include="..\src\render_states.h" />
     <ClInclude Include="..\src\strings.h" />
+    <ClInclude Include="..\src\text_util.h" />
     <ClInclude Include="..\src\time_util.h" />
     <ClInclude Include="..\src\window.h" />
   </ItemGroup>
@@ -133,6 +134,7 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClCompile Include="..\src\render_objects.c" />
     <ClCompile Include="..\src\render_states.c" />
     <ClCompile Include="..\src\entity_sprite.c" />
+    <ClCompile Include="..\src\text_util.c" />
     <ClCompile Include="..\src\time_util.c" />
     <ClCompile Include="..\src\window.c" />
   </ItemGroup>

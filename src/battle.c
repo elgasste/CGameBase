@@ -6,6 +6,8 @@ gmBattle_t* gmBattle_Create()
 
    battle->state = gmBattleState_Intro;
 
+   sprintf_s( battle->message, DEFAULT_STRLEN, "You've encountered an enemy, probably!" );
+
    return battle;
 }
 

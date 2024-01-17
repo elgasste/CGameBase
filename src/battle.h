@@ -14,6 +14,7 @@ gmBattleState_t;
 typedef struct gmBattle_t
 {
    gmBattleState_t state;
+   char message[DEFAULT_STRLEN];
 }
 gmBattle_t;
 
