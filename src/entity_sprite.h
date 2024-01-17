@@ -10,13 +10,13 @@ typedef struct gmEntitySprite_t
 {
    sfTexture* texture;
    sfSprite* sfmlSprite;
-   uint16_t frames;
+   uint32_t frames;
    float frameSeconds;
    float elapsedSeconds;
 }
 gmEntitySprite_t;
 
-gmEntitySprite_t* gmEntitySprite_Create( sfTexture* texture, uint16_t frames, float frameSeconds );
+gmEntitySprite_t* gmEntitySprite_Create( sfTexture* texture, uint32_t frames, float frameSeconds );
 void gmEntitySprite_Destroy( gmEntitySprite_t* sprite );
 void gmEntitySprite_SetPosition( gmEntitySprite_t* sprite, sfVector2f pos );
 void gmEntitySprite_SetDirection( gmEntitySprite_t* sprite, gmDirection_t direction );

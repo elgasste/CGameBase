@@ -21,9 +21,9 @@ void gmInputState_Destroy( gmInputState_t* inputState )
 
 void gmInputState_Reset( gmInputState_t* inputState )
 {
-   int i;
+   int32_t i;
 
-   for ( i = 0; i < (int)sfKeyCount; i++ )
+   for ( i = 0; i < (int32_t)sfKeyCount; i++ )
    {
       inputState->keysPressed[i] = sfFalse;
       inputState->keysReleased[i] = sfFalse;
@@ -66,9 +66,9 @@ sfBool gmInputState_IsKeyDown( sfKeyCode keyCode )
 
 sfBool gmInputState_IsAnyKeyDown()
 {
-   int i;
+   int32_t i;
 
-   for ( i = 0; i < (int)sfKeyCount; i++ )
+   for ( i = 0; i < (int32_t)sfKeyCount; i++ )
    {
       if ( sfKeyboard_isKeyPressed( i ) )
       {

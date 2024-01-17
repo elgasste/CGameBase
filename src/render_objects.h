@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-typedef struct gmGame_t gmGame_t;
+typedef struct gmRenderer_t gmRenderer_t;
 
 typedef struct gmDiagnosticsRenderObjects_t
 {
@@ -40,21 +40,38 @@ typedef struct gmOverworldMenuRenderObjects_t
 }
 gmOverworldMenuRenderObjects_t;
 
+typedef struct gmBattleRenderObjects_t
+{
+   sfConvexShape* largeDialogBackground;
+   sfConvexShape* smallDialogBackground;
+   sfConvexShape* actionMenuBackground;
+   sfFont* font;
+   sfText* text;
+   float lineSpacing;
+   sfVector2f largeDialogTextPos;
+   float largeDialogTextWidth;
+   sfVector2f smallDialogTextPos;
+   float smallDialogTextWidth;
+   sfVector2f actionMenuItemsPos;
+}
+gmBattleRenderObjects_t;
+
 typedef struct gmRenderObjects_t
 {
    gmDiagnosticsRenderObjects_t* diagnosticsRenderObjects;
    gmDebugBarRenderObjects_t* debugBarRenderObjects;
    gmMapRenderObjects_t* mapRenderObjects;
    gmOverworldMenuRenderObjects_t* overworldMenuRenderObjects;
+   gmBattleRenderObjects_t* battleRenderObjects;
 
+   sfTexture* mapTilesetTexture;
+   sfTexture* entitySpriteTexture;
    sfRectangleShape* windowBackgroundRect;
-
    sfRectangleShape* entityRect;
 }
 gmRenderObjects_t;
 
-gmRenderObjects_t* gmRenderObjects_Create( gmGame_t* game );
+gmRenderObjects_t* gmRenderObjects_Create();
 void gmRenderObjects_Destroy( gmRenderObjects_t* renderObjects );
 
 #endif // RENDER_OBJECTS_H
-

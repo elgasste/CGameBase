@@ -5,10 +5,13 @@
 #include "input_state.h"
 #include "entity.h"
 #include "menus.h"
+#include "renderer.h"
 #include "render_states.h"
+#include "battle.h"
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
+static void gmInputHandler_HandleBattleInput( gmGame_t* game );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -44,6 +47,9 @@ void gmInputHandler_HandleInput( gmGame_t* game )
          break;
       case gmGameState_OverworldMenu:
          gmInputHandler_HandleOverworldMenuInput( game );
+         break;
+      case gmGameState_Battle:
+         gmInputHandler_HandleBattleInput( game );
          break;
    }
 
@@ -142,11 +148,11 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
    {
-      gmMenu_ScrollUp( menu, game->renderStates->menu );
+      gmMenu_ScrollUp( menu, game->renderer->renderStates->menu );
    }
    else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyDown ) )
    {
-      gmMenu_ScrollDown( menu, game->renderStates->menu );
+      gmMenu_ScrollDown( menu, game->renderer->renderStates->menu );
    }
    else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
    {
@@ -155,14 +161,35 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
    }
 }
 
+static void gmInputHandler_HandleBattleInput( gmGame_t* game )
+{
+   if ( game->inputState->keyWasPressed )
+   {
+      switch ( game->battle->state )
+      {
+         case gmBattleState_Intro:
+            gmBattle_Begin( game->battle );
+            break;
+         case gmBattleState_SelectAction:
+            gmBattle_ActionSelected( game->battle );
+            break;
+         case gmBattleState_Result:
+            gmBattle_Close( game );
+            break;
+      }
+   }
+}
+
 static void gmInputHandler_CheckCheats( gmGame_t* game )
 {
-   int cheatStringLength, i, l, lastIndex, matchCount;
+   int32_t cheatStringLength, i, l, lastIndex, matchCount;
    static const char* cheats[] = {
       CHEAT_NOCLIP,
+      CHEAT_NOENCOUNTER,
+      CHEAT_FIGHT,
       CHEAT_CLEAR
    };
-   static int cheatCount = (int)( sizeof( cheats ) / sizeof( const char* ) );
+   static int32_t cheatCount = (int32_t)( sizeof( cheats ) / sizeof( const char* ) );
    gmInputHandler_t* inputHandler = game->inputHandler;
 
    if ( !game->inputState->keyWasPressed )
@@ -170,7 +197,7 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
       return;
    }
 
-   cheatStringLength = (int)strlen( inputHandler->cheatString );
+   cheatStringLength = (int32_t)strlen( inputHandler->cheatString );
    inputHandler->cheatString[cheatStringLength] = (char)( game->inputState->lastPressedKey + 97 );
    cheatStringLength++;
    inputHandler->cheatString[cheatStringLength] = '\0';
@@ -180,7 +207,7 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
 
    for ( i = 0; i < cheatCount; i++ )
    {
-      l = (int)strlen( cheats[i] );
+      l = (int32_t)strlen( cheats[i] );
 
       if ( lastIndex >= l || cheats[i][lastIndex] != inputHandler->cheatString[lastIndex] )
       {
@@ -210,9 +237,21 @@ static void gmInputHandler_ApplyCheat( gmGame_t* game )
       sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
+   else if ( !strcmp( cheat, CHEAT_NOENCOUNTER ) )
+   {
+      TOGGLE_BOOL( game->cheatNoEncounters );
+      sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
+      gmGame_ShowDebugMessage( game, cheatMsg );
+   }
+   else if ( !strcmp( cheat, CHEAT_FIGHT ) )
+   {
+      gmGame_StartEncounter( game );
+      gmGame_ShowDebugMessage( game, STR_CHEAT_FIGHT );
+   }
    else if ( !strcmp( cheat, CHEAT_CLEAR ) )
    {
       game->cheatNoClip = sfFalse;
+      game->cheatNoEncounters = sfFalse;
       gmGame_ShowDebugMessage( game, STR_CHEAT_CLEARED );
    }
 

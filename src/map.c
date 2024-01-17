@@ -16,3 +16,8 @@ void gmMap_Destroy( gmMap_t* map )
 
    gmFree( map, sizeof( gmMap_t ), sfTrue );
 }
+
+uint32_t gmMap_TileIndexFromPos( gmMap_t* map, sfVector2f pos )
+{
+   return ( (uint32_t)( pos.y / MAP_TILE_SIZE ) * map->tileCount.x ) + (uint32_t)( pos.x / MAP_TILE_SIZE );
+}

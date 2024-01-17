@@ -1,4 +1,5 @@
 #include "render_states.h"
+#include "renderer.h"
 #include "game.h"
 #include "clock.h"
 
@@ -68,7 +69,7 @@ void gmRenderStates_ResetMenu( gmMenuRenderState_t* state )
 
 void gmRenderStates_Tic( gmGame_t* game )
 {
-   gmRenderStates_t* states = game->renderStates;
+   gmRenderStates_t* states = game->renderer->renderStates;
    gmClock_t* clock = game->clock;
 
    if ( states->debugBar->isVisible )

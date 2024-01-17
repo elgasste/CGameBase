@@ -9,17 +9,23 @@
 #include "entity.h"
 #include "entity_sprite.h"
 #include "menus.h"
+#include "battle.h"
+#include "text_util.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
 static void gmRenderer_DrawMapEntities( gmGame_t* game );
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
+static void gmRenderer_DrawBattle( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create()
 {
    gmRenderer_t* renderer = (gmRenderer_t*)gmAlloc( sizeof( gmRenderer_t ), sfTrue );
+
+   renderer->renderObjects = gmRenderObjects_Create( renderer );
+   renderer->renderStates = gmRenderStates_Create();
 
    renderer->mapViewRect.width = WINDOW_WIDTH;
    renderer->mapViewRect.height = WINDOW_HEIGHT;
@@ -29,12 +35,15 @@ gmRenderer_t* gmRenderer_Create()
 
 void gmRenderer_Destroy( gmRenderer_t* renderer )
 {
+   gmRenderStates_Destroy( renderer->renderStates );
+   gmRenderObjects_Destroy( renderer->renderObjects );
+
    gmFree( renderer, sizeof( gmRenderer_t ), sfTrue );
 }
 
 void gmRenderer_Render( gmGame_t* game )
 {
-   gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
+   gmWindow_DrawRectangleShape( game->window, game->renderer->renderObjects->windowBackgroundRect );
 
    switch ( game->state )
    {
@@ -49,12 +58,9 @@ void gmRenderer_Render( gmGame_t* game )
          gmRenderer_DrawMapEntities( game );
          gmRenderer_DrawOverworldMenu( game );
          break;
-   }
-   if ( game->state == gmGameState_Overworld )
-   {
-      gmRenderer_SetMapView( game );
-      gmRenderer_DrawMap( game );
-      gmRenderer_DrawMapEntities( game );
+      case gmGameState_Battle:
+         gmRenderer_DrawBattle( game );
+         break;
    }
    
    gmRenderer_DrawDebugBar( game );
@@ -71,7 +77,7 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];
    char timeStr[SHORT_STRLEN];
-   gmDiagnosticsRenderObjects_t* objects = game->renderObjects->diagnosticsRenderObjects;
+   gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnosticsRenderObjects;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
@@ -132,13 +138,13 @@ static void gmRenderer_SetMapView( gmGame_t* game )
    {
       renderer->mapViewRect.left = mapSize.x - renderer->mapViewRect.width - 1;
       renderer->mapViewPadding.x = 0;
-      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int32_t)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewEnd.x = map->tileCount.x;
       renderer->mapViewStart.x = renderer->mapViewEnd.x - (uint32_t)( renderer->mapViewRect.width / MAP_TILE_SIZE ) - 1;
    }
    else
    {
-      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.x = -( renderer->mapViewRect.left - (float)( (int32_t)renderer->mapViewRect.left / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewStart.x = (uint32_t)( renderer->mapViewRect.left / MAP_TILE_SIZE );
       renderer->mapViewEnd.x = renderer->mapViewStart.x + (uint32_t)( renderer->mapViewRect.width / MAP_TILE_SIZE ) + 1;
    }
@@ -162,13 +168,13 @@ static void gmRenderer_SetMapView( gmGame_t* game )
    {
       renderer->mapViewRect.top = mapSize.y - renderer->mapViewRect.height - 1;
       renderer->mapViewPadding.y = 0;
-      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int32_t)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewEnd.y = map->tileCount.y;
       renderer->mapViewStart.y = renderer->mapViewEnd.y - (uint32_t)( renderer->mapViewRect.height / MAP_TILE_SIZE ) - 1;
    }
    else
    {
-      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
+      renderer->mapTilePixelOffset.y = -( renderer->mapViewRect.top - (float)( (int32_t)renderer->mapViewRect.top / MAP_TILE_SIZE ) * MAP_TILE_SIZE );
       renderer->mapViewStart.y = (uint32_t)( renderer->mapViewRect.top / MAP_TILE_SIZE );
       renderer->mapViewEnd.y = renderer->mapViewStart.y + (uint32_t)( renderer->mapViewRect.height / MAP_TILE_SIZE ) + 1;
    }
@@ -179,11 +185,11 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    gmRenderer_t* renderer = game->renderer;
    gmMap_t* map = game->map;
    uint32_t tileRow, tileCol, row, col;
-   gmMapRenderObjects_t* objects = game->renderObjects->mapRenderObjects;
+   gmMapRenderObjects_t* objects = game->renderer->renderObjects->mapRenderObjects;
    gmMapTile_t* tile;
    sfVector2f tilePos = { 0, 0 };
    sfIntRect textureRect = { 0, 0, MAP_TILE_PIXELS, MAP_TILE_PIXELS };
-   sfVector2u textureSize = sfTexture_getSize( game->mapTilesetTexture );
+   sfVector2u textureSize = sfTexture_getSize( game->renderer->renderObjects->mapTilesetTexture );
    sfVector2u textureTileCount = { textureSize.x / MAP_TILE_PIXELS, textureSize.y / MAP_TILE_PIXELS };
 
    for ( row = 0, tileRow = renderer->mapViewStart.y; tileRow <= renderer->mapViewEnd.y; row++, tileRow++ )
@@ -224,10 +230,10 @@ static void gmRenderer_DrawMapEntities( gmGame_t* game )
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 {
    sfVector2f pos;
-   gmOverworldMenuRenderObjects_t* objects = game->renderObjects->overworldMenuRenderObjects;
-   gmMenuRenderState_t* renderState = game->renderStates->menu;
+   gmOverworldMenuRenderObjects_t* objects = game->renderer->renderObjects->overworldMenuRenderObjects;
+   gmMenuRenderState_t* renderState = game->renderer->renderStates->menu;
    gmMenu_t* menu = game->menus->overworld;
-   uint16_t i;
+   uint32_t i;
 
    gmWindow_DrawConvexShape( game->window, objects->backgroundShape );
 
@@ -250,10 +256,41 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
    }
 }
 
+static void gmRenderer_DrawBattle( gmGame_t* game )
+{
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battleRenderObjects;
+
+   switch ( game->battle->state )
+   {
+      case gmBattleState_Intro:
+      case gmBattleState_Result:
+         gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
+         sfText_setString( objects->text, game->battle->message );
+         gmTextUtil_DrawWrappedText( game->window,
+                                     objects->text,
+                                     game->battle->message,
+                                     objects->largeDialogTextPos,
+                                     objects->largeDialogTextWidth,
+                                     objects->lineSpacing );
+         break;
+      case gmBattleState_SelectAction:
+         gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
+         gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
+         sfText_setString( objects->text, game->battle->message );
+         gmTextUtil_DrawWrappedText( game->window,
+                                     objects->text,
+                                     game->battle->message,
+                                     objects->smallDialogTextPos,
+                                     objects->smallDialogTextWidth,
+                                     objects->lineSpacing );
+         break;
+   }
+}
+
 static void gmRenderer_DrawDebugBar( gmGame_t* game )
 {
-   gmDebugBarRenderState_t* state = game->renderStates->debugBar;
-   gmDebugBarRenderObjects_t* objects = game->renderObjects->debugBarRenderObjects;
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
+   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBarRenderObjects;
 
    if ( state->isVisible )
    {

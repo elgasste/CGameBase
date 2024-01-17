@@ -7,14 +7,30 @@
 
 #define COLLISION_PADDING 0.01f
 
+gmPhysics_t* gmPhysics_Create()
+{
+   gmPhysics_t* physics = (gmPhysics_t*)gmAlloc( sizeof( gmPhysics_t ), sfTrue );
+
+   physics->entityMapTileCache = 0;
+
+   return physics;
+}
+
+void gmPhysics_Destroy( gmPhysics_t* physics )
+{
+   gmFree( physics, sizeof( gmPhysics_t ), sfTrue );
+}
+
 void gmPhysics_Tic( gmGame_t* game )
 {
    gmEntity_t* entity = game->entity;
    sfVector2f newPos = entity->mapPos;
    sfVector2f mapSize = { (float)( game->map->tileCount.x * MAP_TILE_SIZE ),
                           (float)( game->map->tileCount.y * MAP_TILE_SIZE ) };
+   sfVector2f entityCenterPos;
    uint32_t startRow, endRow, startCol, endCol, row, col;
    gmMapTile_t* tile;
+   uint32_t newTileIndex;
 
    newPos.x += entity->velocity.x * game->clock->frameDelta;
 
@@ -82,7 +98,16 @@ void gmPhysics_Tic( gmGame_t* game )
 
    entity->mapPos = newPos;
    gmEntity_Tic( entity, game->clock );
-
    entity->velocity.x = 0;
    entity->velocity.y = 0;
+
+   entityCenterPos.x = entity->mapPos.x + ( entity->mapHitBoxSize.x / 2 );
+   entityCenterPos.y = entity->mapPos.y + ( entity->mapHitBoxSize.y / 2 );
+   newTileIndex = gmMap_TileIndexFromPos( game->map, entityCenterPos );
+
+   if ( newTileIndex != game->physics->entityMapTileCache )
+   {
+      game->physics->entityMapTileCache = newTileIndex;
+      gmGame_RollEncounter( game, newTileIndex );
+   }
 }
