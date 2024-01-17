@@ -3,11 +3,13 @@
 
 static gmDiagnosticsRenderObjects_t* gmDiagnosticsRenderObjects_Create();
 static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create();
+static gmScreenFadeRenderObjects_t* gmScreenFadeRenderObjects_Create();
 static gmMapRenderObjects_t* gmMapRenderObjects_Create( sfTexture* mapTilesetTexture );
 static gmOverworldMenuRenderObjects_t* gmOverworldMenuRenderObjects_Create();
 static gmBattleRenderObjects_t* gmBattleRenderObjects_Create();
 static void gmDiagnosticsRenderObjects_Destroy( gmDiagnosticsRenderObjects_t* objects );
 static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects );
+static void gmScreenFadeRenderObjects_Destroy( gmScreenFadeRenderObjects_t* objects );
 static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects );
 static void gmOverworldMenuRenderObjects_Destroy( gmOverworldMenuRenderObjects_t* objects );
 static void gmBattleRenderObjects_Destroy( gmBattleRenderObjects_t* objects );
@@ -28,11 +30,12 @@ gmRenderObjects_t* gmRenderObjects_Create()
    renderObjects->mapTilesetTexture = gmTexture_CreateFromFile( "map_tileset.png" );
    renderObjects->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
 
-   renderObjects->diagnosticsRenderObjects = gmDiagnosticsRenderObjects_Create();
-   renderObjects->debugBarRenderObjects = gmDebugBarRenderObjects_Create();
-   renderObjects->mapRenderObjects = gmMapRenderObjects_Create( renderObjects->mapTilesetTexture );
-   renderObjects->overworldMenuRenderObjects = gmOverworldMenuRenderObjects_Create();
-   renderObjects->battleRenderObjects = gmBattleRenderObjects_Create();
+   renderObjects->diagnostics = gmDiagnosticsRenderObjects_Create();
+   renderObjects->debugBar = gmDebugBarRenderObjects_Create();
+   renderObjects->screenFade = gmScreenFadeRenderObjects_Create();
+   renderObjects->map = gmMapRenderObjects_Create( renderObjects->mapTilesetTexture );
+   renderObjects->overworldMenu = gmOverworldMenuRenderObjects_Create();
+   renderObjects->battle = gmBattleRenderObjects_Create();
 
    renderObjects->windowBackgroundRect = gmRectangleShape_Create();
    sfRectangleShape_setSize( renderObjects->windowBackgroundRect, windowBackgroundSize );
@@ -85,6 +88,25 @@ static gmDebugBarRenderObjects_t* gmDebugBarRenderObjects_Create()
    sfText_setCharacterSize( objects->text, 12 );
    sfText_setFillColor( objects->text, sfBlack );
    sfText_setPosition( objects->text, textPos );
+
+   return objects;
+}
+
+static gmScreenFadeRenderObjects_t* gmScreenFadeRenderObjects_Create()
+{
+   sfVector2f v = { 0, 0 };
+
+   gmScreenFadeRenderObjects_t* objects = (gmScreenFadeRenderObjects_t*)gmAlloc( sizeof( gmScreenFadeRenderObjects_t ), sfTrue );
+
+   objects->screenRect = gmRectangleShape_Create();
+
+   sfRectangleShape_setPosition( objects->screenRect, v );
+   v.x = WINDOW_WIDTH;
+   v.y = WINDOW_HEIGHT;
+   sfRectangleShape_setSize( objects->screenRect, v );
+
+   objects->lightColor = sfWhite;
+   objects->darkColor = sfBlack;
 
    return objects;
 }
@@ -180,11 +202,12 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
 
 void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
 {
-   gmBattleRenderObjects_Destroy( objects->battleRenderObjects );
-   gmOverworldMenuRenderObjects_Destroy( objects->overworldMenuRenderObjects );
-   gmMapRenderObjects_Destroy( objects->mapRenderObjects );
-   gmDebugBarRenderObjects_Destroy( objects->debugBarRenderObjects );
-   gmDiagnosticsRenderObjects_Destroy( objects->diagnosticsRenderObjects );
+   gmBattleRenderObjects_Destroy( objects->battle );
+   gmOverworldMenuRenderObjects_Destroy( objects->overworldMenu );
+   gmMapRenderObjects_Destroy( objects->map );
+   gmScreenFadeRenderObjects_Destroy( objects->screenFade );
+   gmDebugBarRenderObjects_Destroy( objects->debugBar );
+   gmDiagnosticsRenderObjects_Destroy( objects->diagnostics );
 
    gmRectangleShape_Destroy( objects->entityRect );
    gmRectangleShape_Destroy( objects->windowBackgroundRect );
@@ -211,6 +234,13 @@ static void gmDebugBarRenderObjects_Destroy( gmDebugBarRenderObjects_t* objects 
    gmRectangleShape_Destroy( objects->backgroundRect );
 
    gmFree( objects, sizeof( gmDebugBarRenderObjects_t ), sfTrue );
+}
+
+static void gmScreenFadeRenderObjects_Destroy( gmScreenFadeRenderObjects_t* objects )
+{
+   gmRectangleShape_Destroy( objects->screenRect );
+
+   gmFree( objects, sizeof( gmScreenFadeRenderObjects_t ), sfTrue );
 }
 
 static void gmMapRenderObjects_Destroy( gmMapRenderObjects_t* objects )

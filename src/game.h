@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "common.h"
+#include "game_state.h"
 #include "menu_command.h"
 
 typedef struct gmWindow_t gmWindow_t;
@@ -14,14 +15,6 @@ typedef struct gmMenus_t gmMenus_t;
 typedef struct gmMap_t gmMap_t;
 typedef struct gmBattle_t gmBattle_t;
 typedef struct gmEntity_t gmEntity_t;
-
-typedef enum gmGameState_t
-{
-   gmGameState_Overworld,
-   gmGameState_OverworldMenu,
-   gmGameState_Battle
-}
-gmGameState_t;
 
 typedef struct gmGame_t
 {
