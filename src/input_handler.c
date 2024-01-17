@@ -7,6 +7,7 @@
 #include "menus.h"
 #include "renderer.h"
 #include "render_states.h"
+#include "battle.h"
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
@@ -164,7 +165,18 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 {
    if ( game->inputState->keyWasPressed )
    {
-      gmGame_CloseEncounter( game );
+      switch ( game->battle->state )
+      {
+         case gmBattleState_Intro:
+            gmBattle_Begin( game->battle );
+            break;
+         case gmBattleState_SelectAction:
+            gmBattle_ActionSelected( game->battle );
+            break;
+         case gmBattleState_Result:
+            gmBattle_Close( game );
+            break;
+      }
    }
 }
 
