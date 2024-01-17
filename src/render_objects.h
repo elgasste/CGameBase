@@ -23,6 +23,14 @@ typedef struct gmDebugBarRenderObjects_t
 }
 gmDebugBarRenderObjects_t;
 
+typedef struct gmScreenFadeRenderObjects_t
+{
+   sfRectangleShape* screenRect;
+   sfColor lightColor;
+   sfColor darkColor;
+}
+gmScreenFadeRenderObjects_t;
+
 typedef struct gmMapRenderObjects_t
 {
    sfSprite* tileSprite;
@@ -58,11 +66,12 @@ gmBattleRenderObjects_t;
 
 typedef struct gmRenderObjects_t
 {
-   gmDiagnosticsRenderObjects_t* diagnosticsRenderObjects;
-   gmDebugBarRenderObjects_t* debugBarRenderObjects;
-   gmMapRenderObjects_t* mapRenderObjects;
-   gmOverworldMenuRenderObjects_t* overworldMenuRenderObjects;
-   gmBattleRenderObjects_t* battleRenderObjects;
+   gmDiagnosticsRenderObjects_t* diagnostics;
+   gmDebugBarRenderObjects_t* debugBar;
+   gmScreenFadeRenderObjects_t* screenFade;
+   gmMapRenderObjects_t* map;
+   gmOverworldMenuRenderObjects_t* overworldMenu;
+   gmBattleRenderObjects_t* battle;
 
    sfTexture* mapTilesetTexture;
    sfTexture* entitySpriteTexture;

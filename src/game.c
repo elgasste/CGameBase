@@ -32,7 +32,8 @@ gmGame_t* gmGame_Create()
 
    gmGame_LoadData( game );
 
-   game->renderer = gmRenderer_Create();
+   game->state = (gmGameState_t)0;
+   game->renderer = gmRenderer_Create( game );
 
    game->battle = 0;
 
@@ -142,18 +143,18 @@ void gmGame_StartEncounter( gmGame_t* game )
 {
    game->battle = gmBattle_Create();
    gmGame_SetState( game, gmGameState_Battle );
+   gmRenderStates_StartFade( game->renderer->renderStates->screenFade, sfTrue );
 }
 
 void gmGame_EndEncounter( gmGame_t* game )
 {
-   gmBattle_Destroy( game->battle );
-   game->battle = 0;
    gmGame_SetState( game, gmGameState_Overworld );
+   gmRenderStates_StartFade( game->renderer->renderStates->screenFade, sfFalse );
 }
 
 static void gmGame_Tic( gmGame_t* game )
 {
-   if ( game->state == gmGameState_Overworld )
+   if ( game->state == gmGameState_Overworld && !game->renderer->renderStates->screenFade->isFading )
    {
       gmPhysics_Tic( game );
    }

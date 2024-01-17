@@ -40,17 +40,20 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
-   switch ( game->state )
+   if ( !game->renderer->renderStates->screenFade->isFading )
    {
-      case gmGameState_Overworld:
-         gmInputHandler_HandleOverworldInput( game );
-         break;
-      case gmGameState_OverworldMenu:
-         gmInputHandler_HandleOverworldMenuInput( game );
-         break;
-      case gmGameState_Battle:
-         gmInputHandler_HandleBattleInput( game );
-         break;
+      switch ( game->state )
+      {
+         case gmGameState_Overworld:
+            gmInputHandler_HandleOverworldInput( game );
+            break;
+         case gmGameState_OverworldMenu:
+            gmInputHandler_HandleOverworldMenuInput( game );
+            break;
+         case gmGameState_Battle:
+            gmInputHandler_HandleBattleInput( game );
+            break;
+      }
    }
 
    gmInputHandler_CheckCheats( game );

@@ -87,6 +87,9 @@
     <ClInclude Include="..\src\text_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\game_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.c">

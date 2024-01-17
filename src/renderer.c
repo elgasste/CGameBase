@@ -20,7 +20,7 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
 static void gmRenderer_DrawBattle( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
-gmRenderer_t* gmRenderer_Create()
+gmRenderer_t* gmRenderer_Create( gmGame_t* game )
 {
    gmRenderer_t* renderer = (gmRenderer_t*)gmAlloc( sizeof( gmRenderer_t ), sfTrue );
 
@@ -29,6 +29,9 @@ gmRenderer_t* gmRenderer_Create()
 
    renderer->mapViewRect.width = WINDOW_WIDTH;
    renderer->mapViewRect.height = WINDOW_HEIGHT;
+
+   renderer->currentGameState = game->state;
+   renderer->lastGameState = renderer->currentGameState;
 
    return renderer;
 }
@@ -43,9 +46,24 @@ void gmRenderer_Destroy( gmRenderer_t* renderer )
 
 void gmRenderer_Render( gmGame_t* game )
 {
-   gmWindow_DrawRectangleShape( game->window, game->renderer->renderObjects->windowBackgroundRect );
+   float fadePercentage;
+   gmRenderer_t* renderer = game->renderer;
+   gmScreenFadeRenderState_t* fadeRenderState = renderer->renderStates->screenFade;
+   gmScreenFadeRenderObjects_t* fadeRenderObjects = renderer->renderObjects->screenFade;
 
-   switch ( game->state )
+   gmGameState_t gameState;
+
+   gmWindow_DrawRectangleShape( game->window, renderer->renderObjects->windowBackgroundRect );
+
+   if ( game->state != renderer->currentGameState )
+   {
+      renderer->lastGameState = renderer->currentGameState;
+      renderer->currentGameState = game->state;
+   }
+
+   gameState = fadeRenderState->isFadingOut ? renderer->lastGameState : game->state;
+
+   switch ( gameState )
    {
       case gmGameState_Overworld:
          gmRenderer_SetMapView( game );
@@ -62,6 +80,29 @@ void gmRenderer_Render( gmGame_t* game )
          gmRenderer_DrawBattle( game );
          break;
    }
+
+   if ( fadeRenderState->isFading )
+   {
+      fadePercentage = fadeRenderState->isPaused ? 1.0f : fadeRenderState->elapsedSeconds / fadeRenderState->fadeSeconds;
+
+      if ( fadeRenderState->isFadingIn )
+      {
+         fadePercentage = 1.0f - fadePercentage;
+      }
+
+      if ( fadeRenderState->light )
+      {
+         fadeRenderObjects->lightColor.a = (sfUint8)( 255 * fadePercentage );
+         sfRectangleShape_setFillColor( fadeRenderObjects->screenRect, fadeRenderObjects->lightColor );
+      }
+      else
+      {
+         fadeRenderObjects->darkColor.a = (sfUint8)( 255 * fadePercentage );
+         sfRectangleShape_setFillColor( fadeRenderObjects->screenRect, fadeRenderObjects->darkColor );
+      }
+      
+      gmWindow_DrawRectangleShape( game->window, fadeRenderObjects->screenRect );
+   }
    
    gmRenderer_DrawDebugBar( game );
 
@@ -77,7 +118,7 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];
    char timeStr[SHORT_STRLEN];
-   gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnosticsRenderObjects;
+   gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnostics;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
@@ -185,7 +226,7 @@ static void gmRenderer_DrawMap( gmGame_t* game )
    gmRenderer_t* renderer = game->renderer;
    gmMap_t* map = game->map;
    uint32_t tileRow, tileCol, row, col;
-   gmMapRenderObjects_t* objects = game->renderer->renderObjects->mapRenderObjects;
+   gmMapRenderObjects_t* objects = game->renderer->renderObjects->map;
    gmMapTile_t* tile;
    sfVector2f tilePos = { 0, 0 };
    sfIntRect textureRect = { 0, 0, MAP_TILE_PIXELS, MAP_TILE_PIXELS };
@@ -230,7 +271,7 @@ static void gmRenderer_DrawMapEntities( gmGame_t* game )
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 {
    sfVector2f pos;
-   gmOverworldMenuRenderObjects_t* objects = game->renderer->renderObjects->overworldMenuRenderObjects;
+   gmOverworldMenuRenderObjects_t* objects = game->renderer->renderObjects->overworldMenu;
    gmMenuRenderState_t* renderState = game->renderer->renderStates->menu;
    gmMenu_t* menu = game->menus->overworld;
    uint32_t i;
@@ -258,7 +299,7 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 
 static void gmRenderer_DrawBattle( gmGame_t* game )
 {
-   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battleRenderObjects;
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
 
    switch ( game->battle->state )
    {
@@ -290,7 +331,7 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
 static void gmRenderer_DrawDebugBar( gmGame_t* game )
 {
    gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
-   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBarRenderObjects;
+   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBar;
 
    if ( state->isVisible )
    {

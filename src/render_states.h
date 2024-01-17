@@ -23,16 +23,32 @@ typedef struct gmMenuRenderState_t
 }
 gmMenuRenderState_t;
 
+typedef struct gmScreenFadeRenderState_t
+{
+   sfBool isFading;
+   sfBool isFadingOut;
+   sfBool isPaused;
+   sfBool isFadingIn;
+   sfBool light;
+   float fadeSeconds;
+   float pauseSeconds;
+   float elapsedSeconds;
+}
+gmScreenFadeRenderState_t;
+
 typedef struct gmRenderStates_t
 {
    gmDebugBarRenderState_t* debugBar;
    gmMenuRenderState_t* menu;
+   gmScreenFadeRenderState_t* screenFade;
 }
 gmRenderStates_t;
 
 gmRenderStates_t* gmRenderStates_Create();
 void gmRenderStates_Destroy( gmRenderStates_t* states );
 void gmRenderStates_ResetMenu( gmMenuRenderState_t* state );
+void gmRenderStates_ResetScreenFade( gmScreenFadeRenderState_t* state );
+void gmRenderStates_StartFade( gmScreenFadeRenderState_t* state, sfBool light );
 void gmRenderStates_Tic( gmGame_t* game );
 
 #endif // RENDER_STATES_H
