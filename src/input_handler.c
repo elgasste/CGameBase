@@ -40,7 +40,15 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
-   if ( !gmRenderer_IsBlockingInput( game->renderer ) )
+   if ( gmRenderer_IsBlockingInput( game->renderer ) )
+   {
+      // MUFFINS
+      if ( game->inputState->keyWasPressed )
+      {
+         gmRenderer_TryUnblockingInput( game->renderer );
+      }
+   }
+   else
    {
       switch ( game->state )
       {

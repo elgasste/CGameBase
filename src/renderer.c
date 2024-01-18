@@ -124,6 +124,14 @@ sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
    return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
 }
 
+void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
+{
+   if ( renderer->renderStates->textScroll->isScrolling )
+   {
+      gmRenderStates_ResetTextScroll( renderer->renderStates->textScroll );
+   }
+}
+
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];
