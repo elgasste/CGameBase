@@ -25,8 +25,8 @@
 #define MAP_TILE_SIZE               64
 #define MAP_TILE_PIXELS             32
 
-#define DEBUG_FONT                  "consolas.ttf"
-#define GAME_FONT                   "abaddon_bold.ttf"
+#define DEBUG_FONT                  "resources/fonts/consolas.ttf"
+#define GAME_FONT                   "resources/fonts/abaddon_bold.ttf"
 #define GAME_FONT_SIZE              16
 #define GAME_FONT_COLOR             sfColor_fromRGB( 224, 224, 224 )
 #define DIALOG_BACKDROP_LIGHTCOLOR  sfColor_fromRGBA( 0, 0, 0, 192 )
