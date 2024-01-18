@@ -36,7 +36,7 @@ void gmInputHandler_HandleInput( gmGame_t* game )
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
       TOGGLE_BOOL( game->showDiagnostics );
-      sprintf_s( debugMsg, SHORT_STRLEN, STR_DEBUG_DIAGNOSTICSFORMATTER, game->showDiagnostics ? STR_ON : STR_OFF );
+      snprintf( debugMsg, SHORT_STRLEN, STR_DEBUG_DIAGNOSTICSFORMATTER, game->showDiagnostics ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
@@ -171,10 +171,10 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
       switch ( game->battle->state )
       {
          case gmBattleState_Intro:
-            gmBattle_Begin( game->battle );
+            gmBattle_Begin( game );
             break;
          case gmBattleState_SelectAction:
-            gmBattle_ActionSelected( game->battle );
+            gmBattle_ActionSelected( game );
             break;
          case gmBattleState_Result:
             gmBattle_Close( game );
@@ -237,13 +237,13 @@ static void gmInputHandler_ApplyCheat( gmGame_t* game )
    if ( !strcmp( cheat, CHEAT_NOCLIP ) )
    {
       TOGGLE_BOOL( game->cheatNoClip );
-      sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
+      snprintf( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
    else if ( !strcmp( cheat, CHEAT_NOENCOUNTER ) )
    {
       TOGGLE_BOOL( game->cheatNoEncounters );
-      sprintf_s( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
+      snprintf( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
    else if ( !strcmp( cheat, CHEAT_FIGHT ) )

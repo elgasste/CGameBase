@@ -41,7 +41,8 @@ void gmLog_Msg( const char* msg )
 
    tm = localtime( &t );
 
-   if ( strcmp( msg, "\n" ) == 0 )
+   // NOTE: the logFile check here is there to make Visual Studio's analyzer happy
+   if ( strcmp( msg, "\n" ) == 0 && logFile )
    {
       if ( fprintf( logFile, msg ) < 0 )
       {
@@ -49,7 +50,7 @@ void gmLog_Msg( const char* msg )
          gmExitWithError( errorMsg );
       }
    }
-   else
+   else if ( logFile )
    {
       if ( fprintf( logFile, "%d-%02d-%02d %02d:%02d:%02d - %s\n",
                      tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,

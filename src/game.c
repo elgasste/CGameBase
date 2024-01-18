@@ -147,7 +147,7 @@ void gmGame_StartEncounter( gmGame_t* game )
       game->battle = 0;
    }
 
-   game->battle = gmBattle_Create();
+   game->battle = gmBattle_Create( game );
    gmGame_SetState( game, gmGameState_Battle );
    gmRenderStates_StartScreenFade( game->renderer->renderStates->screenFade, sfTrue );
 }

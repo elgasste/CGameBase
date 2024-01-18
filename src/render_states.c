@@ -66,7 +66,7 @@ static gmTextScrollRenderState_t* gmTextScrollRenderState_Create()
 {
    gmTextScrollRenderState_t* state = (gmTextScrollRenderState_t*)gmAlloc( sizeof( gmTextScrollRenderState_t ), sfTrue );
 
-   state->letterSeconds = 0.05f;
+   state->letterSeconds = 0.01f;
    gmRenderStates_ResetTextScroll( state );
 
    return state;
