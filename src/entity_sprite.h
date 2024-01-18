@@ -2,7 +2,7 @@
 #define ENTITY_SPRITE_H
 
 #include "common.h"
-#include "direction.h"
+#include "enums.h"
 
 typedef struct gmClock_t gmClock_t;
 

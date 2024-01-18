@@ -141,20 +141,26 @@ void gmGame_RollEncounter( gmGame_t* game, uint32_t mapTileIndex )
 
 void gmGame_StartEncounter( gmGame_t* game )
 {
-   game->battle = gmBattle_Create();
+   if ( game->battle )
+   {
+      gmBattle_Destroy( game->battle );
+      game->battle = 0;
+   }
+
+   game->battle = gmBattle_Create( game );
    gmGame_SetState( game, gmGameState_Battle );
-   gmRenderStates_StartFade( game->renderer->renderStates->screenFade, sfTrue );
+   gmRenderStates_StartScreenFade( game->renderer->renderStates->screenFade, sfTrue );
 }
 
 void gmGame_EndEncounter( gmGame_t* game )
 {
    gmGame_SetState( game, gmGameState_Overworld );
-   gmRenderStates_StartFade( game->renderer->renderStates->screenFade, sfFalse );
+   gmRenderStates_StartScreenFade( game->renderer->renderStates->screenFade, sfFalse );
 }
 
 static void gmGame_Tic( gmGame_t* game )
 {
-   if ( game->state == gmGameState_Overworld && !game->renderer->renderStates->screenFade->isFading )
+   if ( game->state == gmGameState_Overworld && !gmRenderer_IsBlockingPhysics( game->renderer ) )
    {
       gmPhysics_Tic( game );
    }

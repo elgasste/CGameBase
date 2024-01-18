@@ -114,6 +114,24 @@ void gmRenderer_Render( gmGame_t* game )
    gmWindow_Display( game->window );
 }
 
+sfBool gmRenderer_IsBlockingPhysics( gmRenderer_t* renderer )
+{
+   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+}
+
+sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
+{
+   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+}
+
+void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
+{
+   if ( renderer->renderStates->textScroll->isScrolling )
+   {
+      gmRenderStates_ResetTextScroll( renderer->renderStates->textScroll );
+   }
+}
+
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];
@@ -307,23 +325,23 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
       case gmBattleState_Result:
          gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
          sfText_setString( objects->text, game->battle->message );
-         gmTextUtil_DrawWrappedText( game->window,
-                                     objects->text,
-                                     game->battle->message,
-                                     objects->largeDialogTextPos,
-                                     objects->largeDialogTextWidth,
-                                     objects->lineSpacing );
+         gmTextUtil_DrawWrappedScrollingText( game,
+                                              objects->text,
+                                              game->battle->message,
+                                              objects->largeDialogTextPos,
+                                              objects->largeDialogTextWidth,
+                                              objects->lineSpacing );
          break;
       case gmBattleState_SelectAction:
          gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
          gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
          sfText_setString( objects->text, game->battle->message );
-         gmTextUtil_DrawWrappedText( game->window,
-                                     objects->text,
-                                     game->battle->message,
-                                     objects->smallDialogTextPos,
-                                     objects->smallDialogTextWidth,
-                                     objects->lineSpacing );
+         gmTextUtil_DrawWrappedScrollingText( game,
+                                              objects->text,
+                                              game->battle->message,
+                                              objects->smallDialogTextPos,
+                                              objects->smallDialogTextWidth,
+                                              objects->lineSpacing );
          break;
    }
 }

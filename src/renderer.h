@@ -2,7 +2,7 @@
 #define RENDERER_H
 
 #include "common.h"
-#include "game_state.h"
+#include "enums.h"
 
 typedef struct gmRenderObjects_t gmRenderObjects_t;
 typedef struct gmRenderStates_t gmRenderStates_t;
@@ -27,5 +27,8 @@ gmRenderer_t;
 gmRenderer_t* gmRenderer_Create( gmGame_t* game );
 void gmRenderer_Destroy( gmRenderer_t* renderer );
 void gmRenderer_Render( gmGame_t* game );
+sfBool gmRenderer_IsBlockingPhysics( gmRenderer_t* renderer );
+sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer );
+void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer );
 
 #endif // RENDERER_H

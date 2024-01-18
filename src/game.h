@@ -2,8 +2,7 @@
 #define GAME_H
 
 #include "common.h"
-#include "game_state.h"
-#include "menu_command.h"
+#include "enums.h"
 
 typedef struct gmWindow_t gmWindow_t;
 typedef struct gmClock_t gmClock_t;
