@@ -42,7 +42,6 @@ void gmInputHandler_HandleInput( gmGame_t* game )
 
    if ( gmRenderer_IsBlockingInput( game->renderer ) )
    {
-      // MUFFINS
       if ( game->inputState->keyWasPressed )
       {
          gmRenderer_TryUnblockingInput( game->renderer );
