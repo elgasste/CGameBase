@@ -2,7 +2,7 @@
 #define MENUS_H
 
 #include "common.h"
-#include "menu_command.h"
+#include "enums.h"
 
 typedef struct gmMenuRenderState_t gmMenuRenderState_t;
 

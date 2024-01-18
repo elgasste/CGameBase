@@ -2,7 +2,7 @@
 #define ENTITY_H
 
 #include "common.h"
-#include "direction.h"
+#include "enums.h"
 
 typedef struct gmEntitySprite_t gmEntitySprite_t;
 typedef struct gmClock_t gmClock_t;

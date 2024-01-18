@@ -2,16 +2,9 @@
 #define BATTLE_H
 
 #include "common.h"
+#include "enums.h"
 
 typedef struct gmGame_t gmGame_t;
-
-typedef enum gmBattleState_t
-{
-   gmBattleState_Intro,
-   gmBattleState_SelectAction,
-   gmBattleState_Result
-}
-gmBattleState_t;
 
 typedef struct gmBattle_t
 {

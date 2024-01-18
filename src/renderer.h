@@ -2,7 +2,7 @@
 #define RENDERER_H
 
 #include "common.h"
-#include "game_state.h"
+#include "enums.h"
 
 typedef struct gmRenderObjects_t gmRenderObjects_t;
 typedef struct gmRenderStates_t gmRenderStates_t;

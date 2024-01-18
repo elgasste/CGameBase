@@ -97,16 +97,14 @@ xcopy "$(SolutionDir)..\src\resources\textures\tiles\*.*" "$(OutDir)" /Y</Comman
     <ClInclude Include="..\src\battle.h" />
     <ClInclude Include="..\src\clock.h" />
     <ClInclude Include="..\src\common.h" />
-    <ClInclude Include="..\src\direction.h" />
     <ClInclude Include="..\src\entity_sprite.h" />
+    <ClInclude Include="..\src\enums.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\entity.h" />
-    <ClInclude Include="..\src\game_state.h" />
     <ClInclude Include="..\src\input_handler.h" />
     <ClInclude Include="..\src\input_state.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\menus.h" />
-    <ClInclude Include="..\src\menu_command.h" />
     <ClInclude Include="..\src\physics.h" />
     <ClInclude Include="..\src\random.h" />
     <ClInclude Include="..\src\renderer.h" />
