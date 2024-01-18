@@ -160,7 +160,7 @@ void gmGame_EndEncounter( gmGame_t* game )
 
 static void gmGame_Tic( gmGame_t* game )
 {
-   if ( game->state == gmGameState_Overworld && !game->renderer->renderStates->screenFade->isFading )
+   if ( game->state == gmGameState_Overworld && !gmRenderer_IsBlockingPhysics( game->renderer ) )
    {
       gmPhysics_Tic( game );
    }

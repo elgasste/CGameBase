@@ -114,6 +114,16 @@ void gmRenderer_Render( gmGame_t* game )
    gmWindow_Display( game->window );
 }
 
+sfBool gmRenderer_IsBlockingPhysics( gmRenderer_t* renderer )
+{
+   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+}
+
+sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
+{
+   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+}
+
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[DEFAULT_STRLEN];

@@ -40,7 +40,7 @@ void gmInputHandler_HandleInput( gmGame_t* game )
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
-   if ( !game->renderer->renderStates->screenFade->isFading )
+   if ( !gmRenderer_IsBlockingInput( game->renderer ) )
    {
       switch ( game->state )
       {
