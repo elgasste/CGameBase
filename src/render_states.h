@@ -36,11 +36,22 @@ typedef struct gmScreenFadeRenderState_t
 }
 gmScreenFadeRenderState_t;
 
+typedef struct gmTextScrollRenderState_t
+{
+   sfBool isScrolling;
+   uint32_t charCount;
+   uint32_t currentCharIndex;
+   float letterSeconds;
+   float elapsedSeconds;
+}
+gmTextScrollRenderState_t;
+
 typedef struct gmRenderStates_t
 {
    gmDebugBarRenderState_t* debugBar;
    gmMenuRenderState_t* menu;
    gmScreenFadeRenderState_t* screenFade;
+   gmTextScrollRenderState_t* textScroll;
 }
 gmRenderStates_t;
 
@@ -48,7 +59,9 @@ gmRenderStates_t* gmRenderStates_Create();
 void gmRenderStates_Destroy( gmRenderStates_t* states );
 void gmRenderStates_ResetMenu( gmMenuRenderState_t* state );
 void gmRenderStates_ResetScreenFade( gmScreenFadeRenderState_t* state );
-void gmRenderStates_StartFade( gmScreenFadeRenderState_t* state, sfBool light );
+void gmRenderStates_StartScreenFade( gmScreenFadeRenderState_t* state, sfBool light );
+void gmRenderStates_ResetTextScroll( gmTextScrollRenderState_t* state );
+void gmRenderStates_StartTextScroll( gmTextScrollRenderState_t* state, uint32_t charCount );
 void gmRenderStates_Tic( gmGame_t* game );
 
 #endif // RENDER_STATES_H

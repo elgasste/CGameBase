@@ -6,9 +6,15 @@
 static gmDebugBarRenderState_t* gmDebugBarRenderState_Create();
 static gmMenuRenderState_t* gmMenuRenderState_Create();
 static gmScreenFadeRenderState_t* gmScreenFadeRenderState_Create();
+static gmTextScrollRenderState_t* gmTextScrollRenderState_Create();
 static void gmDebugBarRenderState_Destroy( gmDebugBarRenderState_t* state );
 static void gmMenuRenderState_Destroy( gmMenuRenderState_t* state );
 static void gmScreenFadeRenderState_Destroy( gmScreenFadeRenderState_t* state );
+static void gmTextScrollRenderState_Destroy( gmTextScrollRenderState_t* state );
+static void gmRenderStates_TicDebugBar( gmDebugBarRenderState_t* state, gmClock_t* clock );
+static sfBool gmRenderStates_TicScreenFade( gmScreenFadeRenderState_t* state, gmClock_t* clock );
+static sfBool gmRenderStates_TicTextScroll( gmTextScrollRenderState_t* state, gmClock_t* clock );
+static void gmRenderStates_TicMenu( gmGame_t* game );
 
 gmRenderStates_t* gmRenderStates_Create()
 {
@@ -17,6 +23,7 @@ gmRenderStates_t* gmRenderStates_Create()
    states->debugBar = gmDebugBarRenderState_Create();
    states->menu = gmMenuRenderState_Create();
    states->screenFade = gmScreenFadeRenderState_Create();
+   states->textScroll = gmTextScrollRenderState_Create();
 
    return states;
 }
@@ -55,8 +62,19 @@ static gmScreenFadeRenderState_t* gmScreenFadeRenderState_Create()
    return state;
 }
 
+static gmTextScrollRenderState_t* gmTextScrollRenderState_Create()
+{
+   gmTextScrollRenderState_t* state = (gmTextScrollRenderState_t*)gmAlloc( sizeof( gmTextScrollRenderState_t ), sfTrue );
+
+   state->letterSeconds = 0.05f;
+   gmRenderStates_ResetTextScroll( state );
+
+   return state;
+}
+
 void gmRenderStates_Destroy( gmRenderStates_t* states )
 {
+   gmTextScrollRenderState_Destroy( states->textScroll );
    gmScreenFadeRenderState_Destroy( states->screenFade );
    gmMenuRenderState_Destroy( states->menu );
    gmDebugBarRenderState_Destroy( states->debugBar );
@@ -81,6 +99,11 @@ static void gmScreenFadeRenderState_Destroy( gmScreenFadeRenderState_t* state )
    gmFree( state, sizeof( gmScreenFadeRenderState_t ), sfTrue );
 }
 
+static void gmTextScrollRenderState_Destroy( gmTextScrollRenderState_t* state )
+{
+   gmFree( state, sizeof( gmTextScrollRenderState_t ), sfTrue );
+}
+
 void gmRenderStates_ResetMenu( gmMenuRenderState_t* state )
 {
    state->showCarat = sfTrue;
@@ -96,7 +119,7 @@ void gmRenderStates_ResetScreenFade( gmScreenFadeRenderState_t* state )
    state->elapsedSeconds = 0;
 }
 
-void gmRenderStates_StartFade( gmScreenFadeRenderState_t* state, sfBool light )
+void gmRenderStates_StartScreenFade( gmScreenFadeRenderState_t* state, sfBool light )
 {
    gmRenderStates_ResetScreenFade( state );
    state->light = light;
@@ -104,52 +127,113 @@ void gmRenderStates_StartFade( gmScreenFadeRenderState_t* state, sfBool light )
    state->isFadingOut = sfTrue;
 }
 
+void gmRenderStates_ResetTextScroll( gmTextScrollRenderState_t* state )
+{
+   state->isScrolling = sfFalse;
+   state->elapsedSeconds = 0;
+   state->currentCharIndex = 0;
+}
+
+void gmRenderStates_StartTextScroll( gmTextScrollRenderState_t* state, uint32_t charCount )
+{
+   gmRenderStates_ResetTextScroll( state );
+   state->charCount = charCount;
+   state->isScrolling = sfTrue;
+}
+
 void gmRenderStates_Tic( gmGame_t* game )
 {
-   gmRenderStates_t* states = game->renderer->renderStates;
-   gmClock_t* clock = game->clock;
+   gmRenderStates_TicDebugBar( game->renderer->renderStates->debugBar, game->clock );
 
-   if ( states->debugBar->isVisible )
+   if ( gmRenderStates_TicScreenFade( game->renderer->renderStates->screenFade, game->clock ) )
    {
-      states->debugBar->elapsedSeconds += clock->frameDelta;
-
-      if ( states->debugBar->elapsedSeconds > states->debugBar->visibleSeconds )
-      {
-         states->debugBar->isVisible = sfFalse;
-         states->debugBar->elapsedSeconds = 0;
-      }
+      return;
    }
-
-   if ( states->screenFade->isFading )
+   else if ( gmRenderStates_TicTextScroll( game->renderer->renderStates->textScroll, game->clock ) )
    {
-      states->screenFade->elapsedSeconds += clock->frameDelta;
-
-      if ( states->screenFade->elapsedSeconds > states->screenFade->fadeSeconds )
-      {
-         states->screenFade->elapsedSeconds = 0;
-
-         if ( states->screenFade->isFadingOut )
-         {
-            states->screenFade->isFadingOut = sfFalse;
-            states->screenFade->isPaused = sfTrue;
-         }
-         else if ( states->screenFade->isPaused )
-         {
-            states->screenFade->isPaused = sfFalse;
-            states->screenFade->isFadingIn = sfTrue;
-         }
-         else
-         {
-            gmRenderStates_ResetScreenFade( states->screenFade );
-         }
-      }
-
       return;
    }
 
+   gmRenderStates_TicMenu( game );
+}
+
+static void gmRenderStates_TicDebugBar( gmDebugBarRenderState_t* state, gmClock_t* clock )
+{
+   if ( state->isVisible )
+   {
+      state->elapsedSeconds += clock->frameDelta;
+
+      if ( state->elapsedSeconds > state->visibleSeconds )
+      {
+         state->isVisible = sfFalse;
+         state->elapsedSeconds = 0;
+      }
+   }
+}
+
+static sfBool gmRenderStates_TicScreenFade( gmScreenFadeRenderState_t* state, gmClock_t* clock )
+{
+   if ( state->isFading )
+   {
+      state->elapsedSeconds += clock->frameDelta;
+
+      if ( state->elapsedSeconds > state->fadeSeconds )
+      {
+         state->elapsedSeconds = 0;
+
+         if ( state->isFadingOut )
+         {
+            state->isFadingOut = sfFalse;
+            state->isPaused = sfTrue;
+         }
+         else if ( state->isPaused )
+         {
+            state->isPaused = sfFalse;
+            state->isFadingIn = sfTrue;
+         }
+         else
+         {
+            gmRenderStates_ResetScreenFade( state );
+         }
+      }
+
+      return sfTrue;
+   }
+
+   return sfFalse;
+}
+
+static sfBool gmRenderStates_TicTextScroll( gmTextScrollRenderState_t* state, gmClock_t* clock )
+{
+   if ( state->isScrolling )
+   {
+      state->elapsedSeconds += clock->frameDelta;
+
+      while ( state->elapsedSeconds > state->letterSeconds )
+      {
+         state->elapsedSeconds -= state->letterSeconds;
+         state->currentCharIndex++;
+
+         if ( state->currentCharIndex == state->charCount )
+         {
+            gmRenderStates_ResetTextScroll( state );
+            break;
+         }
+      }
+
+      return sfTrue;
+   }
+
+   return sfFalse;
+}
+
+static void gmRenderStates_TicMenu( gmGame_t* game )
+{
+   gmRenderStates_t* states = game->renderer->renderStates;
+
    if ( game->state == gmGameState_OverworldMenu )
    {
-      states->menu->caratElapsedSeconds += clock->frameDelta;
+      states->menu->caratElapsedSeconds += game->clock->frameDelta;
 
       while( states->menu->caratElapsedSeconds > states->menu->caratBlinkSeconds )
       {
