@@ -27,8 +27,8 @@ gmRenderObjects_t* gmRenderObjects_Create()
    gmRenderObjects_t* renderObjects = (gmRenderObjects_t*)gmAlloc( sizeof( gmRenderObjects_t ), sfTrue );
 
    // TODO: define these filenames somewhere?
-   renderObjects->mapTilesetTexture = gmTexture_CreateFromFile( "map_tileset.png" );
-   renderObjects->entitySpriteTexture = gmTexture_CreateFromFile( "entity.png" );
+   renderObjects->mapTilesetTexture = gmTexture_CreateFromFile( "resources/textures/tiles/map_tileset.png" );
+   renderObjects->entitySpriteTexture = gmTexture_CreateFromFile( "resources/textures/sprites/entity.png" );
 
    renderObjects->diagnostics = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBar = gmDebugBarRenderObjects_Create();
