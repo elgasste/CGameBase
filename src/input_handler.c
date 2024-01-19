@@ -164,6 +164,8 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
 
 static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 {
+   gmMenu_t* menu = game->menus->battleAction;
+
    if ( game->inputState->keyWasPressed )
    {
       switch ( game->battle->state )
@@ -172,9 +174,9 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
             gmBattle_Begin( game );
             break;
          case gmBattleState_SelectAction:
-            if ( gmInputHandler_HandleMenuSelection( game, game->menus->battleAction ) )
+            if ( gmInputHandler_HandleMenuSelection( game, menu ) )
             {
-               gmBattle_ActionSelected( game );
+               gmBattle_ActionSelected( game, menu->options[menu->selectedIndex].command );
             }
             break;
          case gmBattleState_Result:
