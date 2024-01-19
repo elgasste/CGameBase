@@ -1,4 +1,11 @@
+#include <time.h>
+
 #include "random.h"
+
+void gmRandom_Seed()
+{
+   srand( (uint32_t)time( 0 ) );
+}
 
 uint32_t gmRandom_UInt32( uint32_t min, uint32_t max )
 {

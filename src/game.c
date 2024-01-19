@@ -22,6 +22,8 @@ gmGame_t* gmGame_Create()
    sfVector2f entityMapHitBoxSize = { 52, 32 };
    sfVector2f entitySpriteOffset = { -6, -32 };
 
+   gmRandom_Seed();
+
    gmGame_t* game = (gmGame_t*)gmAlloc( sizeof( gmGame_t ), sfTrue );
 
    game->window = gmWindow_Create();
