@@ -15,12 +15,22 @@ void gmGame_LoadData( gmGame_t* game )
    gmMap_t* map;
 
    game->menus = gmMenus_Create();
+
    game->menus->overworld->optionCount = 2;
    game->menus->overworld->options = (gmMenuOption_t*)gmAlloc( sizeof( gmMenuOption_t ) * 2, sfTrue );
    game->menus->overworld->options[0].command = gmMenuCommand_CloseMenu;
    snprintf( game->menus->overworld->options[0].label, SHORT_STRLEN, STR_MENU_CLOSEMENU );
    game->menus->overworld->options[1].command = gmMenuCommand_Quit;
    snprintf( game->menus->overworld->options[1].label, SHORT_STRLEN, STR_MENU_QUITGAME );
+
+   game->menus->battleAction->optionCount = 3;
+   game->menus->battleAction->options = (gmMenuOption_t*)gmAlloc( sizeof( gmMenuOption_t ) * 3, sfTrue );
+   game->menus->battleAction->options[0].command = gmMenuCommand_Attack;
+   snprintf( game->menus->battleAction->options[0].label, SHORT_STRLEN, STR_MENU_ATTACK );
+   game->menus->battleAction->options[1].command = gmMenuCommand_Guard;
+   snprintf( game->menus->battleAction->options[1].label, SHORT_STRLEN, STR_MENU_GUARD );
+   game->menus->battleAction->options[2].command = gmMenuCommand_Flee;
+   snprintf( game->menus->battleAction->options[2].label, SHORT_STRLEN, STR_MENU_FLEE );
 
    game->map = gmMap_Create( mapTileCount );
    map = game->map;

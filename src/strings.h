@@ -42,5 +42,8 @@
 #define STR_MENU_CARAT                    ">"
 #define STR_MENU_QUITGAME                 "Quit Game"
 #define STR_MENU_CLOSEMENU                "Close Menu"
+#define STR_MENU_ATTACK                   "Attack"
+#define STR_MENU_GUARD                    "Guard"
+#define STR_MENU_FLEE                     "Flee"
 
 #endif // STRINGS_H
