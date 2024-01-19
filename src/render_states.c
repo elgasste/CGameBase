@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "game.h"
 #include "clock.h"
+#include "battle.h"
 
 static gmDebugBarRenderState_t* gmDebugBarRenderState_Create();
 static gmMenuRenderState_t* gmMenuRenderState_Create();
@@ -66,7 +67,7 @@ static gmTextScrollRenderState_t* gmTextScrollRenderState_Create()
 {
    gmTextScrollRenderState_t* state = (gmTextScrollRenderState_t*)gmAlloc( sizeof( gmTextScrollRenderState_t ), sfTrue );
 
-   state->letterSeconds = 0.015f;
+   state->letterSeconds = 0.012f;
    gmRenderStates_ResetTextScroll( state );
 
    return state;
@@ -231,7 +232,8 @@ static void gmRenderStates_TicMenu( gmGame_t* game )
 {
    gmRenderStates_t* states = game->renderer->renderStates;
 
-   if ( game->state == gmGameState_OverworldMenu )
+   if ( game->state == gmGameState_OverworldMenu ||
+        ( game->state == gmGameState_Battle && game->battle->state == gmBattleState_SelectAction ) )
    {
       states->menu->caratElapsedSeconds += game->clock->frameDelta;
 

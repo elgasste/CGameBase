@@ -38,9 +38,15 @@
 #define STR_ERROR_OPENLOGFILE             "Could not open logfile to write message"
 #define STR_ERROR_WRITELOGFILE            "Could not write message to logfile"
 #define STR_ERROR_CLOSELOGFILE            "Could not close logfile"
+#define STR_ERROR_INVALIDBATTLECOMMAND    "Invalid menu command passed into battle"
 
 #define STR_MENU_CARAT                    ">"
 #define STR_MENU_QUITGAME                 "Quit Game"
 #define STR_MENU_CLOSEMENU                "Close Menu"
+#define STR_MENU_ATTACK                   "Attack"
+#define STR_MENU_GUARD                    "Guard"
+#define STR_MENU_FLEE                     "Flee"
+
+#define STR_BATTLE_SELECTACTION           "Select an action"
 
 #endif // STRINGS_H

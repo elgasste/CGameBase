@@ -2,6 +2,7 @@
 
 #include "battle.h"
 #include "game.h"
+#include "menus.h"
 #include "renderer.h"
 #include "render_states.h"
 
@@ -23,14 +24,29 @@ void gmBattle_Destroy( gmBattle_t* battle )
 
 void gmBattle_Begin( gmGame_t* game )
 {
-   snprintf( game->battle->message, DEFAULT_STRLEN, "Figure out what to do, and figure it out fast, you idiot! SELECT SOMETHING NOW, AND DO IT FAST!!" );
+   snprintf( game->battle->message, DEFAULT_STRLEN, STR_BATTLE_SELECTACTION );
    game->battle->state = gmBattleState_SelectAction;
-   gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
+   gmRenderStates_ResetMenu( game->renderer->renderStates->menu );
+   game->menus->battleAction->selectedIndex = 0;
 }
 
-void gmBattle_ActionSelected( gmGame_t* game )
+void gmBattle_ActionSelected( gmGame_t* game, gmMenuCommand_t command )
 {
-   snprintf( game->battle->message, DEFAULT_STRLEN, "Whatever you did, it must have worked." );
+   switch ( command )
+   {
+      case gmMenuCommand_Attack:
+         snprintf( game->battle->message, DEFAULT_STRLEN, "Your brutal attack has left the enemy in tiny pieces, well done." );
+         break;
+      case gmMenuCommand_Guard:
+         snprintf( game->battle->message, DEFAULT_STRLEN, "You hid behind your shield so well that the enemy forgot you were even there, and ran off." );
+         break;
+      case gmMenuCommand_Flee:
+         snprintf( game->battle->message, DEFAULT_STRLEN, "You got away, nice work. Now the bad guy can go kill someone else." );
+         break;
+      default:
+         gmExitWithError( STR_ERROR_INVALIDBATTLECOMMAND );
+   }
+
    game->battle->state = gmBattleState_Result;
    gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
 }

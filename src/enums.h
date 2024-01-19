@@ -31,7 +31,11 @@ gmBattleState_t;
 typedef enum gmMenuCommand_t
 {
    gmMenuCommand_Quit = 0,
-   gmMenuCommand_CloseMenu
+   gmMenuCommand_CloseMenu,
+
+   gmMenuCommand_Attack,
+   gmMenuCommand_Guard,
+   gmMenuCommand_Flee
 }
 gmMenuCommand_t;
 

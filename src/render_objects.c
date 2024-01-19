@@ -194,8 +194,10 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    objects->smallDialogTextPos.x = WINDOW_WIDTH - 640;
    objects->smallDialogTextPos.y = WINDOW_HEIGHT - 256;
    objects->smallDialogTextWidth = 640 - 64;
-   objects->actionMenuItemsPos.x = 64;
+   objects->actionMenuItemsPos.x = 96;
    objects->actionMenuItemsPos.y = WINDOW_HEIGHT - 256;
+   objects->actionMenuCaratOffset.x = -32;
+   objects->actionMenuCaratOffset.y = 0;
 
    return objects;
 }

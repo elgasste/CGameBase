@@ -12,6 +12,7 @@
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
 static void gmInputHandler_HandleBattleInput( gmGame_t* game );
+static sfBool gmInputHandler_HandleMenuSelection( gmGame_t* game, gmMenu_t* menu );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -148,13 +149,46 @@ static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
 {
    gmMenu_t* menu = game->menus->overworld;
-   gmMenuOption_t* selectedOption;
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {
       gmGame_SetState( game, gmGameState_Overworld );
       return;
    }
+
+   if ( gmInputHandler_HandleMenuSelection( game, game->menus->overworld ) )
+   {
+      gmGame_ExecuteMenuCommand( game, menu->options[menu->selectedIndex].command );
+   }
+}
+
+static void gmInputHandler_HandleBattleInput( gmGame_t* game )
+{
+   gmMenu_t* menu = game->menus->battleAction;
+
+   if ( game->inputState->keyWasPressed )
+   {
+      switch ( game->battle->state )
+      {
+         case gmBattleState_Intro:
+            gmBattle_Begin( game );
+            break;
+         case gmBattleState_SelectAction:
+            if ( gmInputHandler_HandleMenuSelection( game, menu ) )
+            {
+               gmBattle_ActionSelected( game, menu->options[menu->selectedIndex].command );
+            }
+            break;
+         case gmBattleState_Result:
+            gmBattle_Close( game );
+            break;
+      }
+   }
+}
+
+static sfBool gmInputHandler_HandleMenuSelection( gmGame_t* game, gmMenu_t* menu )
+{
+   gmMenuOption_t* selectedOption;
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
    {
@@ -167,27 +201,10 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
    else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
    {
       selectedOption = &( menu->options[menu->selectedIndex] );
-      gmGame_ExecuteMenuCommand( game, selectedOption->command );
+      return sfTrue;
    }
-}
 
-static void gmInputHandler_HandleBattleInput( gmGame_t* game )
-{
-   if ( game->inputState->keyWasPressed )
-   {
-      switch ( game->battle->state )
-      {
-         case gmBattleState_Intro:
-            gmBattle_Begin( game );
-            break;
-         case gmBattleState_SelectAction:
-            gmBattle_ActionSelected( game );
-            break;
-         case gmBattleState_Result:
-            gmBattle_Close( game );
-            break;
-      }
-   }
+   return sfFalse;
 }
 
 static void gmInputHandler_CheckCheats( gmGame_t* game )

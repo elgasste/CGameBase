@@ -318,6 +318,10 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 static void gmRenderer_DrawBattle( gmGame_t* game )
 {
    gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+   gmMenu_t* actionMenu = game->menus->battleAction;
+   gmMenuRenderState_t* actionMenuState = game->renderer->renderStates->menu;
+   uint32_t i;
+   sfVector2f pos;
 
    switch ( game->battle->state )
    {
@@ -334,6 +338,22 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
          break;
       case gmBattleState_SelectAction:
          gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
+         for ( i = 0; i < actionMenu->optionCount; i++ )
+         {
+            if ( actionMenu->selectedIndex == i && actionMenuState->showCarat )
+            {
+               pos.x = objects->actionMenuItemsPos.x + objects->actionMenuCaratOffset.x;
+               pos.y = objects->actionMenuItemsPos.y + objects->actionMenuCaratOffset.y + ( i * MENU_LINESIZE );
+               sfText_setPosition( objects->text, pos );
+               sfText_setString( objects->text, STR_MENU_CARAT );
+               gmWindow_DrawText( game->window, objects->text );
+            }
+            pos.x = objects->actionMenuItemsPos.x;
+            pos.y = objects->actionMenuItemsPos.y + ( i * MENU_LINESIZE );
+            sfText_setPosition( objects->text, pos );
+            sfText_setString( objects->text, actionMenu->options[i].label );
+            gmWindow_DrawText( game->window, objects->text );
+         }
          gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
          sfText_setString( objects->text, game->battle->message );
          gmTextUtil_DrawWrappedScrollingText( game,

@@ -24,6 +24,7 @@ gmMenu_t;
 typedef struct gmMenus_t
 {
    gmMenu_t* overworld;
+   gmMenu_t* battleAction;
 }
 gmMenus_t;
 
