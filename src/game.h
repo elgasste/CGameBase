@@ -13,7 +13,7 @@ typedef struct gmPhysics_t gmPhysics_t;
 typedef struct gmMenus_t gmMenus_t;
 typedef struct gmMap_t gmMap_t;
 typedef struct gmBattle_t gmBattle_t;
-typedef struct gmEntity_t gmEntity_t;
+typedef struct gmCharacter_t gmCharacter_t;
 
 typedef struct gmGame_t
 {
@@ -30,7 +30,7 @@ typedef struct gmGame_t
    gmMap_t* map;
    gmBattle_t* battle;
 
-   gmEntity_t* entity;
+   gmCharacter_t* player;
 
    sfBool cheatNoClip;
    sfBool cheatNoEncounters;

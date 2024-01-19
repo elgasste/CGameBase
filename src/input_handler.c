@@ -3,6 +3,7 @@
 #include "input_handler.h"
 #include "game.h"
 #include "input_state.h"
+#include "character.h"
 #include "entity.h"
 #include "menus.h"
 #include "renderer.h"
@@ -69,7 +70,7 @@ void gmInputHandler_HandleInput( gmGame_t* game )
 
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
 {
-   gmEntity_t* entity = game->entity;
+   gmEntity_t* entity = game->player->entity;
    sfBool leftIsDown = gmInputState_IsKeyDown( sfKeyLeft );
    sfBool upIsDown = gmInputState_IsKeyDown( sfKeyUp );
    sfBool rightIsDown = gmInputState_IsKeyDown( sfKeyRight );

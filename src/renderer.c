@@ -6,6 +6,7 @@
 #include "clock.h"
 #include "time_util.h"
 #include "map.h"
+#include "character.h"
 #include "entity.h"
 #include "entity_sprite.h"
 #include "menus.h"
@@ -168,7 +169,7 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 
 static void gmRenderer_SetMapView( gmGame_t* game )
 {
-   gmEntity_t* entity = game->entity;
+   gmEntity_t* entity = game->player->entity;
    gmRenderer_t* renderer = game->renderer;
    gmMap_t* map = game->map;
    sfVector2f mapSize = { (float)( map->tileCount.x * MAP_TILE_SIZE ), (float)( map->tileCount.y * MAP_TILE_SIZE ) };
@@ -273,17 +274,18 @@ static void gmRenderer_DrawMap( gmGame_t* game )
 static void gmRenderer_DrawMapEntities( gmGame_t* game )
 {
    gmRenderer_t* renderer = game->renderer;
+   gmEntity_t* entity = game->player->entity;
    sfVector2f spritePos;
 
    spritePos.x = ( renderer->mapViewPadding.x > 0 )
-      ? game->entity->mapPos.x + game->entity->spriteOffset.x + renderer->mapViewPadding.x
-      : game->entity->mapPos.x + game->entity->spriteOffset.x - renderer->mapViewRect.left;
+      ? entity->mapPos.x + entity->spriteOffset.x + renderer->mapViewPadding.x
+      : entity->mapPos.x + entity->spriteOffset.x - renderer->mapViewRect.left;
    spritePos.y = ( renderer->mapViewPadding.y > 0 )
-      ? game->entity->mapPos.y + game->entity->spriteOffset.y + renderer->mapViewPadding.y
-      : game->entity->mapPos.y + game->entity->spriteOffset.y - renderer->mapViewRect.top;
+      ? entity->mapPos.y + entity->spriteOffset.y + renderer->mapViewPadding.y
+      : entity->mapPos.y + entity->spriteOffset.y - renderer->mapViewRect.top;
 
-   gmEntitySprite_SetPosition( game->entity->sprite, spritePos );
-   gmWindow_DrawEntitySprite( game->window, game->entity->sprite );
+   gmEntitySprite_SetPosition( entity->sprite, spritePos );
+   gmWindow_DrawEntitySprite( game->window, entity->sprite );
 }
 
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
