@@ -12,6 +12,7 @@
 static void gmInputHandler_HandleOverworldInput( gmGame_t* game );
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game );
 static void gmInputHandler_HandleBattleInput( gmGame_t* game );
+static sfBool gmInputHandler_HandleMenuSelection( gmGame_t* game, gmMenu_t* menu );
 static void gmInputHandler_CheckCheats( gmGame_t* game );
 static void gmInputHandler_ApplyCheat( gmGame_t* game );
 
@@ -148,7 +149,6 @@ static void gmInputHandler_HandleOverworldInput( gmGame_t* game )
 static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
 {
    gmMenu_t* menu = game->menus->overworld;
-   gmMenuOption_t* selectedOption;
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {
@@ -156,18 +156,9 @@ static void gmInputHandler_HandleOverworldMenuInput( gmGame_t* game )
       return;
    }
 
-   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
+   if ( gmInputHandler_HandleMenuSelection( game, game->menus->overworld ) )
    {
-      gmMenu_ScrollUp( menu, game->renderer->renderStates->menu );
-   }
-   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyDown ) )
-   {
-      gmMenu_ScrollDown( menu, game->renderer->renderStates->menu );
-   }
-   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
-   {
-      selectedOption = &( menu->options[menu->selectedIndex] );
-      gmGame_ExecuteMenuCommand( game, selectedOption->command );
+      gmGame_ExecuteMenuCommand( game, menu->options[menu->selectedIndex].command );
    }
 }
 
@@ -181,13 +172,37 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
             gmBattle_Begin( game );
             break;
          case gmBattleState_SelectAction:
-            gmBattle_ActionSelected( game );
+            if ( gmInputHandler_HandleMenuSelection( game, game->menus->battleAction ) )
+            {
+               gmBattle_ActionSelected( game );
+            }
             break;
          case gmBattleState_Result:
             gmBattle_Close( game );
             break;
       }
    }
+}
+
+static sfBool gmInputHandler_HandleMenuSelection( gmGame_t* game, gmMenu_t* menu )
+{
+   gmMenuOption_t* selectedOption;
+
+   if ( gmInputState_WasKeyPressed( game->inputState, sfKeyUp ) )
+   {
+      gmMenu_ScrollUp( menu, game->renderer->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyDown ) )
+   {
+      gmMenu_ScrollDown( menu, game->renderer->renderStates->menu );
+   }
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyReturn ) )
+   {
+      selectedOption = &( menu->options[menu->selectedIndex] );
+      return sfTrue;
+   }
+
+   return sfFalse;
 }
 
 static void gmInputHandler_CheckCheats( gmGame_t* game )

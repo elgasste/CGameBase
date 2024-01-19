@@ -61,6 +61,7 @@ typedef struct gmBattleRenderObjects_t
    sfVector2f smallDialogTextPos;
    float smallDialogTextWidth;
    sfVector2f actionMenuItemsPos;
+   sfVector2f actionMenuCaratOffset;
 }
 gmBattleRenderObjects_t;
 

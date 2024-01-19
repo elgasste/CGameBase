@@ -2,6 +2,7 @@
 
 #include "battle.h"
 #include "game.h"
+#include "menus.h"
 #include "renderer.h"
 #include "render_states.h"
 
@@ -25,6 +26,9 @@ void gmBattle_Begin( gmGame_t* game )
 {
    snprintf( game->battle->message, DEFAULT_STRLEN, "Figure out what to do, and figure it out fast, you idiot! SELECT SOMETHING NOW, AND DO IT FAST!!" );
    game->battle->state = gmBattleState_SelectAction;
+   gmRenderStates_ResetMenu( game->renderer->renderStates->menu );
+   game->menus->battleAction->selectedIndex = 0;
+   game->renderer->renderStates->menu->showCarat = sfFalse;
    gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
 }
 
