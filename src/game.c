@@ -12,6 +12,7 @@
 #include "character.h"
 #include "entity.h"
 #include "entity_sprite.h"
+#include "battle_stats.h"
 #include "physics.h"
 #include "random.h"
 
@@ -23,6 +24,7 @@ gmGame_t* gmGame_Create()
    sfVector2f entityMapHitBoxSize = { 52, 32 };
    sfVector2f entitySpriteOffset = { -6, -32 };
    gmEntity_t* playerEntity;
+   gmBattleStats_t* playerBattleStats;
 
    gmRandom_Seed();
 
@@ -52,7 +54,11 @@ gmGame_t* gmGame_Create()
                                    entitySpriteOffset,
                                    game->renderer->renderObjects->entitySpriteTexture );
    gmEntity_SetDirection( playerEntity, gmDirection_Down );
-   game->player = gmCharacter_Create( playerEntity );
+   playerBattleStats = (gmBattleStats_t*)gmAlloc( sizeof( gmBattleStats_t ), sfTrue );
+   playerBattleStats->hitPoints = 100;
+   playerBattleStats->attackPower = 20;
+   playerBattleStats->defensePower = 20;
+   game->player = gmCharacter_Create( playerEntity, playerBattleStats );
 
    game->physics->entityMapTileCache = gmMap_TileIndexFromPos( game->map, entityMapPos );
 
