@@ -36,8 +36,8 @@ static gmDebugBarRenderState_t* gmDebugBarRenderState_Create()
    state->isVisible = sfFalse;
    state->visibleSeconds = 3;
    state->elapsedSeconds = 0;
-   state->msgBuffer = (char*)gmCalloc( DEFAULT_STRLEN, sizeof( char ), sfTrue );
-   state->msgBufferLen = DEFAULT_STRLEN;
+   state->msgBuffer = (char*)gmCalloc( STRLEN_DEFAULT, sizeof( char ), sfTrue );
+   state->msgBufferLen = STRLEN_DEFAULT;
 
    return state;
 }

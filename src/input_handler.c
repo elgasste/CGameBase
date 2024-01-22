@@ -33,12 +33,12 @@ void gmInputHandler_Destroy( gmInputHandler_t* inputHandler )
 
 void gmInputHandler_HandleInput( gmGame_t* game )
 {
-   char debugMsg[SHORT_STRLEN];
+   char debugMsg[STRLEN_SHORT];
 
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
       TOGGLE_BOOL( game->showDiagnostics );
-      snprintf( debugMsg, SHORT_STRLEN, STR_DEBUG_DIAGNOSTICSFORMATTER, game->showDiagnostics ? STR_ON : STR_OFF );
+      snprintf( debugMsg, STRLEN_SHORT, STR_DEBUG_DIAGNOSTICSFORMATTER, game->showDiagnostics ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, debugMsg );
    }
 
@@ -256,19 +256,19 @@ static void gmInputHandler_CheckCheats( gmGame_t* game )
 
 static void gmInputHandler_ApplyCheat( gmGame_t* game )
 {
-   char cheatMsg[SHORT_STRLEN];
+   char cheatMsg[STRLEN_SHORT];
    char* cheat = game->inputHandler->cheatString;
 
    if ( !strcmp( cheat, CHEAT_NOCLIP ) )
    {
       TOGGLE_BOOL( game->cheatNoClip );
-      snprintf( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
+      snprintf( cheatMsg, STRLEN_SHORT, STR_CHEAT_NOCLIPFORMATTER, game->cheatNoClip ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
    else if ( !strcmp( cheat, CHEAT_NOENCOUNTER ) )
    {
       TOGGLE_BOOL( game->cheatNoEncounters );
-      snprintf( cheatMsg, SHORT_STRLEN, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
+      snprintf( cheatMsg, STRLEN_SHORT, STR_CHEAT_NOENCOUNTERFORMATTER, game->cheatNoEncounters ? STR_ON : STR_OFF );
       gmGame_ShowDebugMessage( game, cheatMsg );
    }
    else if ( !strcmp( cheat, CHEAT_FIGHT ) )

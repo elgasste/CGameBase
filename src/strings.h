@@ -47,6 +47,8 @@
 #define STR_MENU_GUARD                    "Guard"
 #define STR_MENU_FLEE                     "Flee"
 
+#define STR_BATTLE_HITPOINTSFORMATTER     "  HP: %d"
+#define STR_BATTLE_MAGPOINTSFORMATTER     "  MP: %d"
 #define STR_BATTLE_SELECTACTION           "Select an action"
 
 #endif // STRINGS_H

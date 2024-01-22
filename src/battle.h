@@ -9,7 +9,7 @@ typedef struct gmGame_t gmGame_t;
 typedef struct gmBattle_t
 {
    gmBattleState_t state;
-   char message[DEFAULT_STRLEN];
+   char message[STRLEN_DEFAULT];
 }
 gmBattle_t;
 

@@ -12,6 +12,7 @@
 #include "menus.h"
 #include "battle.h"
 #include "text_util.h"
+#include "battle_stats.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
@@ -139,34 +140,34 @@ void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
-   char msg[DEFAULT_STRLEN];
-   char timeStr[SHORT_STRLEN];
+   char msg[STRLEN_DEFAULT];
+   char timeStr[STRLEN_DEFAULT];
    gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnostics;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
    objects->textPosition.y = 4;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_FRAMERATEFORMATTER, GAME_FPS );
+   snprintf( msg, STRLEN_DEFAULT, STR_FRAMERATEFORMATTER, GAME_FPS );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   dmTimeUtil_FormatTime( timeStr, SHORT_STRLEN, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
-   snprintf( msg, DEFAULT_STRLEN, STR_ELAPSEDTIMEFORMATTER, timeStr );
+   dmTimeUtil_FormatTime( timeStr, STRLEN_SHORT, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
+   snprintf( msg, STRLEN_DEFAULT, STR_ELAPSEDTIMEFORMATTER, timeStr );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 }
@@ -357,10 +358,22 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
 static void gmRenderer_DrawBattleStatusDialog( gmGame_t* game )
 {
    gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+   sfVector2f pos = { objects->statusDialogTextPos.x, objects->statusDialogTextPos.y };
+   char hpStr[STRLEN_SHORT];
 
    gmWindow_DrawConvexShape( game->window, objects->statusDialogBackground );
-   sfText_setPosition( objects->text, objects->statusDialogTextPos );
+   sfText_setPosition( objects->text, pos );
    sfText_setString( objects->text, game->player->name );
+   gmWindow_DrawText( game->window, objects->text );
+   pos.y += objects->lineSpacing;
+   sfText_setPosition( objects->text, pos );
+   snprintf( hpStr, STRLEN_SHORT, STR_BATTLE_HITPOINTSFORMATTER, game->player->battleStats->hitPoints );
+   sfText_setString( objects->text, hpStr );
+   gmWindow_DrawText( game->window, objects->text );
+   pos.y += objects->lineSpacing;
+   sfText_setPosition( objects->text, pos );
+   snprintf( hpStr, STRLEN_SHORT, STR_BATTLE_MAGPOINTSFORMATTER, game->player->battleStats->magicPoints );
+   sfText_setString( objects->text, hpStr );
    gmWindow_DrawText( game->window, objects->text );
 }
 

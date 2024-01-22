@@ -8,7 +8,7 @@ typedef struct gmBattleStats_t gmBattleStats_t;
 
 typedef struct gmCharacter_t
 {
-   char name[NAME_STRLEN];
+   char name[STRLEN_SHORT];
    gmEntity_t* entity;
    gmBattleStats_t* battleStats;
 }

@@ -29,13 +29,13 @@ void gmLog_Msg( const char* msg )
    FILE* logFile = 0;
    time_t t = time( 0 );
    struct tm* tm;
-   char errorMsg[DEFAULT_STRLEN];
+   char errorMsg[STRLEN_DEFAULT];
 
    logFile = fopen( LOG_FILENAME, "a" );
 
    if ( !logFile )
    {
-      snprintf( errorMsg, DEFAULT_STRLEN, "%s: \"%s\"", STR_ERROR_OPENLOGFILE, msg );
+      snprintf( errorMsg, STRLEN_DEFAULT, "%s: \"%s\"", STR_ERROR_OPENLOGFILE, msg );
       gmExitWithError( errorMsg );
    }
 
@@ -46,7 +46,7 @@ void gmLog_Msg( const char* msg )
    {
       if ( fprintf( logFile, msg ) < 0 )
       {
-         snprintf( errorMsg, DEFAULT_STRLEN, "%s: \"%s\"", STR_ERROR_WRITELOGFILE, msg );
+         snprintf( errorMsg, STRLEN_DEFAULT, "%s: \"%s\"", STR_ERROR_WRITELOGFILE, msg );
          gmExitWithError( errorMsg );
       }
    }
@@ -57,7 +57,7 @@ void gmLog_Msg( const char* msg )
                      tm->tm_hour, tm->tm_min, tm->tm_sec,
                      msg ) < 0 )
       {
-         snprintf( errorMsg, DEFAULT_STRLEN, "%s: \"%s\"", STR_ERROR_WRITELOGFILE, msg );
+         snprintf( errorMsg, STRLEN_DEFAULT, "%s: \"%s\"", STR_ERROR_WRITELOGFILE, msg );
          gmExitWithError( errorMsg );
       }
    }
@@ -75,8 +75,8 @@ void gmLog_Newline()
 
 void gmExitWithError( const char* msg )
 {
-   char output[DEFAULT_STRLEN];
-   snprintf( output, DEFAULT_STRLEN, "%s: %s\n\n", STR_ERROR, msg );
+   char output[STRLEN_DEFAULT];
+   snprintf( output, STRLEN_DEFAULT, "%s: %s\n\n", STR_ERROR, msg );
    printf( output );
    exit( 1 );
 }

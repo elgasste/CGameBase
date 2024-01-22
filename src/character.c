@@ -8,7 +8,7 @@ gmCharacter_t* gmCharacter_Create( const char* name, gmEntity_t* entity, gmBattl
 {
    gmCharacter_t* character = (gmCharacter_t*)gmAlloc( sizeof( gmCharacter_t ), sfTrue );
 
-   snprintf( character->name, NAME_STRLEN, "%s", name );
+   snprintf( character->name, STRLEN_SHORT, "%s", name );
    character->entity = entity;
    character->battleStats = battleStats;
 

@@ -6,6 +6,7 @@
 typedef struct gmBattleStats_t
 {
    uint32_t hitPoints;
+   uint32_t magicPoints;
    uint32_t attackPower;
    uint32_t defensePower;
 }

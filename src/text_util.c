@@ -14,7 +14,7 @@ void gmTextUtil_DrawWrappedScrollingText( gmGame_t* game,
                                           float lineSpacing )
 {
    gmTextScrollRenderState_t* scrollState = game->renderer->renderStates->textScroll;
-   char strLine[DEFAULT_STRLEN];
+   char strLine[STRLEN_DEFAULT];
    uint32_t strLen = (uint32_t)strlen( str );
    uint32_t substrEndIndex = scrollState->isScrolling ? scrollState->currentCharIndex : strLen;
    uint32_t lineStartIndex, curIndex, writeIndex, cutoffIndex, lastSpaceIndex;

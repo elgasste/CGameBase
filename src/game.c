@@ -56,6 +56,7 @@ gmGame_t* gmGame_Create()
    gmEntity_SetDirection( playerEntity, gmDirection_Down );
    playerBattleStats = (gmBattleStats_t*)gmAlloc( sizeof( gmBattleStats_t ), sfTrue );
    playerBattleStats->hitPoints = 100;
+   playerBattleStats->magicPoints = 25;
    playerBattleStats->attackPower = 20;
    playerBattleStats->defensePower = 20;
    game->player = gmCharacter_Create( "Goobermans", playerEntity, playerBattleStats );
