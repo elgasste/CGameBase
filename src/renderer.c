@@ -127,7 +127,7 @@ sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
 
 void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
 {
-   if ( renderer->renderStates->textScroll->isScrolling )
+   if ( !renderer->renderStates->screenFade->isFading && renderer->renderStates->textScroll->isScrolling )
    {
       gmRenderStates_ResetTextScroll( renderer->renderStates->textScroll );
    }
@@ -351,6 +351,7 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
                                               objects->lineSpacing );
          break;
       case gmBattleState_SelectAction:
+         gmWindow_DrawConvexShape( game->window, objects->statusDialogBackground );
          gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
          for ( i = 0; i < actionMenu->optionCount; i++ )
          {

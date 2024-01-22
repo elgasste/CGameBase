@@ -50,6 +50,7 @@ gmOverworldMenuRenderObjects_t;
 
 typedef struct gmBattleRenderObjects_t
 {
+   sfConvexShape* statusDialogBackground;
    sfConvexShape* largeDialogBackground;
    sfConvexShape* smallDialogBackground;
    sfConvexShape* actionMenuBackground;
