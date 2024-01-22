@@ -328,6 +328,18 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
    switch ( game->battle->state )
    {
       case gmBattleState_Intro:
+         gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
+         sfText_setString( objects->text, game->battle->message );
+         if ( !game->renderer->renderStates->screenFade->isFading )
+         {
+            gmTextUtil_DrawWrappedScrollingText( game,
+                                                 objects->text,
+                                                 game->battle->message,
+                                                 objects->largeDialogTextPos,
+                                                 objects->largeDialogTextWidth,
+                                                 objects->lineSpacing );
+         }
+         break;
       case gmBattleState_Result:
          gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
          sfText_setString( objects->text, game->battle->message );
