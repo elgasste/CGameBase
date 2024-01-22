@@ -195,6 +195,8 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    sfText_setFillColor( objects->text, GAME_FONT_COLOR );
 
    objects->lineSpacing = 40;
+   objects->statusDialogTextPos.x = 64;
+   objects->statusDialogTextPos.y = 64;
    objects->largeDialogTextPos.x = 64;
    objects->largeDialogTextPos.y = WINDOW_HEIGHT - 256;
    objects->largeDialogTextWidth = WINDOW_WIDTH - 64 - 64;
