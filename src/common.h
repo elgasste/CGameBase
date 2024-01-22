@@ -10,6 +10,7 @@
 
 #define DEFAULT_STRLEN              512
 #define SHORT_STRLEN                32
+#define NAME_STRLEN                 11
 
 #define LOG_FILENAME                "log.txt"
 

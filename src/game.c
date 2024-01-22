@@ -58,7 +58,7 @@ gmGame_t* gmGame_Create()
    playerBattleStats->hitPoints = 100;
    playerBattleStats->attackPower = 20;
    playerBattleStats->defensePower = 20;
-   game->player = gmCharacter_Create( playerEntity, playerBattleStats );
+   game->player = gmCharacter_Create( "Goobermans", playerEntity, playerBattleStats );
 
    game->physics->entityMapTileCache = gmMap_TileIndexFromPos( game->map, entityMapPos );
 
