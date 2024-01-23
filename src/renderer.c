@@ -24,34 +24,34 @@ void gmGame_Render( gmGame_t* game )
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
-   char msg[DEFAULT_STRLEN];
-   char timeStr[SHORT_STRLEN];
+   char msg[STRLEN_DEFAULT];
+   char timeStr[STRLEN_SHORT];
    gmDiagnosticsRenderObjects_t* objects = game->renderObjects->diagnosticsRenderObjects;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
    objects->textPosition.y = 4;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_FRAMERATEFORMATTER, GAME_FPS );
+   snprintf( msg, STRLEN_DEFAULT, STR_FRAMERATEFORMATTER, GAME_FPS );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   dmTimeUtil_FormatTime( timeStr, SHORT_STRLEN, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
-   snprintf( msg, DEFAULT_STRLEN, STR_ELAPSEDTIMEFORMATTER, timeStr );
+   dmTimeUtil_FormatTime( timeStr, STRLEN_SHORT, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
+   snprintf( msg, STRLEN_DEFAULT, STR_ELAPSEDTIMEFORMATTER, timeStr );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 }
