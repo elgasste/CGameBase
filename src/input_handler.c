@@ -1,7 +1,7 @@
 #include "game.h"
 #include "input_state.h"
 
-void gmGame_HandleInput( gmGame_t* game )
+void gmInputHandler_HandleInput( gmGame_t* game )
 {
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {

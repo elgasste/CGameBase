@@ -25,7 +25,4 @@ void gmGame_Run( gmGame_t* game );
 void gmGame_Close( gmGame_t* game );
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg );
 
-// input_handler.c
-void gmGame_HandleInput( gmGame_t* game );
-
 #endif // GAME_H

@@ -2,6 +2,7 @@
 #include "window.h"
 #include "clock.h"
 #include "input_state.h"
+#include "input_handler.h"
 #include "renderer.h"
 #include "render_states.h"
 
@@ -39,7 +40,7 @@ void gmGame_Run( gmGame_t* game )
 
       gmInputState_Reset( game->inputState );
       gmWindow_HandleEvents( game->window, game->inputState );
-      gmGame_HandleInput( game );
+      gmInputHandler_HandleInput( game );
       gmGame_Tic( game );
       gmRenderer_Render( game );
 
