@@ -26,6 +26,11 @@
 #define STR_ON                            "on"
 #define STR_OFF                           "off"
 
+#define STR_INDEFINITE_LOWERA             "a"
+#define STR_INDEFINITE_UPPERA             "A"
+#define STR_INDEFINITE_LOWERAN            "an"
+#define STR_INDEFINITE_UPPERAN            "An"
+
 #define STR_DEBUG_DIAGNOSTICSFORMATTER    "Toggled diagnostics %s"
 
 #define STR_CHEAT_NOCLIPFORMATTER         "Toggled no-clip mode %s"
@@ -47,6 +52,7 @@
 #define STR_MENU_GUARD                    "Guard"
 #define STR_MENU_FLEE                     "Flee"
 
+#define STR_BATTLE_INTROFORMATTER         "You've encountered %s %s!"
 #define STR_BATTLE_HITPOINTSFORMATTER     "  HP: %d"
 #define STR_BATTLE_MAGPOINTSFORMATTER     "  MP: %d"
 #define STR_BATTLE_SELECTACTION           "Select an action"

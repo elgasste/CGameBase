@@ -60,9 +60,6 @@
     <ClInclude Include="..\src\entity_sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\direction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,16 +75,25 @@
     <ClInclude Include="..\src\menus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\menu_command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\battle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\text_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\game_state.h">
+    <ClInclude Include="..\src\battle_stats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\battle_sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,6 +158,15 @@
     <ClCompile Include="..\src\text_util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\character.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\enemy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\battle_sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\src\resources\fonts\consolas.ttf">
@@ -159,7 +174,10 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\src\resources\textures\sprites\entity.png">
+    <Image Include="..\src\resources\textures\sprites\enemy.png">
+      <Filter>Resource Files\Textures\Sprites</Filter>
+    </Image>
+    <Image Include="..\src\resources\textures\sprites\player.png">
       <Filter>Resource Files\Textures\Sprites</Filter>
     </Image>
   </ItemGroup>

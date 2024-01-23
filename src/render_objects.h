@@ -64,6 +64,7 @@ typedef struct gmBattleRenderObjects_t
    float smallDialogTextWidth;
    sfVector2f actionMenuItemsPos;
    sfVector2f actionMenuCaratOffset;
+   sfVector2f enemyPos;
 }
 gmBattleRenderObjects_t;
 
@@ -77,7 +78,8 @@ typedef struct gmRenderObjects_t
    gmBattleRenderObjects_t* battle;
 
    sfTexture* mapTilesetTexture;
-   sfTexture* entitySpriteTexture;
+   sfTexture* playerSpriteTexture;
+   sfTexture* enemySpriteTexture;
    sfRectangleShape* windowBackgroundRect;
    sfRectangleShape* entityRect;
 }

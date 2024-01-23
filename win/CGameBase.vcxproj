@@ -91,10 +91,12 @@ xcopy "$(SolutionDir)..\src\resources" "$(OutDir)\resources\" /S /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\battle.h" />
+    <ClInclude Include="..\src\battle_sprite.h" />
     <ClInclude Include="..\src\battle_stats.h" />
     <ClInclude Include="..\src\character.h" />
     <ClInclude Include="..\src\clock.h" />
     <ClInclude Include="..\src\common.h" />
+    <ClInclude Include="..\src\enemy.h" />
     <ClInclude Include="..\src\entity_sprite.h" />
     <ClInclude Include="..\src\enums.h" />
     <ClInclude Include="..\src\game.h" />
@@ -115,9 +117,11 @@ xcopy "$(SolutionDir)..\src\resources" "$(OutDir)\resources\" /S /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\battle.c" />
+    <ClCompile Include="..\src\battle_sprite.c" />
     <ClCompile Include="..\src\character.c" />
     <ClCompile Include="..\src\clock.c" />
     <ClCompile Include="..\src\common.c" />
+    <ClCompile Include="..\src\enemy.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\game_loader.c" />
@@ -140,7 +144,8 @@ xcopy "$(SolutionDir)..\src\resources" "$(OutDir)\resources\" /S /Y</Command>
     <Font Include="..\src\resources\fonts\consolas.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\src\resources\textures\sprites\entity.png" />
+    <Image Include="..\src\resources\textures\sprites\enemy.png" />
+    <Image Include="..\src\resources\textures\sprites\player.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

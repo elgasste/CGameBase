@@ -5,6 +5,7 @@
 
 typedef struct gmInputState_t gmInputState_t;
 typedef struct gmEntitySprite_t gmEntitySprite_t;
+typedef struct gmBattleSprite_t gmBattleSprite_t;
 
 typedef struct gmWindow_t
 {
@@ -24,6 +25,7 @@ void gmWindow_DrawConvexShape( gmWindow_t* window, sfConvexShape* shape );
 void gmWindow_DrawText( gmWindow_t* window, sfText* text );
 void gmWindow_DrawSprite( gmWindow_t* window, sfSprite* sprite );
 void gmWindow_DrawEntitySprite( gmWindow_t* window, gmEntitySprite_t* sprite );
+void gmWindow_DrawBattleSprite( gmWindow_t* window, gmBattleSprite_t* sprite );
 sfBool gmWindow_IsOpen( gmWindow_t* window );
 
 #endif // WINDOW_H

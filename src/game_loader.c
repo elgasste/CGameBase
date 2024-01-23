@@ -56,7 +56,7 @@ void gmGame_LoadData( gmGame_t* game )
    {
       if ( map->tiles[i].textureIndex == 0 )
       {
-         map->tiles[i].encounterRate = 2;
+         map->tiles[i].encounterRate = 5;
       }
    }
 }

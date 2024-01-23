@@ -52,7 +52,7 @@ gmGame_t* gmGame_Create()
                                    entityMapHitBoxSize,
                                    200.0f,
                                    entitySpriteOffset,
-                                   game->renderer->renderObjects->entitySpriteTexture );
+                                   game->renderer->renderObjects->playerSpriteTexture );
    gmEntity_SetDirection( playerEntity, gmDirection_Down );
    playerBattleStats = (gmBattleStats_t*)gmAlloc( sizeof( gmBattleStats_t ), sfTrue );
    playerBattleStats->hitPoints = 100;
@@ -175,6 +175,10 @@ static void gmGame_Tic( gmGame_t* game )
    if ( game->state == gmGameState_Overworld && !gmRenderer_IsBlockingPhysics( game->renderer ) )
    {
       gmPhysics_Tic( game );
+   }
+   else if ( game->state == gmGameState_Battle )
+   {
+      gmBattle_Tic( game );
    }
 
    gmRenderStates_Tic( game );
