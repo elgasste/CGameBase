@@ -28,7 +28,8 @@ gmRenderObjects_t* gmRenderObjects_Create()
 
    // TODO: define these filenames somewhere?
    renderObjects->mapTilesetTexture = gmTexture_CreateFromFile( "resources/textures/tiles/map_tileset.png" );
-   renderObjects->entitySpriteTexture = gmTexture_CreateFromFile( "resources/textures/sprites/entity.png" );
+   renderObjects->playerSpriteTexture = gmTexture_CreateFromFile( "resources/textures/sprites/player.png" );
+   renderObjects->enemySpriteTexture = gmTexture_CreateFromFile( "resources/textures/sprites/enemy.png" );
 
    renderObjects->diagnostics = gmDiagnosticsRenderObjects_Create();
    renderObjects->debugBar = gmDebugBarRenderObjects_Create();
@@ -207,6 +208,8 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    objects->actionMenuItemsPos.y = WINDOW_HEIGHT - 256;
    objects->actionMenuCaratOffset.x = -32;
    objects->actionMenuCaratOffset.y = 0;
+   objects->enemyPos.x = ( WINDOW_WIDTH / 2 ) - 64;
+   objects->enemyPos.y = 320;
 
    return objects;
 }
@@ -223,7 +226,8 @@ void gmRenderObjects_Destroy( gmRenderObjects_t* objects )
    gmRectangleShape_Destroy( objects->entityRect );
    gmRectangleShape_Destroy( objects->windowBackgroundRect );
 
-   gmTexture_Destroy( objects->entitySpriteTexture );
+   gmTexture_Destroy( objects->enemySpriteTexture );
+   gmTexture_Destroy( objects->playerSpriteTexture );
    gmTexture_Destroy( objects->mapTilesetTexture );
 
    gmFree( objects, sizeof( gmRenderObjects_t ), sfTrue );

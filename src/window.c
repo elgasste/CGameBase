@@ -1,6 +1,7 @@
 #include "window.h"
 #include "input_state.h"
 #include "entity_sprite.h"
+#include "battle_sprite.h"
 
 gmWindow_t* gmWindow_Create()
 {
@@ -79,6 +80,11 @@ void gmWindow_DrawSprite( gmWindow_t* window, sfSprite* sprite )
 }
 
 void gmWindow_DrawEntitySprite( gmWindow_t* window, gmEntitySprite_t* sprite )
+{
+   sfRenderWindow_drawSprite( window->sfmlWindow, sprite->sfmlSprite, 0 );
+}
+
+void gmWindow_DrawBattleSprite( gmWindow_t* window, gmBattleSprite_t* sprite )
 {
    sfRenderWindow_drawSprite( window->sfmlWindow, sprite->sfmlSprite, 0 );
 }

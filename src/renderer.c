@@ -7,8 +7,10 @@
 #include "time_util.h"
 #include "map.h"
 #include "character.h"
+#include "enemy.h"
 #include "entity.h"
 #include "entity_sprite.h"
+#include "battle_sprite.h"
 #include "menus.h"
 #include "battle.h"
 #include "text_util.h"
@@ -25,6 +27,7 @@ static void gmRenderer_DrawBattleStatusDialog( gmGame_t* game );
 static void gmRenderer_DrawBattleActionMenu( gmGame_t* game );
 static void gmRenderer_DrawBattleLargeDialog( gmGame_t* game );
 static void gmRenderer_DrawBattleSmallDialog( gmGame_t* game );
+static void gmRenderer_DrawBattleEnemy( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create( gmGame_t* game )
 {
@@ -342,6 +345,7 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
    {
       case gmBattleState_Intro:
          gmRenderer_DrawBattleLargeDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
          break;
       case gmBattleState_Result:
          gmRenderer_DrawBattleStatusDialog( game );
@@ -351,6 +355,7 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
          gmRenderer_DrawBattleStatusDialog( game );
          gmRenderer_DrawBattleActionMenu( game );
          gmRenderer_DrawBattleSmallDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
          break;
    }
 }
@@ -439,4 +444,10 @@ static void gmRenderer_DrawBattleSmallDialog( gmGame_t* game )
                                         objects->smallDialogTextPos,
                                         objects->smallDialogTextWidth,
                                         objects->lineSpacing );
+}
+
+static void gmRenderer_DrawBattleEnemy( gmGame_t* game )
+{
+   gmBattleSprite_SetPosition( game->battle->enemy->battleSprite, game->renderer->renderObjects->battle->enemyPos );
+   gmWindow_DrawBattleSprite( game->window, game->battle->enemy->battleSprite );
 }

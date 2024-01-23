@@ -6,8 +6,10 @@
 #include "battle_stats.h"
 #include "menus.h"
 #include "renderer.h"
+#include "render_objects.h"
 #include "render_states.h"
 #include "text_util.h"
+#include "battle_sprite.h"
 
 gmBattle_t* gmBattle_Create( gmGame_t* game )
 {
@@ -19,7 +21,7 @@ gmBattle_t* gmBattle_Create( gmGame_t* game )
    enemyStats->magicPoints = 0;
    enemyStats->attackPower = 5;
    enemyStats->defensePower = 5;
-   battle->enemy = gmEnemy_Create( "Bad Guyyyy", gmIndefiniteArticle_A, enemyStats );
+   battle->enemy = gmEnemy_Create( "Bad Guyyyy", gmIndefiniteArticle_A, enemyStats, game->renderer->renderObjects->enemySpriteTexture );
    snprintf( battle->message,
              STRLEN_DEFAULT,
              STR_BATTLE_INTROFORMATTER,
@@ -65,6 +67,14 @@ void gmBattle_ActionSelected( gmGame_t* game, gmMenuCommand_t command )
 
    game->battle->state = gmBattleState_Result;
    gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
+}
+
+void gmBattle_Tic( gmGame_t* game )
+{
+   if ( game->battle->state != gmBattleState_Result )
+   {
+      gmBattleSprite_Tic( game->battle->enemy->battleSprite, game->clock );
+   }
 }
 
 void gmBattle_Close( gmGame_t* game )
