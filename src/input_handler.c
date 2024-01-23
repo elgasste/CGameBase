@@ -7,7 +7,7 @@ void gmInputHandler_HandleInput( gmGame_t* game )
    {
       gmGame_Close( game );
    }
-   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyD ) )
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
       TOGGLE_BOOL( game->showDiagnostics );
 
