@@ -5,7 +5,7 @@
 
 typedef struct gmClock_t
 {
-   sfClock* innerClock;
+   sfClock* sfmlClock;
 
    float frameDeltaSeconds;
    sfInt64 maxFrameDurationMicro;
