@@ -5,6 +5,13 @@
 
 typedef enum
 {
+   gmIndefiniteArticle_A = 0,
+   gmIndefiniteArticle_An
+}
+gmIndefiniteArticle_t;
+
+typedef enum
+{
    gmDirection_Left = 0,
    gmDirection_Up,
    gmDirection_Right,

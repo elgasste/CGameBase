@@ -4,11 +4,13 @@
 #include "common.h"
 #include "enums.h"
 
+typedef struct gmEnemy_t gmEnemy_t;
 typedef struct gmGame_t gmGame_t;
 
 typedef struct gmBattle_t
 {
    gmBattleState_t state;
+   gmEnemy_t* enemy;
    char message[STRLEN_DEFAULT];
 }
 gmBattle_t;

@@ -108,3 +108,16 @@ void gmTextUtil_DrawWrappedScrollingText( gmGame_t* game,
       }
    }
 }
+
+const char* gmTextUtil_IndefiniteArticleFromEnum( gmIndefiniteArticle_t article, sfBool lower )
+{
+   switch ( article )
+   {
+      case gmIndefiniteArticle_A:
+         return lower ? STR_INDEFINITE_LOWERA : STR_INDEFINITE_UPPERA;
+      case gmIndefiniteArticle_An:
+         return lower ? STR_INDEFINITE_LOWERAN : STR_INDEFINITE_UPPERAN;
+      default:
+         return "";
+   }
+}
