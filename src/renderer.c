@@ -1,6 +1,7 @@
-#include "game.h"
+#include "renderer.h"
 #include "render_objects.h"
 #include "render_states.h"
+#include "game.h"
 #include "window.h"
 #include "clock.h"
 #include "time_util.h"
@@ -8,9 +9,27 @@
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
 static void gmRenderer_DrawDebugBar( gmGame_t* game );
 
-void gmGame_Render( gmGame_t* game )
+gmRenderer_t* gmRenderer_Create()
 {
-   gmWindow_DrawRectangleShape( game->window, game->renderObjects->windowBackgroundRect );
+   gmRenderer_t* renderer = (gmRenderer_t*)gmAlloc( sizeof( gmRenderer_t ), sfTrue );
+
+   renderer->renderObjects = gmRenderObjects_Create();
+   renderer->renderStates = gmRenderStates_Create();
+
+   return renderer;
+}
+
+void gmRenderer_Destroy( gmRenderer_t* renderer )
+{
+   gmRenderStates_Destroy( renderer->renderStates );
+   gmRenderObjects_Destroy( renderer->renderObjects );
+
+   gmFree( renderer, sizeof( gmRenderer_t ), sfTrue );
+}
+
+void gmRenderer_Render( gmGame_t* game )
+{
+   gmWindow_DrawRectangleShape( game->window, game->renderer->renderObjects->windowBackgroundRect );
 
    gmRenderer_DrawDebugBar( game );
 
@@ -26,7 +45,7 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
    char msg[STRLEN_DEFAULT];
    char timeStr[STRLEN_SHORT];
-   gmDiagnosticsRenderObjects_t* objects = game->renderObjects->diagnosticsRenderObjects;
+   gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnosticsRenderObjects;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
@@ -58,8 +77,8 @@ static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 
 static void gmRenderer_DrawDebugBar( gmGame_t* game )
 {
-   gmDebugBarRenderState_t* state = game->renderStates->debugBar;
-   gmDebugBarRenderObjects_t* objects = game->renderObjects->debugBarRenderObjects;
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
+   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBarRenderObjects;
 
    if ( state->isVisible )
    {

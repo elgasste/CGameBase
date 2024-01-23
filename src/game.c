@@ -2,8 +2,10 @@
 #include "window.h"
 #include "clock.h"
 #include "input_state.h"
-#include "render_objects.h"
+#include "renderer.h"
 #include "render_states.h"
+
+static void gmGame_Tic( gmGame_t* game );
 
 gmGame_t* gmGame_Create()
 {
@@ -12,8 +14,7 @@ gmGame_t* gmGame_Create()
    game->window = gmWindow_Create();
    game->clock = gmClock_Create();
    game->inputState = gmInputState_Create();
-   game->renderObjects = gmRenderObjects_Create();
-   game->renderStates = gmRenderStates_Create();
+   game->renderer = gmRenderer_Create();
 
    game->showDiagnostics = sfFalse;
 
@@ -22,8 +23,7 @@ gmGame_t* gmGame_Create()
 
 void gmGame_Destroy( gmGame_t* game )
 {
-   gmRenderStates_Destroy( game->renderStates );
-   gmRenderObjects_Destroy( game->renderObjects );
+   gmRenderer_Destroy( game->renderer );
    gmInputState_Destroy( game->inputState );
    gmClock_Destroy( game->clock );
    gmWindow_Destroy( game->window );
@@ -40,8 +40,8 @@ void gmGame_Run( gmGame_t* game )
       gmInputState_Reset( game->inputState );
       gmWindow_HandleEvents( game->window, game->inputState );
       gmGame_HandleInput( game );
-      gmRenderStates_Tic( game->renderStates, game->clock );
-      gmGame_Render( game );
+      gmGame_Tic( game );
+      gmRenderer_Render( game );
 
       if ( game->window->wantToClose )
       {
@@ -52,6 +52,11 @@ void gmGame_Run( gmGame_t* game )
    }
 }
 
+static void gmGame_Tic( gmGame_t* game )
+{
+   gmRenderStates_Tic( game->renderer->renderStates, game->clock );
+}
+
 void gmGame_Close( gmGame_t* game )
 {
    gmWindow_Close( game->window );
@@ -59,7 +64,7 @@ void gmGame_Close( gmGame_t* game )
 
 void gmGame_ShowDebugMessage( gmGame_t* game, const char* msg )
 {
-   gmDebugBarRenderState_t* state = game->renderStates->debugBar;
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
 
    snprintf( state->msgBuffer, state->msgBufferLen, "%s", msg );
    state->isVisible = sfTrue;
