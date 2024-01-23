@@ -7,7 +7,7 @@ typedef struct gmInputState_t gmInputState_t;
 
 typedef struct gmWindow_t
 {
-   sfRenderWindow* innerWindow;
+   sfRenderWindow* sfmlWindow;
    sfBool wantToClose;
 }
 gmWindow_t;
