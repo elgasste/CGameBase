@@ -8,8 +8,8 @@
 
 #include "strings.h"
 
-#define DEFAULT_STRLEN  512
-#define SHORT_STRLEN    32
+#define STRLEN_DEFAULT  512
+#define STRLEN_SHORT    32
 
 #define LOG_FILENAME    "log.txt"
 

@@ -1,13 +1,13 @@
 #include "game.h"
 #include "input_state.h"
 
-void gmGame_HandleInput( gmGame_t* game )
+void gmInputHandler_HandleInput( gmGame_t* game )
 {
    if ( gmInputState_WasKeyPressed( game->inputState, sfKeyEscape ) )
    {
       gmGame_Close( game );
    }
-   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyD ) )
+   else if ( gmInputState_WasKeyPressed( game->inputState, sfKeyF8 ) )
    {
       TOGGLE_BOOL( game->showDiagnostics );
 

@@ -93,7 +93,9 @@ xcopy "$(SolutionDir)..\src\resources\fonts\*.*" "$(OutDir)" /Y</Command>
     <ClInclude Include="..\src\clock.h" />
     <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\game.h" />
+    <ClInclude Include="..\src\input_handler.h" />
     <ClInclude Include="..\src\input_state.h" />
+    <ClInclude Include="..\src\renderer.h" />
     <ClInclude Include="..\src\render_objects.h" />
     <ClInclude Include="..\src\render_states.h" />
     <ClInclude Include="..\src\strings.h" />
