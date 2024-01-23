@@ -14,65 +14,97 @@ void gmTextUtil_DrawWrappedScrollingText( gmGame_t* game,
                                           float lineSpacing )
 {
    gmTextScrollRenderState_t* scrollState = game->renderer->renderStates->textScroll;
-   size_t strLen = scrollState->isScrolling ? scrollState->currentCharIndex : strlen( str );
-   char* strLine = (char*)gmAlloc( sizeof( char ) * ( strLen + 1 ), sfTrue );
-   size_t i;
-   int32_t j, lastSpaceIndex = -1;
+   char strLine[STRLEN_DEFAULT];
+   uint32_t strLen = (uint32_t)strlen( str );
+   uint32_t substrEndIndex = scrollState->isScrolling ? scrollState->currentCharIndex : strLen;
+   uint32_t lineStartIndex, curIndex, writeIndex, cutoffIndex, lastSpaceIndex;
 
-   for ( i = 0, j = 0; i < strLen; i++, j++ )
+   sfText_setPosition( text, pos );
+
+   for ( lineStartIndex = 0, curIndex = 0, cutoffIndex = 0, lastSpaceIndex = 0; curIndex < strLen; curIndex++ )
    {
-      strLine[j] = str[i];
-      strLine[j + 1] = '\0';
+      writeIndex = curIndex - lineStartIndex;
+      strLine[writeIndex] = str[curIndex];
 
-      sfText_setString( text, strLine );
-
-      if ( sfText_getGlobalBounds( text ).width > width )
+      if ( str[curIndex] == ' ' || curIndex == strLen - 1 )
       {
-         if ( str[i] == ' ' )
+         if ( str[curIndex] == ' ' )
          {
-            sfText_setString( text, strLine );
-            sfText_setPosition( text, pos );
-            gmWindow_DrawText( game->window, text );
-            j = -1;
-            pos.y += lineSpacing;
+            strLine[writeIndex] = '\0';
          }
          else
          {
-            if ( lastSpaceIndex < 0 )
+            strLine[writeIndex + 1] = '\0';
+         }
+
+         sfText_setString( text, strLine );
+
+         if ( sfText_getGlobalBounds( text ).width > width )
+         {
+            if ( lastSpaceIndex <= lineStartIndex )
             {
-               strLine[j] = '\0';
-               sfText_setString( text, strLine );
-               sfText_setPosition( text, pos );
-               gmWindow_DrawText( game->window, text );
-               i--;
-               j = -1;
-               pos.y += lineSpacing;
-               lastSpaceIndex = -1;
+               // the entire line is one word
+               curIndex = cutoffIndex + 1;
             }
             else
             {
-               strLine[j - ( i - lastSpaceIndex)] = '\0';
+               // the line has multiple words
+               curIndex = lastSpaceIndex;
+            }
+
+            if ( substrEndIndex < curIndex )
+            {
+               strLine[substrEndIndex - lineStartIndex + 1] = '\0';
                sfText_setString( text, strLine );
-               sfText_setPosition( text, pos );
                gmWindow_DrawText( game->window, text );
-               i = lastSpaceIndex;
-               j = -1;
-               pos.y += lineSpacing;
-               lastSpaceIndex = -1;
+               break;
+            }
+            // this check is only here to get around a compiler warning
+            else if ( curIndex >= lineStartIndex )
+            {
+               strLine[curIndex - lineStartIndex] = '\0';
+               sfText_setString( text, strLine );
+               gmWindow_DrawText( game->window, text );
+            }
+
+            if ( str[curIndex] != ' ' && str[curIndex] != '\0' )
+            {
+               curIndex--;
+            }
+
+            lineStartIndex = curIndex + 1;
+            pos.y += lineSpacing;
+            sfText_setPosition( text, pos );
+         }
+         else
+         {
+            if ( curIndex > substrEndIndex )
+            {
+               strLine[substrEndIndex - lineStartIndex + 1] = '\0';
+               sfText_setString( text, strLine );
+               gmWindow_DrawText( game->window, text );
+               break;
+            }
+            else if ( curIndex == strLen - 1 )
+            {
+               gmWindow_DrawText( game->window, text );
+            }
+            else
+            {
+               strLine[writeIndex] = ' ';
+               lastSpaceIndex = writeIndex;
             }
          }
       }
-      else if ( i == strLen - 1 )
+      else if ( cutoffIndex <= lineStartIndex )
       {
+         strLine[writeIndex + 1] = '\0';
          sfText_setString( text, strLine );
-         sfText_setPosition( text, pos );
-         gmWindow_DrawText( game->window, text );
-      }
-      else if ( str[i] == ' ' )
-      {
-         lastSpaceIndex = (int32_t)i;
+
+         if ( sfText_getGlobalBounds( text ).width > width )
+         {
+            cutoffIndex = curIndex - 1;
+         }
       }
    }
-
-   gmFree( strLine, sizeof( char ) * ( strLen + 1 ), sfTrue );
 }

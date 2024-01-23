@@ -6,19 +6,25 @@
 #include "clock.h"
 #include "time_util.h"
 #include "map.h"
+#include "character.h"
 #include "entity.h"
 #include "entity_sprite.h"
 #include "menus.h"
 #include "battle.h"
 #include "text_util.h"
+#include "battle_stats.h"
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game );
+static void gmRenderer_DrawDebugBar( gmGame_t* game );
 static void gmRenderer_SetMapView( gmGame_t* game );
 static void gmRenderer_DrawMap( gmGame_t* game );
 static void gmRenderer_DrawMapEntities( gmGame_t* game );
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game );
 static void gmRenderer_DrawBattle( gmGame_t* game );
-static void gmRenderer_DrawDebugBar( gmGame_t* game );
+static void gmRenderer_DrawBattleStatusDialog( gmGame_t* game );
+static void gmRenderer_DrawBattleActionMenu( gmGame_t* game );
+static void gmRenderer_DrawBattleLargeDialog( gmGame_t* game );
+static void gmRenderer_DrawBattleSmallDialog( gmGame_t* game );
 
 gmRenderer_t* gmRenderer_Create( gmGame_t* game )
 {
@@ -126,7 +132,7 @@ sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
 
 void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
 {
-   if ( renderer->renderStates->textScroll->isScrolling )
+   if ( !renderer->renderStates->screenFade->isFading && renderer->renderStates->textScroll->isScrolling )
    {
       gmRenderStates_ResetTextScroll( renderer->renderStates->textScroll );
    }
@@ -134,41 +140,55 @@ void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
 
 static void gmRenderer_DrawDiagnostics( gmGame_t* game )
 {
-   char msg[DEFAULT_STRLEN];
-   char timeStr[SHORT_STRLEN];
+   char msg[STRLEN_DEFAULT];
+   char timeStr[STRLEN_DEFAULT];
    gmDiagnosticsRenderObjects_t* objects = game->renderer->renderObjects->diagnostics;
 
    gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
 
    objects->textPosition.y = 4;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_FRAMERATEFORMATTER, GAME_FPS );
+   snprintf( msg, STRLEN_DEFAULT, STR_FRAMERATEFORMATTER, GAME_FPS );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_TOTALFRAMESFORMATTER, game->clock->totalFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   snprintf( msg, DEFAULT_STRLEN, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
+   snprintf( msg, STRLEN_DEFAULT, STR_LAGFRAMESFORMATTER, game->clock->lagFrameCount );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 
    objects->textPosition.y += objects->lineSpacing;
    sfText_setPosition( objects->text, objects->textPosition );
-   dmTimeUtil_FormatTime( timeStr, SHORT_STRLEN, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
-   snprintf( msg, DEFAULT_STRLEN, STR_ELAPSEDTIMEFORMATTER, timeStr );
+   dmTimeUtil_FormatTime( timeStr, STRLEN_SHORT, (int32_t)( game->clock->realTotalDurationMicro / 1000000 ) );
+   snprintf( msg, STRLEN_DEFAULT, STR_ELAPSEDTIMEFORMATTER, timeStr );
    sfText_setString( objects->text, msg );
    gmWindow_DrawText( game->window, objects->text );
 }
 
+static void gmRenderer_DrawDebugBar( gmGame_t* game )
+{
+   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
+   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBar;
+
+   if ( state->isVisible )
+   {
+      sfText_setString( objects->text, state->msgBuffer );
+
+      gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
+      gmWindow_DrawText( game->window, objects->text );
+   }
+}
+
 static void gmRenderer_SetMapView( gmGame_t* game )
 {
-   gmEntity_t* entity = game->entity;
+   gmEntity_t* entity = game->player->entity;
    gmRenderer_t* renderer = game->renderer;
    gmMap_t* map = game->map;
    sfVector2f mapSize = { (float)( map->tileCount.x * MAP_TILE_SIZE ), (float)( map->tileCount.y * MAP_TILE_SIZE ) };
@@ -273,17 +293,18 @@ static void gmRenderer_DrawMap( gmGame_t* game )
 static void gmRenderer_DrawMapEntities( gmGame_t* game )
 {
    gmRenderer_t* renderer = game->renderer;
+   gmEntity_t* entity = game->player->entity;
    sfVector2f spritePos;
 
    spritePos.x = ( renderer->mapViewPadding.x > 0 )
-      ? game->entity->mapPos.x + game->entity->spriteOffset.x + renderer->mapViewPadding.x
-      : game->entity->mapPos.x + game->entity->spriteOffset.x - renderer->mapViewRect.left;
+      ? entity->mapPos.x + entity->spriteOffset.x + renderer->mapViewPadding.x
+      : entity->mapPos.x + entity->spriteOffset.x - renderer->mapViewRect.left;
    spritePos.y = ( renderer->mapViewPadding.y > 0 )
-      ? game->entity->mapPos.y + game->entity->spriteOffset.y + renderer->mapViewPadding.y
-      : game->entity->mapPos.y + game->entity->spriteOffset.y - renderer->mapViewRect.top;
+      ? entity->mapPos.y + entity->spriteOffset.y + renderer->mapViewPadding.y
+      : entity->mapPos.y + entity->spriteOffset.y - renderer->mapViewRect.top;
 
-   gmEntitySprite_SetPosition( game->entity->sprite, spritePos );
-   gmWindow_DrawEntitySprite( game->window, game->entity->sprite );
+   gmEntitySprite_SetPosition( entity->sprite, spritePos );
+   gmWindow_DrawEntitySprite( game->window, entity->sprite );
 }
 
 static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
@@ -317,65 +338,105 @@ static void gmRenderer_DrawOverworldMenu( gmGame_t* game )
 
 static void gmRenderer_DrawBattle( gmGame_t* game )
 {
-   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
-   gmMenu_t* actionMenu = game->menus->battleAction;
-   gmMenuRenderState_t* actionMenuState = game->renderer->renderStates->menu;
-   uint32_t i;
-   sfVector2f pos;
-
    switch ( game->battle->state )
    {
       case gmBattleState_Intro:
+         gmRenderer_DrawBattleLargeDialog( game );
+         break;
       case gmBattleState_Result:
-         gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
-         sfText_setString( objects->text, game->battle->message );
-         gmTextUtil_DrawWrappedScrollingText( game,
-                                              objects->text,
-                                              game->battle->message,
-                                              objects->largeDialogTextPos,
-                                              objects->largeDialogTextWidth,
-                                              objects->lineSpacing );
+         gmRenderer_DrawBattleStatusDialog( game );
+         gmRenderer_DrawBattleLargeDialog( game );
          break;
       case gmBattleState_SelectAction:
-         gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
-         for ( i = 0; i < actionMenu->optionCount; i++ )
-         {
-            if ( actionMenu->selectedIndex == i && actionMenuState->showCarat )
-            {
-               pos.x = objects->actionMenuItemsPos.x + objects->actionMenuCaratOffset.x;
-               pos.y = objects->actionMenuItemsPos.y + objects->actionMenuCaratOffset.y + ( i * MENU_LINESIZE );
-               sfText_setPosition( objects->text, pos );
-               sfText_setString( objects->text, STR_MENU_CARAT );
-               gmWindow_DrawText( game->window, objects->text );
-            }
-            pos.x = objects->actionMenuItemsPos.x;
-            pos.y = objects->actionMenuItemsPos.y + ( i * MENU_LINESIZE );
-            sfText_setPosition( objects->text, pos );
-            sfText_setString( objects->text, actionMenu->options[i].label );
-            gmWindow_DrawText( game->window, objects->text );
-         }
-         gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
-         sfText_setString( objects->text, game->battle->message );
-         gmTextUtil_DrawWrappedScrollingText( game,
-                                              objects->text,
-                                              game->battle->message,
-                                              objects->smallDialogTextPos,
-                                              objects->smallDialogTextWidth,
-                                              objects->lineSpacing );
+         gmRenderer_DrawBattleStatusDialog( game );
+         gmRenderer_DrawBattleActionMenu( game );
+         gmRenderer_DrawBattleSmallDialog( game );
          break;
    }
 }
 
-static void gmRenderer_DrawDebugBar( gmGame_t* game )
+static void gmRenderer_DrawBattleStatusDialog( gmGame_t* game )
 {
-   gmDebugBarRenderState_t* state = game->renderer->renderStates->debugBar;
-   gmDebugBarRenderObjects_t* objects = game->renderer->renderObjects->debugBar;
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+   sfVector2f pos = { objects->statusDialogTextPos.x, objects->statusDialogTextPos.y };
+   char hpStr[STRLEN_SHORT];
 
-   if ( state->isVisible )
+   gmWindow_DrawConvexShape( game->window, objects->statusDialogBackground );
+   sfText_setPosition( objects->text, pos );
+   sfText_setString( objects->text, game->player->name );
+   gmWindow_DrawText( game->window, objects->text );
+   pos.y += objects->lineSpacing;
+   sfText_setPosition( objects->text, pos );
+   snprintf( hpStr, STRLEN_SHORT, STR_BATTLE_HITPOINTSFORMATTER, game->player->battleStats->hitPoints );
+   sfText_setString( objects->text, hpStr );
+   gmWindow_DrawText( game->window, objects->text );
+   pos.y += objects->lineSpacing;
+   sfText_setPosition( objects->text, pos );
+   snprintf( hpStr, STRLEN_SHORT, STR_BATTLE_MAGPOINTSFORMATTER, game->player->battleStats->magicPoints );
+   sfText_setString( objects->text, hpStr );
+   gmWindow_DrawText( game->window, objects->text );
+}
+
+static void gmRenderer_DrawBattleActionMenu( gmGame_t* game )
+{
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+   gmMenu_t* actionMenu = game->menus->battleAction;
+   gmMenuRenderState_t* actionMenuState = game->renderer->renderStates->menu;
+   sfVector2f pos;
+   uint32_t i;
+
+   gmWindow_DrawConvexShape( game->window, objects->actionMenuBackground );
+
+   for ( i = 0; i < actionMenu->optionCount; i++ )
    {
-      sfText_setString( objects->text, state->msgBuffer );
+      if ( actionMenu->selectedIndex == i && actionMenuState->showCarat )
+      {
+         pos.x = objects->actionMenuItemsPos.x + objects->actionMenuCaratOffset.x;
+         pos.y = objects->actionMenuItemsPos.y + objects->actionMenuCaratOffset.y + ( i * MENU_LINESIZE );
+         sfText_setPosition( objects->text, pos );
+         sfText_setString( objects->text, STR_MENU_CARAT );
+         gmWindow_DrawText( game->window, objects->text );
+      }
 
-      gmWindow_DrawRectangleShape( game->window, objects->backgroundRect );
+      pos.x = objects->actionMenuItemsPos.x;
+      pos.y = objects->actionMenuItemsPos.y + ( i * MENU_LINESIZE );
+      sfText_setPosition( objects->text, pos );
+      sfText_setString( objects->text, actionMenu->options[i].label );
       gmWindow_DrawText( game->window, objects->text );
    }
+}
+
+static void gmRenderer_DrawBattleLargeDialog( gmGame_t* game )
+{
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+
+   gmWindow_DrawConvexShape( game->window, objects->largeDialogBackground );
+
+   if ( game->battle->state == gmBattleState_Intro && game->renderer->renderStates->screenFade->isFading )
+   {
+      // if we don't do this, the first character of the message will appear early
+      return;
+   }
+
+   sfText_setString( objects->text, game->battle->message );
+   gmTextUtil_DrawWrappedScrollingText( game,
+                                        objects->text,
+                                        game->battle->message,
+                                        objects->largeDialogTextPos,
+                                        objects->largeDialogTextWidth,
+                                        objects->lineSpacing );
+}
+
+static void gmRenderer_DrawBattleSmallDialog( gmGame_t* game )
+{
+   gmBattleRenderObjects_t* objects = game->renderer->renderObjects->battle;
+
+   gmWindow_DrawConvexShape( game->window, objects->smallDialogBackground );
+   sfText_setString( objects->text, game->battle->message );
+   gmTextUtil_DrawWrappedScrollingText( game,
+                                        objects->text,
+                                        game->battle->message,
+                                        objects->smallDialogTextPos,
+                                        objects->smallDialogTextWidth,
+                                        objects->lineSpacing );
 }

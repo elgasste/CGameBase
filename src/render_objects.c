@@ -159,6 +159,13 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
 
    gmBattleRenderObjects_t* objects = (gmBattleRenderObjects_t*)gmAlloc( sizeof( gmBattleRenderObjects_t ), sfTrue );
 
+   objects->statusDialogBackground = gmConvexShape_Create();
+   gmRenderObjects_BuildDialogBackground( objects->statusDialogBackground,
+                                          32, 32,
+                                          288, 192,
+                                          16,
+                                          DIALOG_BACKDROP_DARKCOLOR );
+
    objects->largeDialogBackground = gmConvexShape_Create();
    gmRenderObjects_BuildDialogBackground( objects->largeDialogBackground,
                                           32, WINDOW_HEIGHT - 32 - 256,
@@ -188,6 +195,8 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    sfText_setFillColor( objects->text, GAME_FONT_COLOR );
 
    objects->lineSpacing = 40;
+   objects->statusDialogTextPos.x = 64;
+   objects->statusDialogTextPos.y = 64;
    objects->largeDialogTextPos.x = 64;
    objects->largeDialogTextPos.y = WINDOW_HEIGHT - 256;
    objects->largeDialogTextWidth = WINDOW_WIDTH - 64 - 64;
@@ -268,6 +277,7 @@ static void gmBattleRenderObjects_Destroy( gmBattleRenderObjects_t* objects )
    gmConvexShape_Destroy( objects->actionMenuBackground );
    gmConvexShape_Destroy( objects->smallDialogBackground );
    gmConvexShape_Destroy( objects->largeDialogBackground );
+   gmConvexShape_Destroy( objects->statusDialogBackground );
 
    gmFree( objects, sizeof( gmBattleRenderObjects_t ), sfTrue );
 }

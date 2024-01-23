@@ -1,5 +1,6 @@
 #include "physics.h"
 #include "game.h"
+#include "character.h"
 #include "entity.h"
 #include "entity_sprite.h"
 #include "clock.h"
@@ -23,7 +24,7 @@ void gmPhysics_Destroy( gmPhysics_t* physics )
 
 void gmPhysics_Tic( gmGame_t* game )
 {
-   gmEntity_t* entity = game->entity;
+   gmEntity_t* entity = game->player->entity;
    sfVector2f newPos = entity->mapPos;
    sfVector2f mapSize = { (float)( game->map->tileCount.x * MAP_TILE_SIZE ),
                           (float)( game->map->tileCount.y * MAP_TILE_SIZE ) };

@@ -9,8 +9,10 @@
 #include "menus.h"
 #include "map.h"
 #include "battle.h"
+#include "character.h"
 #include "entity.h"
 #include "entity_sprite.h"
+#include "battle_stats.h"
 #include "physics.h"
 #include "random.h"
 
@@ -21,6 +23,8 @@ gmGame_t* gmGame_Create()
    sfVector2f entityMapPos = { 256, 256 };
    sfVector2f entityMapHitBoxSize = { 52, 32 };
    sfVector2f entitySpriteOffset = { -6, -32 };
+   gmEntity_t* playerEntity;
+   gmBattleStats_t* playerBattleStats;
 
    gmRandom_Seed();
 
@@ -43,14 +47,20 @@ gmGame_t* gmGame_Create()
    game->cheatNoClip = sfFalse;
    game->cheatNoEncounters = sfFalse;
 
-   // TODO: entities should be created on the fly, probably.
-   // and gmGame_t should have a "controllable entity" pointer.
-   game->entity = gmEntity_Create( entityMapPos,
+   // TODO: this is a little weird, it should probably go in game_loader or something
+   playerEntity = gmEntity_Create( entityMapPos,
                                    entityMapHitBoxSize,
                                    200.0f,
                                    entitySpriteOffset,
                                    game->renderer->renderObjects->entitySpriteTexture );
-   gmEntity_SetDirection( game->entity, gmDirection_Down );
+   gmEntity_SetDirection( playerEntity, gmDirection_Down );
+   playerBattleStats = (gmBattleStats_t*)gmAlloc( sizeof( gmBattleStats_t ), sfTrue );
+   playerBattleStats->hitPoints = 100;
+   playerBattleStats->magicPoints = 25;
+   playerBattleStats->attackPower = 20;
+   playerBattleStats->defensePower = 20;
+   game->player = gmCharacter_Create( "Goobermans", playerEntity, playerBattleStats );
+
    game->physics->entityMapTileCache = gmMap_TileIndexFromPos( game->map, entityMapPos );
 
    return game;
@@ -58,7 +68,7 @@ gmGame_t* gmGame_Create()
 
 void gmGame_Destroy( gmGame_t* game )
 {
-   gmEntity_Destroy( game->entity );
+   gmCharacter_Destroy( game->player );
    gmMap_Destroy( game->map );
    gmMenus_Destroy( game->menus );
    gmRenderer_Destroy( game->renderer );

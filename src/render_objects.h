@@ -50,14 +50,16 @@ gmOverworldMenuRenderObjects_t;
 
 typedef struct gmBattleRenderObjects_t
 {
+   sfConvexShape* statusDialogBackground;
    sfConvexShape* largeDialogBackground;
    sfConvexShape* smallDialogBackground;
    sfConvexShape* actionMenuBackground;
    sfFont* font;
    sfText* text;
    float lineSpacing;
-   sfVector2f largeDialogTextPos;
    float largeDialogTextWidth;
+   sfVector2f statusDialogTextPos;
+   sfVector2f largeDialogTextPos;
    sfVector2f smallDialogTextPos;
    float smallDialogTextWidth;
    sfVector2f actionMenuItemsPos;

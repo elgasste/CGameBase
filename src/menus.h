@@ -8,7 +8,7 @@ typedef struct gmMenuRenderState_t gmMenuRenderState_t;
 
 typedef struct gmMenuOption_t
 {
-   char label[SHORT_STRLEN];
+   char label[STRLEN_SHORT];
    gmMenuCommand_t command;
 }
 gmMenuOption_t;

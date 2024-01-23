@@ -7,7 +7,7 @@ typedef struct gmGame_t gmGame_t;
 
 typedef struct gmInputHandler_t
 {
-   char cheatString[SHORT_STRLEN];
+   char cheatString[STRLEN_SHORT];
 }
 gmInputHandler_t;
 
