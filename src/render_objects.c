@@ -169,22 +169,22 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
 
    objects->largeDialogBackground = gmConvexShape_Create();
    gmRenderObjects_BuildDialogBackground( objects->largeDialogBackground,
-                                          32, WINDOW_HEIGHT - 32 - 256,
-                                          WINDOW_WIDTH - 64, 256,
+                                          32, WINDOW_HEIGHT - 32 - 192,
+                                          WINDOW_WIDTH - 64, 192,
                                           16,
                                           DIALOG_BACKDROP_DARKCOLOR );
 
    objects->smallDialogBackground = gmConvexShape_Create();
    gmRenderObjects_BuildDialogBackground( objects->smallDialogBackground,
-                                          WINDOW_WIDTH - 640 - 32, WINDOW_HEIGHT - 32 - 256,
-                                          640, 256,
+                                          WINDOW_WIDTH - 640 - 32, WINDOW_HEIGHT - 32 - 192,
+                                          640, 192,
                                           16,
                                           DIALOG_BACKDROP_DARKCOLOR );
 
    objects->actionMenuBackground = gmConvexShape_Create();
    gmRenderObjects_BuildDialogBackground( objects->actionMenuBackground,
-                                          32, WINDOW_HEIGHT - 32 - 256,
-                                          288, 256,
+                                          32, WINDOW_HEIGHT - 32 - 192,
+                                          288, 192,
                                           16,
                                           DIALOG_BACKDROP_DARKCOLOR );
 
@@ -199,13 +199,13 @@ static gmBattleRenderObjects_t* gmBattleRenderObjects_Create()
    objects->statusDialogTextPos.x = 64;
    objects->statusDialogTextPos.y = 64;
    objects->largeDialogTextPos.x = 64;
-   objects->largeDialogTextPos.y = WINDOW_HEIGHT - 256;
+   objects->largeDialogTextPos.y = WINDOW_HEIGHT - 192;
    objects->largeDialogTextWidth = WINDOW_WIDTH - 64 - 64;
    objects->smallDialogTextPos.x = WINDOW_WIDTH - 640;
-   objects->smallDialogTextPos.y = WINDOW_HEIGHT - 256;
+   objects->smallDialogTextPos.y = WINDOW_HEIGHT - 192;
    objects->smallDialogTextWidth = 640 - 64;
    objects->actionMenuItemsPos.x = 96;
-   objects->actionMenuItemsPos.y = WINDOW_HEIGHT - 256;
+   objects->actionMenuItemsPos.y = WINDOW_HEIGHT - 192;
    objects->actionMenuCaratOffset.x = -32;
    objects->actionMenuCaratOffset.y = 0;
    objects->enemyPos.x = ( WINDOW_WIDTH / 2 ) - 64;
