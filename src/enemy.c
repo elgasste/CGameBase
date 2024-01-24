@@ -12,7 +12,7 @@ gmEnemy_t* gmEnemy_Create( const char* name,
    snprintf( enemy->name, STRLEN_SHORT, "%s", name );
    enemy->indefiniteArticle = indefiniteArticle;
    enemy->battleStats = battleStats;
-   enemy->battleSprite = gmBattleSprite_Create( spriteTexture, 8, 0.1f );
+   enemy->battleSprite = gmBattleSprite_Create( spriteTexture, 0.1f, 8, 8, 4, 6 );
 
    return enemy;
 }

@@ -1,7 +1,8 @@
 #include "battle_sprite.h"
 #include "clock.h"
 
-gmBattleSprite_t* gmBattleSprite_Create( sfTexture* texture, uint32_t frames, float frameSeconds )
+gmBattleSprite_t* gmBattleSprite_Create( sfTexture* texture, float frameSeconds,
+                                         uint32_t idleFrames, uint32_t attackFrames, uint32_t damageFrames, uint32_t deathFrames )
 {
    sfIntRect textureRect = { 0, 0, 64, 64 };
    sfVector2f scale = { GRAPHICS_SCALE, GRAPHICS_SCALE };
@@ -14,9 +15,13 @@ gmBattleSprite_t* gmBattleSprite_Create( sfTexture* texture, uint32_t frames, fl
    sfSprite_setTextureRect( sprite->sfmlSprite, textureRect );
    sfSprite_scale( sprite->sfmlSprite, scale );
 
-   sprite->frames = frames;
    sprite->frameSeconds = frameSeconds;
    sprite->elapsedSeconds = 0;
+
+   sprite->idleFrames = idleFrames;
+   sprite->attackFrames = attackFrames;
+   sprite->damageFrames = damageFrames;
+   sprite->deathFrames = deathFrames;
 
    return sprite;
 }
@@ -44,7 +49,7 @@ void gmBattleSprite_Tic( gmBattleSprite_t* sprite, gmClock_t* clock )
       sprite->elapsedSeconds -= sprite->frameSeconds;
       textureRect.left += textureRect.width;
 
-      if ( textureRect.left >= (int32_t)( textureRect.width * sprite->frames ) )
+      if ( textureRect.left >= (int32_t)( textureRect.width * sprite->idleFrames ) )
       {
          textureRect.left = 0;
       }
