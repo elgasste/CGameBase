@@ -171,6 +171,8 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
    {
       case gmBattleState_StartingAttack:
       case gmBattleState_EnemyDamage:
+      case gmBattleState_EnemyDeath:
+      case gmBattleState_AttackResult:
          gmBattle_NextState( game );
          return;
    }

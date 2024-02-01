@@ -33,6 +33,8 @@ typedef enum
    gmBattleState_SelectAction,
    gmBattleState_StartingAttack,
    gmBattleState_EnemyDamage,
+   gmBattleState_EnemyDeath,
+   gmBattleState_AttackResult,
    gmBattleState_Result
 }
 gmBattleState_t;
