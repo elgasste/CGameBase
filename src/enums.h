@@ -32,6 +32,7 @@ typedef enum
    gmBattleState_Intro,
    gmBattleState_SelectAction,
    gmBattleState_StartingAttack,
+   gmBattleState_EnemyDamage,
    gmBattleState_Result
 }
 gmBattleState_t;
@@ -46,5 +47,15 @@ typedef enum gmMenuCommand_t
    gmMenuCommand_Flee
 }
 gmMenuCommand_t;
+
+typedef enum gmBattleSpriteState_t
+{
+   gmBattleSpriteState_Idle = 0,
+   gmBattleSpriteState_Attack,
+   gmBattleSpriteState_Damage,
+   gmBattleSpriteState_Death,
+   gmBattleSpriteState_Dead
+}
+gmBattleSpriteState_t;
 
 #endif

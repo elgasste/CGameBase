@@ -46,12 +46,23 @@ typedef struct gmTextScrollRenderState_t
 }
 gmTextScrollRenderState_t;
 
+typedef struct gmEnemyDamageRenderState_t
+{
+   sfBool isRunning;
+   sfBool isAnimating;
+   sfBool isPausing;
+   float pauseSeconds;
+   float elapsedSeconds;
+}
+gmEnemyDamageRenderState_t;
+
 typedef struct gmRenderStates_t
 {
    gmDebugBarRenderState_t* debugBar;
    gmMenuRenderState_t* menu;
    gmScreenFadeRenderState_t* screenFade;
    gmTextScrollRenderState_t* textScroll;
+   gmEnemyDamageRenderState_t* enemyDamage;
 }
 gmRenderStates_t;
 
@@ -62,6 +73,8 @@ void gmRenderStates_ResetScreenFade( gmScreenFadeRenderState_t* state );
 void gmRenderStates_StartScreenFade( gmScreenFadeRenderState_t* state, sfBool light );
 void gmRenderStates_ResetTextScroll( gmTextScrollRenderState_t* state );
 void gmRenderStates_StartTextScroll( gmTextScrollRenderState_t* state, uint32_t charCount );
+void gmRenderStates_ResetEnemyDamage( gmEnemyDamageRenderState_t* state );
+void gmRenderStates_StartEnemyDamage( gmEnemyDamageRenderState_t* state );
 void gmRenderStates_Tic( gmGame_t* game );
 
 #endif // RENDER_STATES_H

@@ -167,9 +167,12 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 {
    gmMenu_t* menu = game->menus->battleAction;
 
-   if ( game->battle->state == gmBattleState_StartingAttack )
+   switch ( game->battle->state )
    {
-      gmBattle_NextState( game );
+      case gmBattleState_StartingAttack:
+      case gmBattleState_EnemyDamage:
+         gmBattle_NextState( game );
+         return;
    }
 
    if ( game->inputState->keyWasPressed )

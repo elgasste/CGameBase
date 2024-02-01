@@ -77,7 +77,13 @@ void gmBattle_NextState( gmGame_t* game )
    switch ( game->battle->state )
    {
       case gmBattleState_StartingAttack:
+         game->battle->state = gmBattleState_EnemyDamage;
+         gmBattleSprite_SetState( game->battle->enemy->battleSprite, gmBattleSpriteState_Damage );
+         gmRenderStates_StartEnemyDamage( game->renderer->renderStates->enemyDamage );
+         break;
+      case gmBattleState_EnemyDamage:
          game->battle->state = gmBattleState_Result;
+         gmBattleSprite_SetState( game->battle->enemy->battleSprite, gmBattleSpriteState_Dead );
          snprintf( game->battle->message, STRLEN_DEFAULT, "It's a hit! And it's dead! YOU WIN!" );
          gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
          break;
