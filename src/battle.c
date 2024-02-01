@@ -31,7 +31,7 @@ gmBattle_t* gmBattle_Create( gmGame_t* game )
              gmTextUtil_IndefiniteArticleFromEnum( battle->enemy->indefiniteArticle, sfTrue ),
              battle->enemy->name );
    battle->state = gmBattleState_Intro;
-   gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( battle->message ), 0 );
+   gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( battle->message ), 1 );
 
    return battle;
 }

@@ -169,6 +169,9 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
 
    switch ( game->battle->state )
    {
+      case gmBattleState_Intro:
+         gmBattle_Begin( game );
+         return;
       case gmBattleState_StartingAttack:
       case gmBattleState_EnemyDamage:
       case gmBattleState_EnemyDeath:
@@ -181,9 +184,6 @@ static void gmInputHandler_HandleBattleInput( gmGame_t* game )
    {
       switch ( game->battle->state )
       {
-         case gmBattleState_Intro:
-            gmBattle_Begin( game );
-            break;
          case gmBattleState_SelectAction:
             if ( gmInputHandler_HandleMenuSelection( game, menu ) )
             {
