@@ -19,6 +19,7 @@ gmBattle_t* gmBattle_Create( gmGame_t* game );
 void gmBattle_Destroy( gmBattle_t* battle );
 void gmBattle_Begin( gmGame_t* game );
 void gmBattle_ActionSelected( gmGame_t* game, gmMenuCommand_t command );
+void gmBattle_NextState( gmGame_t* game );
 void gmBattle_Tic( gmGame_t* game );
 void gmBattle_Close( gmGame_t* game );
 

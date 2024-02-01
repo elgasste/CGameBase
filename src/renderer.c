@@ -347,6 +347,11 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
          gmRenderer_DrawBattleLargeDialog( game );
          gmRenderer_DrawBattleEnemy( game );
          break;
+      case gmBattleState_StartingAttack:
+         gmRenderer_DrawBattleStatusDialog( game );
+         gmRenderer_DrawBattleLargeDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
+         break;
       case gmBattleState_Result:
          gmRenderer_DrawBattleStatusDialog( game );
          gmRenderer_DrawBattleLargeDialog( game );

@@ -31,6 +31,7 @@ typedef enum
 {
    gmBattleState_Intro,
    gmBattleState_SelectAction,
+   gmBattleState_StartingAttack,
    gmBattleState_Result
 }
 gmBattleState_t;

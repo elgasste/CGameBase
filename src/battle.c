@@ -53,20 +53,35 @@ void gmBattle_ActionSelected( gmGame_t* game, gmMenuCommand_t command )
    switch ( command )
    {
       case gmMenuCommand_Attack:
-         snprintf( game->battle->message, STRLEN_DEFAULT, "Your brutal attack has left the enemy in tiny pieces, well done." );
+         game->battle->state = gmBattleState_StartingAttack;
+         snprintf( game->battle->message, STRLEN_DEFAULT, "You swing your comically oversized sword!" );
+         gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
          break;
       case gmMenuCommand_Guard:
+         game->battle->state = gmBattleState_Result;
          snprintf( game->battle->message, STRLEN_DEFAULT, "You hid behind your shield so well that the enemy forgot you were even there, and ran off." );
+         gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
          break;
       case gmMenuCommand_Flee:
+         game->battle->state = gmBattleState_Result;
          snprintf( game->battle->message, STRLEN_DEFAULT, "You got away, nice work. Now the bad guy can go kill someone else." );
+         gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
          break;
       default:
          gmExitWithError( STR_ERROR_INVALIDBATTLECOMMAND );
    }
+}
 
-   game->battle->state = gmBattleState_Result;
-   gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
+void gmBattle_NextState( gmGame_t* game )
+{
+   switch ( game->battle->state )
+   {
+      case gmBattleState_StartingAttack:
+         game->battle->state = gmBattleState_Result;
+         snprintf( game->battle->message, STRLEN_DEFAULT, "It's a hit! And it's dead! YOU WIN!" );
+         gmRenderStates_StartTextScroll( game->renderer->renderStates->textScroll, (uint32_t)strlen( game->battle->message ) );
+         break;
+   }
 }
 
 void gmBattle_Tic( gmGame_t* game )
