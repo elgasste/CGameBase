@@ -125,19 +125,21 @@ void gmRenderer_Render( gmGame_t* game )
 
 sfBool gmRenderer_IsBlockingPhysics( gmRenderer_t* renderer )
 {
-   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isRunning;
 }
 
 sfBool gmRenderer_IsBlockingInput( gmRenderer_t* renderer )
 {
-   return renderer->renderStates->screenFade->isFading || renderer->renderStates->textScroll->isScrolling;
+   return renderer->renderStates->screenFade->isFading ||
+          renderer->renderStates->textScroll->isRunning ||
+          renderer->renderStates->enemyDamage->isRunning;
 }
 
 void gmRenderer_TryUnblockingInput( gmRenderer_t* renderer )
 {
    if ( !renderer->renderStates->screenFade->isFading && renderer->renderStates->textScroll->isScrolling )
    {
-      gmRenderStates_ResetTextScroll( renderer->renderStates->textScroll );
+      gmRenderStates_SkipTextScroll( renderer->renderStates->textScroll );
    }
 }
 
@@ -347,9 +349,22 @@ static void gmRenderer_DrawBattle( gmGame_t* game )
          gmRenderer_DrawBattleLargeDialog( game );
          gmRenderer_DrawBattleEnemy( game );
          break;
+      case gmBattleState_StartingAttack:
+         gmRenderer_DrawBattleStatusDialog( game );
+         gmRenderer_DrawBattleLargeDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
+         break;
+      case gmBattleState_EnemyDamage:
+      case gmBattleState_EnemyDeath:
+      case gmBattleState_AttackResult:
+         gmRenderer_DrawBattleStatusDialog( game );
+         gmRenderer_DrawBattleLargeDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
+         break;
       case gmBattleState_Result:
          gmRenderer_DrawBattleStatusDialog( game );
          gmRenderer_DrawBattleLargeDialog( game );
+         gmRenderer_DrawBattleEnemy( game );
          break;
       case gmBattleState_SelectAction:
          gmRenderer_DrawBattleStatusDialog( game );

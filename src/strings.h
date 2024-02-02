@@ -44,6 +44,7 @@
 #define STR_ERROR_WRITELOGFILE            "Could not write message to logfile"
 #define STR_ERROR_CLOSELOGFILE            "Could not close logfile"
 #define STR_ERROR_INVALIDBATTLECOMMAND    "Invalid menu command passed into battle"
+#define STR_ERROR_BATTLESPRITEINDEX       "Battle sprite state index is out of bounds"
 
 #define STR_MENU_CARAT                    ">"
 #define STR_MENU_QUITGAME                 "Quit Game"
